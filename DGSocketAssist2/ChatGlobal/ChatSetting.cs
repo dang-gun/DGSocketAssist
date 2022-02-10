@@ -24,7 +24,7 @@ namespace ChatGlobal
 		/// <summary>
 		/// 바이너리 데이터를 문자열로 바꾼다.
 		/// </summary>
-		/// <param name="byteData"></param>
+		/// <param name="byteData">바꿀 데이터</param>
 		/// <returns></returns>
 		public static string ByteArrayToString(byte[] byteData)
 		{
@@ -33,7 +33,7 @@ namespace ChatGlobal
 		/// <summary>
 		/// 문자열을 바이너리 데이터로 바꾼다.
 		/// </summary>
-		/// <param name="sData"></param>
+		/// <param name="sData">바꿀 데이터</param>
 		/// <returns></returns>
 		public static byte[] StringToByteArray(string sData)
 		{
