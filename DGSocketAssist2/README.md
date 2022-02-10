@@ -1,4 +1,4 @@
-# DGSocketAssist2
+# DGSocketAssist2 (.NET Framework 4.8)
 C# Socket + SocketAsyncEventArgs 사용을 이해하기 위한 라이브러리 두번째 버전<br />
 C#에서 C# Socket과 SocketAsyncEventArgs를 사용할때 메커니즘을 공부할때 사용하라고 만든 라이브러리입니다.<br />
 <br />
