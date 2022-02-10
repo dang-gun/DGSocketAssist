@@ -18,16 +18,15 @@ C#에서 C# Socket과 SocketAsyncEventArgs를 사용할때 메커니즘을 공�
 <br />
 
 ### 프로젝트 구성
-.NET Framework 4.8
-VisualStudio 2022
-
-
-Socket, SocketAsyncEventArgs를 이해하기 위한 라이브러리
-- DGSocketAssist1_Server
-- DGSocketAssist1_Client
-
-
-이 라이브러리를 이용하여 만든 체팅 셈플
-- SocketServerTest
-- SocketClientTest
-
+.NET Framework 4.8<br />
+VisualStudio 2022<br />
+<br />
+<br />
+Socket, SocketAsyncEventArgs를 이해하기 위한 라이브러리<br />
+- DGSocketAssist1_Server<br />
+- DGSocketAssist1_Client<br />
+<br />
+<br />
+이 라이브러리를 이용하여 만든 체팅 셈플<br />
+- SocketServerTest<br />
+- SocketClientTest<br />
