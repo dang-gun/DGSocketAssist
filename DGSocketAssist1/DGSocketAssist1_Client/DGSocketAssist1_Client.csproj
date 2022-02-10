@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DGSocketAssist1_Global\DGSocketAssist1_Global.csproj" />
+  </ItemGroup>
+
+</Project>
