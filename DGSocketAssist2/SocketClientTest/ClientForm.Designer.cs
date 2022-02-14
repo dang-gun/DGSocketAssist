@@ -39,20 +39,30 @@
 			this.listUser = new System.Windows.Forms.ListBox();
 			this.listMsg = new System.Windows.Forms.ListBox();
 			this.timer1 = new System.Windows.Forms.Timer(this.components);
-			this.label1 = new System.Windows.Forms.Label();
 			this.txtAutoMsg = new System.Windows.Forms.TextBox();
-			this.txtPort = new System.Windows.Forms.TextBox();
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
 			this.serverToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiConnectReady = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiConnect = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiSendMessage = new System.Windows.Forms.ToolStripMenuItem();
+			this.btnLogin = new System.Windows.Forms.Button();
+			this.pbDownImage = new System.Windows.Forms.PictureBox();
+			this.btnImageSend = new System.Windows.Forms.Button();
+			this.btnDir = new System.Windows.Forms.Button();
+			this.txtDir = new System.Windows.Forms.TextBox();
+			this.txtIP = new System.Windows.Forms.TextBox();
+			this.label2 = new System.Windows.Forms.Label();
+			this.label3 = new System.Windows.Forms.Label();
+			this.label4 = new System.Windows.Forms.Label();
+			this.txtID = new System.Windows.Forms.TextBox();
+			this.txtPort = new System.Windows.Forms.TextBox();
 			this.menuStrip1.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.pbDownImage)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// button1
 			// 
-			this.button1.Location = new System.Drawing.Point(356, 292);
+			this.button1.Location = new System.Drawing.Point(357, 342);
 			this.button1.Name = "button1";
 			this.button1.Size = new System.Drawing.Size(81, 23);
 			this.button1.TabIndex = 23;
@@ -61,7 +71,7 @@
 			// 
 			// labID
 			// 
-			this.labID.Location = new System.Drawing.Point(0, 350);
+			this.labID.Location = new System.Drawing.Point(1, 371);
 			this.labID.Name = "labID";
 			this.labID.Size = new System.Drawing.Size(100, 23);
 			this.labID.TabIndex = 21;
@@ -70,17 +80,17 @@
 			// 
 			// btnSend
 			// 
-			this.btnSend.Location = new System.Drawing.Point(443, 350);
+			this.btnSend.Location = new System.Drawing.Point(446, 369);
 			this.btnSend.Name = "btnSend";
 			this.btnSend.Size = new System.Drawing.Size(75, 23);
 			this.btnSend.TabIndex = 20;
-			this.btnSend.Text = "로그인";
+			this.btnSend.Text = "보내기";
 			this.btnSend.UseVisualStyleBackColor = true;
 			this.btnSend.Click += new System.EventHandler(this.btnSend_Click);
 			// 
 			// txtMsg
 			// 
-			this.txtMsg.Location = new System.Drawing.Point(106, 350);
+			this.txtMsg.Location = new System.Drawing.Point(107, 371);
 			this.txtMsg.Name = "txtMsg";
 			this.txtMsg.Size = new System.Drawing.Size(331, 21);
 			this.txtMsg.TabIndex = 17;
@@ -91,7 +101,7 @@
 			this.listUser.ItemHeight = 12;
 			this.listUser.Location = new System.Drawing.Point(356, 27);
 			this.listUser.Name = "listUser";
-			this.listUser.Size = new System.Drawing.Size(162, 256);
+			this.listUser.Size = new System.Drawing.Size(162, 160);
 			this.listUser.TabIndex = 15;
 			// 
 			// listMsg
@@ -100,42 +110,25 @@
 			this.listMsg.ItemHeight = 12;
 			this.listMsg.Location = new System.Drawing.Point(0, 27);
 			this.listMsg.Name = "listMsg";
-			this.listMsg.Size = new System.Drawing.Size(350, 316);
+			this.listMsg.Size = new System.Drawing.Size(350, 340);
 			this.listMsg.TabIndex = 16;
 			// 
 			// timer1
 			// 
 			this.timer1.Interval = 1000;
 			// 
-			// label1
-			// 
-			this.label1.Location = new System.Drawing.Point(354, 318);
-			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(83, 23);
-			this.label1.TabIndex = 22;
-			this.label1.Text = "Port";
-			this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-			// 
 			// txtAutoMsg
 			// 
-			this.txtAutoMsg.Location = new System.Drawing.Point(443, 292);
+			this.txtAutoMsg.Location = new System.Drawing.Point(446, 342);
 			this.txtAutoMsg.Name = "txtAutoMsg";
 			this.txtAutoMsg.Size = new System.Drawing.Size(75, 21);
 			this.txtAutoMsg.TabIndex = 18;
 			this.txtAutoMsg.Text = "자동 메시지";
 			// 
-			// txtPort
-			// 
-			this.txtPort.Location = new System.Drawing.Point(443, 320);
-			this.txtPort.Name = "txtPort";
-			this.txtPort.Size = new System.Drawing.Size(75, 21);
-			this.txtPort.TabIndex = 19;
-			this.txtPort.Text = "7000";
-			// 
 			// menuStrip1
 			// 
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-			this.serverToolStripMenuItem});
+            this.serverToolStripMenuItem});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
 			this.menuStrip1.Size = new System.Drawing.Size(526, 24);
@@ -145,9 +138,9 @@
 			// serverToolStripMenuItem
 			// 
 			this.serverToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-			this.tsmiConnectReady,
-			this.tsmiConnect,
-			this.tsmiSendMessage});
+            this.tsmiConnectReady,
+            this.tsmiConnect,
+            this.tsmiSendMessage});
 			this.serverToolStripMenuItem.Name = "serverToolStripMenuItem";
 			this.serverToolStripMenuItem.Size = new System.Drawing.Size(77, 20);
 			this.serverToolStripMenuItem.Text = "Server Test";
@@ -155,38 +148,144 @@
 			// tsmiConnectReady
 			// 
 			this.tsmiConnectReady.Name = "tsmiConnectReady";
-			this.tsmiConnectReady.Size = new System.Drawing.Size(180, 22);
+			this.tsmiConnectReady.Size = new System.Drawing.Size(150, 22);
 			this.tsmiConnectReady.Text = "접속 준비";
 			this.tsmiConnectReady.Click += new System.EventHandler(this.tsmiConnectReady_Click);
 			// 
 			// tsmiConnect
 			// 
 			this.tsmiConnect.Name = "tsmiConnect";
-			this.tsmiConnect.Size = new System.Drawing.Size(180, 22);
+			this.tsmiConnect.Size = new System.Drawing.Size(150, 22);
 			this.tsmiConnect.Text = "접속";
 			this.tsmiConnect.Click += new System.EventHandler(this.tsmiConnect_Click);
 			// 
 			// tsmiSendMessage
 			// 
 			this.tsmiSendMessage.Name = "tsmiSendMessage";
-			this.tsmiSendMessage.Size = new System.Drawing.Size(180, 22);
+			this.tsmiSendMessage.Size = new System.Drawing.Size(150, 22);
 			this.tsmiSendMessage.Text = "메시지 보내기";
 			this.tsmiSendMessage.Click += new System.EventHandler(this.tsmiSendMessage_Click);
+			// 
+			// btnLogin
+			// 
+			this.btnLogin.Location = new System.Drawing.Point(446, 427);
+			this.btnLogin.Name = "btnLogin";
+			this.btnLogin.Size = new System.Drawing.Size(75, 23);
+			this.btnLogin.TabIndex = 25;
+			this.btnLogin.Text = "Login";
+			this.btnLogin.UseVisualStyleBackColor = true;
+			this.btnLogin.Click += new System.EventHandler(this.btnLogin_Click);
+			// 
+			// pbDownImage
+			// 
+			this.pbDownImage.Location = new System.Drawing.Point(357, 198);
+			this.pbDownImage.Name = "pbDownImage";
+			this.pbDownImage.Size = new System.Drawing.Size(165, 138);
+			this.pbDownImage.TabIndex = 26;
+			this.pbDownImage.TabStop = false;
+			// 
+			// btnImageSend
+			// 
+			this.btnImageSend.Location = new System.Drawing.Point(446, 398);
+			this.btnImageSend.Name = "btnImageSend";
+			this.btnImageSend.Size = new System.Drawing.Size(75, 23);
+			this.btnImageSend.TabIndex = 27;
+			this.btnImageSend.Text = "파일 전송";
+			this.btnImageSend.UseVisualStyleBackColor = true;
+			this.btnImageSend.Click += new System.EventHandler(this.btnImageSend_Click);
+			// 
+			// btnDir
+			// 
+			this.btnDir.Location = new System.Drawing.Point(407, 398);
+			this.btnDir.Name = "btnDir";
+			this.btnDir.Size = new System.Drawing.Size(33, 23);
+			this.btnDir.TabIndex = 29;
+			this.btnDir.Text = "...";
+			this.btnDir.UseVisualStyleBackColor = true;
+			this.btnDir.Click += new System.EventHandler(this.btnDir_Click);
+			// 
+			// txtDir
+			// 
+			this.txtDir.Location = new System.Drawing.Point(15, 400);
+			this.txtDir.Name = "txtDir";
+			this.txtDir.Size = new System.Drawing.Size(386, 21);
+			this.txtDir.TabIndex = 28;
+			this.txtDir.Text = "C:\\Users\\Persephone\\Pictures\\짤빵\\제니퍼로렌스_001.jpg";
+			// 
+			// txtIP
+			// 
+			this.txtIP.Location = new System.Drawing.Point(52, 429);
+			this.txtIP.Name = "txtIP";
+			this.txtIP.Size = new System.Drawing.Size(133, 21);
+			this.txtIP.TabIndex = 35;
+			this.txtIP.Text = "127.0.0.1";
+			// 
+			// label2
+			// 
+			this.label2.Location = new System.Drawing.Point(16, 429);
+			this.label2.Name = "label2";
+			this.label2.Size = new System.Drawing.Size(30, 23);
+			this.label2.TabIndex = 32;
+			this.label2.Text = "IP";
+			this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			// 
+			// label3
+			// 
+			this.label3.Location = new System.Drawing.Point(308, 427);
+			this.label3.Name = "label3";
+			this.label3.Size = new System.Drawing.Size(30, 23);
+			this.label3.TabIndex = 33;
+			this.label3.Text = "ID";
+			this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			// 
+			// label4
+			// 
+			this.label4.Location = new System.Drawing.Point(191, 429);
+			this.label4.Name = "label4";
+			this.label4.Size = new System.Drawing.Size(30, 23);
+			this.label4.TabIndex = 34;
+			this.label4.Text = "Port";
+			this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			// 
+			// txtID
+			// 
+			this.txtID.Location = new System.Drawing.Point(344, 429);
+			this.txtID.Name = "txtID";
+			this.txtID.Size = new System.Drawing.Size(96, 21);
+			this.txtID.TabIndex = 30;
+			this.txtID.Text = "test";
+			// 
+			// txtPort
+			// 
+			this.txtPort.Location = new System.Drawing.Point(227, 429);
+			this.txtPort.Name = "txtPort";
+			this.txtPort.Size = new System.Drawing.Size(75, 21);
+			this.txtPort.TabIndex = 31;
+			this.txtPort.Text = "7000";
 			// 
 			// ClientForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(526, 378);
+			this.ClientSize = new System.Drawing.Size(526, 455);
+			this.Controls.Add(this.txtIP);
+			this.Controls.Add(this.label2);
+			this.Controls.Add(this.label3);
+			this.Controls.Add(this.label4);
+			this.Controls.Add(this.txtID);
+			this.Controls.Add(this.txtPort);
+			this.Controls.Add(this.btnDir);
+			this.Controls.Add(this.txtDir);
+			this.Controls.Add(this.btnImageSend);
+			this.Controls.Add(this.pbDownImage);
+			this.Controls.Add(this.btnLogin);
 			this.Controls.Add(this.button1);
 			this.Controls.Add(this.labID);
 			this.Controls.Add(this.btnSend);
 			this.Controls.Add(this.txtMsg);
 			this.Controls.Add(this.listUser);
 			this.Controls.Add(this.listMsg);
-			this.Controls.Add(this.label1);
 			this.Controls.Add(this.txtAutoMsg);
-			this.Controls.Add(this.txtPort);
 			this.Controls.Add(this.menuStrip1);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
 			this.MaximizeBox = false;
@@ -195,6 +294,7 @@
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ClientForm_FormClosing);
 			this.menuStrip1.ResumeLayout(false);
 			this.menuStrip1.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.pbDownImage)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -209,14 +309,23 @@
 		private System.Windows.Forms.ListBox listUser;
 		private System.Windows.Forms.ListBox listMsg;
 		private System.Windows.Forms.Timer timer1;
-		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.TextBox txtAutoMsg;
-		private System.Windows.Forms.TextBox txtPort;
 		private System.Windows.Forms.MenuStrip menuStrip1;
 		private System.Windows.Forms.ToolStripMenuItem serverToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem tsmiConnectReady;
 		private System.Windows.Forms.ToolStripMenuItem tsmiConnect;
 		private System.Windows.Forms.ToolStripMenuItem tsmiSendMessage;
+		private System.Windows.Forms.Button btnLogin;
+		private System.Windows.Forms.PictureBox pbDownImage;
+		private System.Windows.Forms.Button btnImageSend;
+		private System.Windows.Forms.Button btnDir;
+		private System.Windows.Forms.TextBox txtDir;
+		private System.Windows.Forms.TextBox txtIP;
+		private System.Windows.Forms.Label label2;
+		private System.Windows.Forms.Label label3;
+		private System.Windows.Forms.Label label4;
+		private System.Windows.Forms.TextBox txtID;
+		private System.Windows.Forms.TextBox txtPort;
 	}
 }
 

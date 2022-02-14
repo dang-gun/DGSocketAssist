@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -139,6 +140,7 @@ namespace SocketClientTest
 		}
 		#endregion
 
+		#region 보내기 UI
 		/// <summary>
 		/// 로그인/메시지 보내기 버튼 클릭
 		/// </summary>
@@ -146,47 +148,58 @@ namespace SocketClientTest
 		/// <param name="e"></param>
 		private void btnSend_Click(object sender, EventArgs e)
 		{
-			switch (m_typeState)
+			this.SendMsg(ChatCommandType.MsgSend, txtMsg.Text);
+			this.txtMsg.Text = "";
+		}
+
+		private void btnImageSend_Click(object sender, EventArgs e)
+		{
+			//명령어 만들기
+			byte[] byteTemp = File.ReadAllBytes(txtDir.Text);
+			//전송 요청
+			this.SendMsg(ChatCommandType.FileSend, byteTemp);
+		}
+
+		/// <summary>
+		/// 로그인
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void btnLogin_Click(object sender, EventArgs e)
+		{
+			if ("" == txtMsg.Text)
 			{
-				case typeState.None://기본
-					if ("" == txtMsg.Text)
-					{
-						//입력값이 없으면 리턴
-						MessageBox.Show("아이디를 넣고 시도해 주세요");
-						return;
-					}
-					else
-					{
-						//아이디가 있으면 로그인 시작
+				//입력값이 없으면 리턴
+				MessageBox.Show("아이디를 넣고 시도해 주세요");
+				return;
+			}
+			else
+			{
+				//아이디가 있으면 로그인 시작
 
-						//유아이를 세팅하고
-						UI_Setting(typeState.Connecting);
+				//유아이를 세팅하고
+				UI_Setting(typeState.Connecting);
 
-						string nIP = "127.0.0.1";
-						int nPort = Convert.ToInt32(txtPort.Text);
+				string nIP = "127.0.0.1";
+				int nPort = Convert.ToInt32(txtPort.Text);
 
-						//클라이언트 개체 생성
-						GloblaStatic.Client = new Client(nIP, nPort);
-						GloblaStatic.Client.OnConnectionComplete += Client_OnConnectionComplete;
-						GloblaStatic.Client.OnDisconnect += Client_OnDisconnect;
-						GloblaStatic.Client.OnDisconnectCompleted += Client_OnDisconnectCompleted;
-						GloblaStatic.Client.OnReceiveReady += Client_OnReceiveReady;
-						GloblaStatic.Client.OnMessaged += Client_OnMessaged;
+				//클라이언트 개체 생성
+				GloblaStatic.Client = new Client(nIP, nPort);
+				GloblaStatic.Client.OnConnectionComplete += Client_OnConnectionComplete;
+				GloblaStatic.Client.OnDisconnect += Client_OnDisconnect;
+				GloblaStatic.Client.OnDisconnectCompleted += Client_OnDisconnectCompleted;
+				GloblaStatic.Client.OnReceiveReady += Client_OnReceiveReady;
+				GloblaStatic.Client.OnMessaged += Client_OnMessaged;
 
-						DisplayMsg("서버 준비 완료");
+				DisplayMsg("서버 준비 완료");
 
-						//서버 접속 시작
-						GloblaStatic.Client.ConnectServer();
-					}
-					break;
-
-				case typeState.Connect://접속 상태
-									   //이상태에서는 메시지를 보낸다.
-					this.SendMsg(ChatCommandType.Msg, txtMsg.Text);
-					this.txtMsg.Text = "";
-					break;
+				//서버 접속 시작
+				GloblaStatic.Client.ConnectServer();
 			}
 		}
+
+		#endregion
+
 
 		#region 클라이언트 이벤트 콜백
 		/// <summary>
@@ -257,7 +270,7 @@ namespace SocketClientTest
 				{
 					case ChatCommandType.None:   //없다
 						break;
-					case ChatCommandType.Msg:    //메시지인 경우
+					case ChatCommandType.MsgSend:    //메시지인 경우
 						Command_Msg(sData[1]);
 						break;
 					case ChatCommandType.ID_Check:    //아이디 체크 시도
@@ -400,13 +413,24 @@ namespace SocketClientTest
 			ChatCommandType typeChatCommand
 			, string sMessage)
 		{
-			string sToss
-				= GloblaStatic.ChatCmd
-					.ChatCommandString(
-						typeChatCommand
-						, sMessage);
 
-			GloblaStatic.Client.Send(ChatSetting.StringToByteArray(sToss));
+
+			//GloblaStatic.Client.Send(
+			//	GloblaStatic.ChatCmd.ChatCommandByte(
+			//		typeChatCommand
+			//		, sMessage));
+
+			GloblaStatic.Client.Send(
+				GloblaStatic.ChatCmd.ChatString(
+					typeChatCommand
+					, sMessage));
+		}
+
+		public void SendByte(
+			ChatCommandType typeChatCommand
+			, byte[] sData)
+		{
+
 		}
 
 
@@ -496,5 +520,25 @@ namespace SocketClientTest
 				GloblaStatic.Client.Disconnect(true);
 			}
 		}
+
+		
+
+		/// <summary>
+		/// 파일 열기
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void btnDir_Click(object sender, EventArgs e)
+		{
+			using (OpenFileDialog openFileDialog = new OpenFileDialog())
+			{
+				if (openFileDialog.ShowDialog() == DialogResult.OK)
+				{
+					txtDir.Text = openFileDialog.FileName;
+				}
+			}//end using openFileDialog
+		}
+
+		
 	}
 }

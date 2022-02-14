@@ -147,7 +147,7 @@ namespace SocketServerTest
 			string sCmdMsg
 				= GloblaStatic.ChatCmd
 					.ChatCommandString(
-						ChatCommandType.Msg
+						ChatCommandType.MsgSend
 						, "Server : " + this.txtSendMsg.Text);
 
 			//전체로 메시지 전송
@@ -308,7 +308,7 @@ namespace SocketServerTest
 
 			switch (e.m_typeCommand)
 			{
-				case ChatCommandType.Msg:    //메시지
+				case ChatCommandType.MsgSend:    //메시지
 					sbMsg.Append(sender.UserID);
 					sbMsg.Append(" : ");
 					sbMsg.Append(e.m_strMsg);
@@ -397,7 +397,7 @@ namespace SocketServerTest
 			string sSendData
 				= GloblaStatic.ChatCmd
 					.ChatCommandString(
-						ChatCommandType.Msg
+						ChatCommandType.MsgSend
 						, string.Empty);
 
 			//전체 유저에게 메시지 전송

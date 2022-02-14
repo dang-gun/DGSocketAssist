@@ -3,7 +3,49 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatGlobal", "ChatGlobal\ChatGlobal.csproj", "{74A4CE65-7ADA-455E-81F2-B7A332D3A9E0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DGSocketAssist3_Client", "DGSocketAssist3_Client\DGSocketAssist3_Client.csproj", "{1705FFFA-5FCF-4776-B6C1-7AEC297E358C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DGSocketAssist3_Global", "DGSocketAssist3_Global\DGSocketAssist3_Global.csproj", "{22D96530-6981-4F2C-AB9A-A4B9E5B7F5CA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DGSocketAssist3_Server", "DGSocketAssist3_Server\DGSocketAssist3_Server.csproj", "{4F3F999B-43F4-421B-87D7-BFE8586A6B39}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerTestConsole", "ServerTestConsole\ServerTestConsole.csproj", "{99B764EA-9159-4CF8-8E57-87D5FC75A2A4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientTestConsole", "ClientTestConsole\ClientTestConsole.csproj", "{2B37CC7B-4578-498B-9833-DD3795A05E8B}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{74A4CE65-7ADA-455E-81F2-B7A332D3A9E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74A4CE65-7ADA-455E-81F2-B7A332D3A9E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74A4CE65-7ADA-455E-81F2-B7A332D3A9E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74A4CE65-7ADA-455E-81F2-B7A332D3A9E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1705FFFA-5FCF-4776-B6C1-7AEC297E358C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1705FFFA-5FCF-4776-B6C1-7AEC297E358C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1705FFFA-5FCF-4776-B6C1-7AEC297E358C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1705FFFA-5FCF-4776-B6C1-7AEC297E358C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22D96530-6981-4F2C-AB9A-A4B9E5B7F5CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22D96530-6981-4F2C-AB9A-A4B9E5B7F5CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22D96530-6981-4F2C-AB9A-A4B9E5B7F5CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22D96530-6981-4F2C-AB9A-A4B9E5B7F5CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F3F999B-43F4-421B-87D7-BFE8586A6B39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F3F999B-43F4-421B-87D7-BFE8586A6B39}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F3F999B-43F4-421B-87D7-BFE8586A6B39}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F3F999B-43F4-421B-87D7-BFE8586A6B39}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99B764EA-9159-4CF8-8E57-87D5FC75A2A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99B764EA-9159-4CF8-8E57-87D5FC75A2A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99B764EA-9159-4CF8-8E57-87D5FC75A2A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99B764EA-9159-4CF8-8E57-87D5FC75A2A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B37CC7B-4578-498B-9833-DD3795A05E8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B37CC7B-4578-498B-9833-DD3795A05E8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B37CC7B-4578-498B-9833-DD3795A05E8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B37CC7B-4578-498B-9833-DD3795A05E8B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection

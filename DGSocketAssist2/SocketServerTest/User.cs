@@ -137,7 +137,7 @@ namespace SocketServerTest
 				{
 					case ChatCommandType.None:   //없다
 						break;
-					case ChatCommandType.Msg:    //메시지인 경우
+					case ChatCommandType.MsgSend:    //메시지인 경우
 						SendMeg_Main(sData[1], typeCommand);
 						break;
 					case ChatCommandType.ID_Check:   //아이디 체크

@@ -1,5 +1,4 @@
-﻿using DGU.DGU_ByteAssist;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -63,11 +62,7 @@ namespace ChatGlobal
 		/// <summary>
 		/// 메시지 전송
 		/// </summary>
-		MsgSend,
-		/// <summary>
-		/// 파일 전송
-		/// </summary>
-		FileSend,
+		Msg,
 	}
 
 	/// <summary>
@@ -79,8 +74,6 @@ namespace ChatGlobal
 		/// 숫자 관련 지원
 		/// </summary>
 		private NumberAssist m_insNumber = new NumberAssist();
-
-		
 
 		/// <summary>
 		/// 문자열로된 숫자를 명령어 타입으로 바꿔줍니다.
@@ -157,39 +150,6 @@ namespace ChatGlobal
 		public string[] ChatCommandCut(byte[] byteMessage)
 		{
 			return this.ChatCommandCut(ChatSetting.ByteArrayToString(byteMessage));
-		}
-
-		/// <summary>
-		/// 체팅 명령을 체팅헤더로 바꾼다.
-		/// <para>체팅 명령을 설정된 크기만큼의 byte로 변환하여 리턴한다.</para>
-		/// </summary>
-		/// <param name="typeChatCommand"></param>
-		/// <returns></returns>
-		public byte[] ChatCommandToChatHeader(ChatCommandType typeChatCommand)
-		{
-			byte[] byteReturn = new byte[ChatSetting.ChatCommandSize];
-			byteReturn = BitConverter.GetBytes(Convert.ToInt16(typeChatCommand));
-
-			return byteReturn;
-		}
-
-		/// <summary>
-		/// 문자열로된 명령을 변환한다.
-		/// <para>체팅명령은 체팅 헤더로 변환하고 문자열을 바이트어레이로 변환한다.</para>
-		/// </summary>
-		/// <param name="typeChatCommand"></param>
-		/// <param name="sData"></param>
-		/// <returns></returns>
-		public byte[] ChatString(
-			ChatCommandType typeChatCommand
-			, string sData)
-		{
-			//체팅명령은 체팅 헤더로 변환
-			byte[] byteChatHeader = this.ChatCommandToChatHeader(typeChatCommand);
-			//문자열 데이터를 바이너리로 변환
-			byte[] byteData = ChatSetting.StringToByteArray(sData);
-			//두개를 합쳐서 리턴
-			return ByteArray.Combine(byteChatHeader, byteData);
 		}
 	}
 }
