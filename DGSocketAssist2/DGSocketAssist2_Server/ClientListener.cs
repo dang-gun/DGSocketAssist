@@ -230,11 +230,18 @@ namespace DGSocketAssist2_Server
 
 		private void SaeaSendArgs_Completed(object sender, SocketAsyncEventArgs e)
 		{
-			//유저 소켓
-			Socket socketClient = (Socket)sender;
-			byte[] byteMsg = (byte[])e.UserToken;
-			//데이터 보내기 마무리
-			socketClient.Send(byteMsg);
+			try
+			{
+				//유저 소켓
+				Socket socketClient = (Socket)sender;
+				byte[] byteMsg = (byte[])e.UserToken;
+				//데이터 보내기 마무리
+				socketClient.Send(byteMsg);
+			}
+			catch
+			{
+				//보통은 클라이언트가 끊기면 여기서 에러가 난다.
+			}
 		}
 
 		/// <summary>
