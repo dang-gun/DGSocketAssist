@@ -11,4 +11,9 @@ C#에서 C# Socket과 SocketAsyncEventArgs를 사용할때 메커니즘을 공�
 문자열로 데이터를 주고 받는 셈플
 
 ### DGSocketAssist2 (.NET Framework 4.8)
-바이너리(byte[])로 데이터를 주고 받는 셈플
+바이너리(byte[])로 데이터를 주고 받는 셈플 
+작은 크기의 파일도 전송 가능하다.
+
+### DGSocketAssist3 (.NET Framework 4.8)
+큰 데이터를 주고 받는 셈플
+아주 많은 데이터나 큰 파일을 전송하는 셈플
