@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32112.339
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatGlobal", "ChatGlobal\ChatGlobal.csproj", "{00D9C8E9-CFC8-41E2-95C5-1EE8B8DBE592}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClientTestConsole", "ClientTestConsole\ClientTestConsole.csproj", "{9A493311-D760-41E0-BBEA-962CE97670ED}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DGSocketAssist3_Client", "DGSocketAssist3_Client\DGSocketAssist3_Client.csproj", "{36BCB6DE-5DE7-411B-B911-2BC3ADE9301B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DGSocketAssist3_Global", "DGSocketAssist3_Global\DGSocketAssist3_Global.csproj", "{938C72FA-051A-4178-BB4B-D006F61F695A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DGSocketAssist3_Server", "DGSocketAssist3_Server\DGSocketAssist3_Server.csproj", "{F6B726A2-90C5-4339-8BDF-3CCAA8E5B51A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerTestConsole", "ServerTestConsole\ServerTestConsole.csproj", "{46FEAB47-48BF-428C-B193-47A0724C74F3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{00D9C8E9-CFC8-41E2-95C5-1EE8B8DBE592}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00D9C8E9-CFC8-41E2-95C5-1EE8B8DBE592}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00D9C8E9-CFC8-41E2-95C5-1EE8B8DBE592}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00D9C8E9-CFC8-41E2-95C5-1EE8B8DBE592}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A493311-D760-41E0-BBEA-962CE97670ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A493311-D760-41E0-BBEA-962CE97670ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A493311-D760-41E0-BBEA-962CE97670ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A493311-D760-41E0-BBEA-962CE97670ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36BCB6DE-5DE7-411B-B911-2BC3ADE9301B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36BCB6DE-5DE7-411B-B911-2BC3ADE9301B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36BCB6DE-5DE7-411B-B911-2BC3ADE9301B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36BCB6DE-5DE7-411B-B911-2BC3ADE9301B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{938C72FA-051A-4178-BB4B-D006F61F695A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{938C72FA-051A-4178-BB4B-D006F61F695A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{938C72FA-051A-4178-BB4B-D006F61F695A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{938C72FA-051A-4178-BB4B-D006F61F695A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6B726A2-90C5-4339-8BDF-3CCAA8E5B51A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6B726A2-90C5-4339-8BDF-3CCAA8E5B51A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6B726A2-90C5-4339-8BDF-3CCAA8E5B51A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6B726A2-90C5-4339-8BDF-3CCAA8E5B51A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46FEAB47-48BF-428C-B193-47A0724C74F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46FEAB47-48BF-428C-B193-47A0724C74F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46FEAB47-48BF-428C-B193-47A0724C74F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46FEAB47-48BF-428C-B193-47A0724C74F3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {48AEB5F2-CF69-4949-A352-348B2C64CE93}
+	EndGlobalSection
+EndGlobal
