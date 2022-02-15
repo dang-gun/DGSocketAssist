@@ -99,11 +99,40 @@
             <param name="sender"></param>
             <param name="e"></param>
         </member>
-        <member name="M:SocketServerTest.ServerForm.Server_ValidationComplete(DGSocketAssist1_Server.ClientListener)">
+        <member name="M:SocketServerTest.ServerForm.Server_OnStart">
             <summary>
-            유효성 검사 완료
+            서버 이벤트 콜백 - 서버가 시작됨
+            </summary>
+        </member>
+        <member name="M:SocketServerTest.ServerForm.Server_OnStop">
+            <summary>
+            서버 이벤트 콜백 - 서버가 멈춤
+            </summary>
+        </member>
+        <member name="M:SocketServerTest.ServerForm.Server_OnConnected(DGSocketAssist1_Server.ClientListener)">
+            <summary>
+            서버 이벤트 콜백 - 클라이언트 연결됨
             </summary>
             <param name="sender"></param>
+        </member>
+        <member name="M:SocketServerTest.ServerForm.Server_ValidationComplete(DGSocketAssist1_Server.ClientListener)">
+            <summary>
+            서버 이벤트 콜백 - 클라이언트 허가됨
+            </summary>
+            <param name="sender"></param>
+        </member>
+        <member name="M:SocketServerTest.ServerForm.Server_OnDisconnected(DGSocketAssist1_Server.ClientListener)">
+            <summary>
+            서버 이벤트 콜백 - 클라이언트 끊김
+            </summary>
+            <param name="sender"></param>
+        </member>
+        <member name="M:SocketServerTest.ServerForm.Server_OnMessaged(DGSocketAssist1_Server.ClientListener,System.String)">
+            <summary>
+            서버 이벤트 콜백 - 클라이언트 메시지
+            </summary>
+            <param name="sender"></param>
+            <param name="message"></param>
         </member>
         <member name="M:SocketServerTest.ServerForm.NewUser_OnUserReady(SocketServerTest.User)">
             <summary>
@@ -303,6 +332,11 @@
             이 유저에게 메시지를 보낸다.
             </summary>
             <param name="sMsg"></param>
+        </member>
+        <member name="M:SocketServerTest.User.Disconnect">
+            <summary>
+            이 유저를 끊는다.
+            </summary>
         </member>
         <member name="T:SocketServerTest.Properties.Resources">
             <summary>

@@ -396,7 +396,7 @@ namespace SocketServerTest
 				= GloblaStatic.ChatCmd
 					.ChatCommandString(
 						ChatCommandType.Msg
-						, string.Empty);
+						, sMsg);
 
 			//전체 유저에게 메시지 전송
 			this.AllUser_Send(sSendData);

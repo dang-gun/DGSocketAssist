@@ -107,6 +107,15 @@ namespace DGSocketAssist1_Server
 		/// </summary>
 		public Socket SocketMe { get; private set; }
 
+		/// <summary>
+		/// 이 클라이언트에게 전송용 SocketAsyncEventArgs
+		/// </summary>
+		private SocketAsyncEventArgs m_saeaSend = null;
+		/// <summary>
+		/// 이 클라이언트에게서오는 수신용 SocketAsyncEventArgs
+		/// </summary>
+		private SocketAsyncEventArgs m_saeaReceive = null;
+
 		#region 클라이언트 유효성(validation) 검사용 함수 정의
 		/// <summary>
 		/// 유효성 검사에 사용할 함수를 전달하기위한 대리자.
@@ -128,6 +137,8 @@ namespace DGSocketAssist1_Server
 		{
 			//소캣을 저장한다.
 			this.SocketMe = socketMe;
+
+
 
 			//여기서 바로 Listening을 시작하면 이벤트가 연결되기 전에 동작이 진행될수 있다.
 		}
