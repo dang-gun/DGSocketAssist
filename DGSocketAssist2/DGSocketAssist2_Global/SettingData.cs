@@ -28,7 +28,7 @@ namespace DGSocketAssist2_Global
 		///			<description>Int32</description>
 		///		</item>
 		///		<item>
-		///			<term>6</term>
+		///			<term>8</term>
 		///			<description>Int64</description>
 		///		</item>
 		///</list>
