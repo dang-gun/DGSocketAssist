@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -152,7 +153,14 @@ namespace SocketServerTest
 						, "Server : " + this.txtSendMsg.Text);
 
 			//전체로 메시지 전송
-			GloblaStatic.Server.AllMessage(byteCmdMsg);
+			this.AllUser_Send(byteCmdMsg, null);
+		}
+
+		private void btnImageSend_Click(object sender, EventArgs e)
+		{
+			//명령어 만들기
+			byte[] byteTemp = File.ReadAllBytes(txtDir.Text);
+			this.AllUser_Send(ChatCommandType.FileSend, byteTemp, null);
 		}
 
 
@@ -203,6 +211,7 @@ namespace SocketServerTest
 						}));
 
 		}
+
 		#endregion
 
 		/// <summary>
@@ -313,14 +322,19 @@ namespace SocketServerTest
 				case ChatCommandType.MsgSend:    //메시지
 					sbMsg.Append(sender.UserID);
 					sbMsg.Append(" : ");
-					sbMsg.Append(e.m_strMsg);
+					sbMsg.Append(e.DataString);
 					//화면에 출력
 					DisplayLog(sbMsg.ToString());
 
 					Commd_SendMsg(sbMsg.ToString(), sender);
 					break;
+
+				case ChatCommandType.FileSend://파일
+					this.Commd_FileSend(sender, e.DataByte);
+					break;
+
 				case ChatCommandType.ID_Check:   //id체크
-					Commd_IDCheck(sender, e.m_strMsg);
+					Commd_IDCheck(sender, e.DataString);
 					break;
 				case ChatCommandType.User_List_Get:  //유저 리스트 갱신 요청
 					Commd_User_List_Get(sender);
@@ -408,6 +422,20 @@ namespace SocketServerTest
 			//전체 유저에게 메시지 전송
 			//호출자는 제외
 			this.AllUser_Send(byteSendData, sender);
+		}
+
+		/// <summary>
+		/// 파일 보내기 요청
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="byteData"></param>
+		private void Commd_FileSend(User sender, byte[] byteData)
+		{
+			//미리 보기 표시
+			this.pbDownImage.Image = this.ByteToImage(byteData);
+
+			//센더를 제외하고 전송하기
+			this.AllUser_Send(ChatCommandType.FileSend, byteData, sender);
 		}
 
 		/// <summary>
@@ -517,5 +545,32 @@ namespace SocketServerTest
 			}
 		}
 
-    }
+
+		private void btnDir_Click(object sender, EventArgs e)
+		{
+			using (OpenFileDialog openFileDialog = new OpenFileDialog())
+			{
+				if (openFileDialog.ShowDialog() == DialogResult.OK)
+				{
+					txtDir.Text = openFileDialog.FileName;
+				}
+			}//end using openFileDialog
+		}
+
+		/// <summary>
+		/// 바이너리를 이미지로 바꾼다.
+		/// https://stackoverflow.com/questions/9576868/how-to-put-image-in-a-picture-box-from-a-byte-in-c-sharp
+		/// </summary>
+		/// <param name="blob"></param>
+		/// <returns></returns>
+		public Bitmap ByteToImage(byte[] blob)
+		{
+			MemoryStream mStream = new MemoryStream();
+			byte[] pData = blob;
+			mStream.Write(pData, 0, Convert.ToInt32(pData.Length));
+			Bitmap bm = new Bitmap(mStream, false);
+			mStream.Dispose();
+			return bm;
+		}
+	}
 }

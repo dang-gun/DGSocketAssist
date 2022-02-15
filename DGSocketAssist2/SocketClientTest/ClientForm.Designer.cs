@@ -47,7 +47,6 @@
 			this.tsmiSendMessage = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiSendFile = new System.Windows.Forms.ToolStripMenuItem();
 			this.btnLogin = new System.Windows.Forms.Button();
-			this.pbDownImage = new System.Windows.Forms.PictureBox();
 			this.btnImageSend = new System.Windows.Forms.Button();
 			this.btnDir = new System.Windows.Forms.Button();
 			this.txtDir = new System.Windows.Forms.TextBox();
@@ -57,6 +56,7 @@
 			this.label4 = new System.Windows.Forms.Label();
 			this.txtID = new System.Windows.Forms.TextBox();
 			this.txtPort = new System.Windows.Forms.TextBox();
+			this.pbDownImage = new System.Windows.Forms.PictureBox();
 			this.menuStrip1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pbDownImage)).BeginInit();
 			this.SuspendLayout();
@@ -93,7 +93,7 @@
 			this.listUser.ItemHeight = 12;
 			this.listUser.Location = new System.Drawing.Point(356, 27);
 			this.listUser.Name = "listUser";
-			this.listUser.Size = new System.Drawing.Size(162, 160);
+			this.listUser.Size = new System.Drawing.Size(165, 160);
 			this.listUser.TabIndex = 15;
 			// 
 			// listMsg
@@ -183,14 +183,6 @@
 			this.btnLogin.UseVisualStyleBackColor = true;
 			this.btnLogin.Click += new System.EventHandler(this.btnLogin_Click);
 			// 
-			// pbDownImage
-			// 
-			this.pbDownImage.Location = new System.Drawing.Point(357, 198);
-			this.pbDownImage.Name = "pbDownImage";
-			this.pbDownImage.Size = new System.Drawing.Size(165, 138);
-			this.pbDownImage.TabIndex = 26;
-			this.pbDownImage.TabStop = false;
-			// 
 			// btnImageSend
 			// 
 			this.btnImageSend.Location = new System.Drawing.Point(446, 398);
@@ -217,7 +209,7 @@
 			this.txtDir.Name = "txtDir";
 			this.txtDir.Size = new System.Drawing.Size(386, 21);
 			this.txtDir.TabIndex = 28;
-			this.txtDir.Text = "C:\\Users\\Persephone\\Pictures\\짤빵\\제니퍼로렌스_001.jpg";
+			this.txtDir.Text = "C:\\Users\\Kim\\Pictures\\favicon.jpg";
 			// 
 			// txtIP
 			// 
@@ -270,6 +262,14 @@
 			this.txtPort.TabIndex = 31;
 			this.txtPort.Text = "7000";
 			// 
+			// pbDownImage
+			// 
+			this.pbDownImage.Location = new System.Drawing.Point(357, 198);
+			this.pbDownImage.Name = "pbDownImage";
+			this.pbDownImage.Size = new System.Drawing.Size(164, 138);
+			this.pbDownImage.TabIndex = 26;
+			this.pbDownImage.TabStop = false;
+			// 
 			// ClientForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -321,7 +321,6 @@
 		private System.Windows.Forms.ToolStripMenuItem tsmiConnect;
 		private System.Windows.Forms.ToolStripMenuItem tsmiSendMessage;
 		private System.Windows.Forms.Button btnLogin;
-		private System.Windows.Forms.PictureBox pbDownImage;
 		private System.Windows.Forms.Button btnImageSend;
 		private System.Windows.Forms.Button btnDir;
 		private System.Windows.Forms.TextBox txtDir;
@@ -333,6 +332,7 @@
 		private System.Windows.Forms.TextBox txtPort;
 		private System.Windows.Forms.ToolStripMenuItem tsmiSendTest;
 		private System.Windows.Forms.ToolStripMenuItem tsmiSendFile;
+		private System.Windows.Forms.PictureBox pbDownImage;
 	}
 }
 

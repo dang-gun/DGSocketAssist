@@ -128,20 +128,26 @@ namespace SocketServerTest
 
 			switch (typeCommand)
 			{
-				case ChatCommandType.None:   //없다
+				case ChatCommandType.None://없다
 					break;
-				case ChatCommandType.MsgSend:    //메시지인 경우
+				
+				case ChatCommandType.MsgSend://메시지인 경우
 					SendMeg_Main(ChatSetting.ByteArrayToString(byteBodyData), typeCommand);
 					break;
-				case ChatCommandType.ID_Check:   //아이디 체크
+				case ChatCommandType.FileSend://파일 전송
+					MessageEventArgs e = new MessageEventArgs(byteBodyData, typeCommand);
+					this.OnMessaged(this, e);
+					break;
+
+				case ChatCommandType.ID_Check://아이디 체크
 					SendMeg_Main(ChatSetting.ByteArrayToString(byteBodyData), typeCommand);
 					break;
 
-				case ChatCommandType.User_List_Get:  //유저리스트 갱신 요청
+				case ChatCommandType.User_List_Get://유저리스트 갱신 요청
 					SendMeg_Main("", typeCommand);
 					break;
 
-				case ChatCommandType.Login:  //로그인 완료
+				case ChatCommandType.Login://로그인 완료
 					OnLoginComplet(this);
 					break;
 			}

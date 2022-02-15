@@ -13,9 +13,15 @@ namespace SocketServerTest
 	public class MessageEventArgs : EventArgs
 	{
 		/// <summary>
-		/// 메시지
+		/// 문자열
 		/// </summary>
-		public readonly string m_strMsg = "";
+		public readonly string DataString = "";
+
+		/// <summary>
+		/// 바이트 데이터
+		/// </summary>
+		public readonly byte[] DataByte;
+
 		/// <summary>
 		/// 메시지 타입
 		/// </summary>
@@ -28,7 +34,18 @@ namespace SocketServerTest
 		/// <param name="typeCommand"></param>
 		public MessageEventArgs(string strMsg, ChatCommandType typeCommand)
 		{
-			this.m_strMsg = strMsg;
+			this.DataString = strMsg;
+			this.m_typeCommand = typeCommand;
+		}
+
+		/// <summary>
+		/// 바이너리 데이터 설정
+		/// </summary>
+		/// <param name="byteData"></param>
+		/// <param name="typeCommand"></param>
+		public MessageEventArgs(byte[] byteData, ChatCommandType typeCommand)
+		{
+			this.DataByte = byteData;
 			this.m_typeCommand = typeCommand;
 		}
 	}

@@ -9,9 +9,14 @@
             메시지 이벤트용 형식입니다.
             </summary>
         </member>
-        <member name="F:SocketServerTest.MessageEventArgs.m_strMsg">
+        <member name="F:SocketServerTest.MessageEventArgs.DataString">
             <summary>
-            메시지
+            문자열
+            </summary>
+        </member>
+        <member name="F:SocketServerTest.MessageEventArgs.DataByte">
+            <summary>
+            바이트 데이터
             </summary>
         </member>
         <member name="F:SocketServerTest.MessageEventArgs.m_typeCommand">
@@ -24,6 +29,13 @@
             메시지 설정
             </summary>
             <param name="strMsg"></param>
+            <param name="typeCommand"></param>
+        </member>
+        <member name="M:SocketServerTest.MessageEventArgs.#ctor(System.Byte[],ChatGlobal.ChatCommandType)">
+            <summary>
+            바이너리 데이터 설정
+            </summary>
+            <param name="byteData"></param>
             <param name="typeCommand"></param>
         </member>
         <member name="T:SocketServerTest.ServerForm">
@@ -170,6 +182,13 @@
             <param name="sMsg"></param>
             <param name="sender">호출자. 호출자한테도 보내고 싶으면 null로 보낸다</param>
         </member>
+        <member name="M:SocketServerTest.ServerForm.Commd_FileSend(SocketServerTest.User,System.Byte[])">
+            <summary>
+            파일 보내기 요청
+            </summary>
+            <param name="sender"></param>
+            <param name="byteData"></param>
+        </member>
         <member name="M:SocketServerTest.ServerForm.Commd_IDCheck(SocketServerTest.User,System.String)">
             <summary>
             명령 처리 - ID체크
@@ -198,6 +217,14 @@
             </summary>
             <param name="byteData"></param>
             <param name="user">제외할 유저. 없으면 null</param>
+        </member>
+        <member name="M:SocketServerTest.ServerForm.ByteToImage(System.Byte[])">
+            <summary>
+            바이너리를 이미지로 바꾼다.
+            https://stackoverflow.com/questions/9576868/how-to-put-image-in-a-picture-box-from-a-byte-in-c-sharp
+            </summary>
+            <param name="blob"></param>
+            <returns></returns>
         </member>
         <member name="F:SocketServerTest.ServerForm.components">
             <summary>

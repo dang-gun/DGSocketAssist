@@ -280,8 +280,12 @@ namespace SocketClientTest
 				case ChatCommandType.MsgSend:    //메시지인 경우
 					Command_Msg(ChatSetting.ByteArrayToString(byteBodyData));
 					break;
-				case ChatCommandType.ID_Check:    //아이디 체크 시도
-												  //로그인 요청
+				case ChatCommandType.FileSend:
+					Command_FileSend(byteBodyData);
+					break;
+
+				case ChatCommandType.ID_Check://아이디 체크 시도
+					//로그인 요청
 					this.Login();
 					break;
 				case ChatCommandType.ID_Check_Ok:    //아이디 성공
@@ -315,6 +319,16 @@ namespace SocketClientTest
 		private void Command_Msg(string sMsg)
 		{
 			DisplayMsg(sMsg);
+		}
+
+		/// <summary>
+		/// 이미지 받음
+		/// </summary>
+		/// <param name="byteData"></param>
+		private void Command_FileSend(byte[] byteData)
+		{
+			//미리 보기 표시
+			this.pbDownImage.Image = this.ByteToImage(byteData);
 		}
 
 		/// <summary>
@@ -556,6 +570,23 @@ namespace SocketClientTest
 			}//end using openFileDialog
 		}
 
-		
+
+
+		/// <summary>
+		/// 바이너리를 이미지로 바꾼다.
+		/// https://stackoverflow.com/questions/9576868/how-to-put-image-in-a-picture-box-from-a-byte-in-c-sharp
+		/// </summary>
+		/// <param name="blob"></param>
+		/// <returns></returns>
+		public Bitmap ByteToImage(byte[] blob)
+		{
+			MemoryStream mStream = new MemoryStream();
+			byte[] pData = blob;
+			mStream.Write(pData, 0, Convert.ToInt32(pData.Length));
+			Bitmap bm = new Bitmap(mStream, false);
+			mStream.Dispose();
+			return bm;
+		}
+
 	}
 }
