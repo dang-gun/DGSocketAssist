@@ -138,6 +138,16 @@ namespace DGSocketAssist1_Server
 			//소캣을 저장한다.
 			this.SocketMe = socketMe;
 
+			//전송용 SocketAsyncEventArgs 세팅
+			this.m_saeaSend = new SocketAsyncEventArgs();
+			this.m_saeaSend.Completed -= SaeaSend_Completed;
+			this.m_saeaSend.Completed += SaeaSend_Completed;
+
+			//수신용 SocketAsyncEventArgs 세팅
+			this.m_saeaReceive = new SocketAsyncEventArgs();
+			this.m_saeaReceive.SetBuffer(new Byte[SettingData.BufferFullSize], 0, SettingData.BufferFullSize);
+			this.m_saeaReceive.Completed -= SaeaReceive_Completed;
+			this.m_saeaReceive.Completed += SaeaReceive_Completed;
 
 
 			//여기서 바로 Listening을 시작하면 이벤트가 연결되기 전에 동작이 진행될수 있다.
@@ -151,18 +161,12 @@ namespace DGSocketAssist1_Server
 		{
 			//데이터 구조 생성
 			MessageData MsgData = new MessageData();
-			//리시브용 인스턴스 생성
-			SocketAsyncEventArgs saeaReceiveArgs = new SocketAsyncEventArgs();
-			//리시브용 데이터 구조 지정
-			saeaReceiveArgs.UserToken = MsgData;
-			//리시브용 데이터버퍼 설정
-			saeaReceiveArgs.SetBuffer(MsgData.GetBufferHeader(), 0, 4);
-			//유저한테서 넘어온 데이터 받음 완료 이벤트 연결
-			saeaReceiveArgs.Completed -= SaeaReceiveArgs_Completed;
-			saeaReceiveArgs.Completed += SaeaReceiveArgs_Completed;
+			//커낵트용 데이터 구조 지정
+			this.m_saeaReceive.UserToken = MsgData;
+			
 			Debug.WriteLine("첫 데이터 받기 준비");
 			//첫 데이터 받기 시작
-			this.SocketMe.ReceiveAsync(saeaReceiveArgs);
+			this.SocketMe.ReceiveAsync(this.m_saeaReceive);
 
 
 			if (null != m_ValidationFunc)
@@ -185,7 +189,7 @@ namespace DGSocketAssist1_Server
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private void SaeaReceiveArgs_Completed(object sender, SocketAsyncEventArgs e)
+		private void SaeaReceive_Completed(object sender, SocketAsyncEventArgs e)
 		{
 			//서버에서 넘어온 정보
 			Socket socketClient = (Socket)sender;
@@ -226,22 +230,16 @@ namespace DGSocketAssist1_Server
 			MessageData mdMsg = new MessageData();
 			mdMsg.SetData(sMsg);
 
-			using (SocketAsyncEventArgs saeaSendArgs = new SocketAsyncEventArgs())
-			{
-				//데이터 길이 세팅
-				saeaSendArgs.SetBuffer(BitConverter.GetBytes(mdMsg.DataLength), 0, 4);
-				//보내기 완료 이벤트 연결
-				saeaSendArgs.Completed -= SaeaSendArgs_Completed;
-				saeaSendArgs.Completed += SaeaSendArgs_Completed;
-				//보낼 데이터 설정
-				saeaSendArgs.UserToken = mdMsg;
-				Debug.WriteLine("데이터 전달 : {0}", sMsg);
-				//보내기
-				this.SocketMe.SendAsync(saeaSendArgs);
-			}//end using saeaSendArgs
+			//데이터 길이 세팅
+			this.m_saeaSend.SetBuffer(BitConverter.GetBytes(mdMsg.DataLength), 0, 4);
+			//보낼 데이터 설정
+			this.m_saeaSend.UserToken = mdMsg;
+			Debug.WriteLine("데이터 전달 : {0}", sMsg);
+			//보내기
+			this.SocketMe.SendAsync(this.m_saeaSend);
 		}
 
-		private void SaeaSendArgs_Completed(object sender, SocketAsyncEventArgs e)
+		private void SaeaSend_Completed(object sender, SocketAsyncEventArgs e)
 		{
 			//유저 소켓
 			Socket socketClient = (Socket)sender;
