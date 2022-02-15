@@ -5,4 +5,11 @@
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Reference Include="DGU_ByteAssist">
+      <HintPath>..\lib\DGU_ByteAssist.dll</HintPath>
+      <CopyLocal>True</CopyLocal>
+    </Reference>
+  </ItemGroup>
+
 </Project>

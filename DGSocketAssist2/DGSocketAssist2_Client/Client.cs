@@ -242,7 +242,7 @@ namespace DGSocketAssist2_Client
 		private void SaeaReceiveArgs_Completed(object sender, SocketAsyncEventArgs e)
 		{
 			Socket socketClient = (Socket)sender;
-			BufferData bdRecieveMsg = new BufferData((byte[])e.UserToken);
+			BufferData bdRecieveMsg = new BufferData((byte[])e.UserToken, true);
 
 			if (true == socketClient.Connected)
 			{
@@ -253,9 +253,12 @@ namespace DGSocketAssist2_Client
                     bdRecieveMsg.Buffer
 					, bdRecieveMsg.Length
 					, SocketFlags.None);
+				//헤더 분리
+				bdRecieveMsg.CutHeader();
+				bdRecieveMsg.CutBody();
 
-                //메시지 수신을 알림
-                this.MessagedCall(bdRecieveMsg.Buffer);
+				//메시지 수신을 알림
+				this.MessagedCall(bdRecieveMsg.Buffer);
 
 				Debug.WriteLine("다음 데이터 받을 준비 ");
 				//다음 메시지를 받을 준비를 한다.
@@ -277,7 +280,9 @@ namespace DGSocketAssist2_Client
 		public void Send(byte[] byteData)
 		{
 			//버퍼 데이터를 만들고
-			BufferData bdSendMsg = new BufferData(byteData);
+			BufferData bdSendMsg = new BufferData(byteData, false);
+			//헤더를 붙인다.
+			bdSendMsg.AddHeader();
 
 			using (SocketAsyncEventArgs saeaSendArgs = new SocketAsyncEventArgs())
 			{

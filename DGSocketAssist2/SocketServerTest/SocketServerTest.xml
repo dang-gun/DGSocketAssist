@@ -163,11 +163,12 @@
             </summary>
             <param name="sender"></param>
         </member>
-        <member name="M:SocketServerTest.ServerForm.Commd_SendMsg(System.String)">
+        <member name="M:SocketServerTest.ServerForm.Commd_SendMsg(System.String,SocketServerTest.User)">
             <summary>
             명령 처리 - 메시지 보내기
             </summary>
             <param name="sMsg"></param>
+            <param name="sender">호출자. 호출자한테도 보내고 싶으면 null로 보낸다</param>
         </member>
         <member name="M:SocketServerTest.ServerForm.Commd_IDCheck(SocketServerTest.User,System.String)">
             <summary>
@@ -182,18 +183,21 @@
             </summary>
             <param name="insUser"></param>
         </member>
-        <member name="M:SocketServerTest.ServerForm.AllUser_Send(System.String)">
+        <member name="M:SocketServerTest.ServerForm.AllUser_Send(ChatGlobal.ChatCommandType,System.Byte[],SocketServerTest.User)">
             <summary>
             접속중인 모든 유저에게 메시지를 보낸다
             </summary>
-            <param name="sMsg"></param>
+            <param name="typeChatCommand"></param>
+            <param name="byteData"></param>
+            <param name="user">제외할 유저. 없으면 null</param>
         </member>
-        <member name="M:SocketServerTest.ServerForm.AllUser_Send(System.String,SocketServerTest.User)">
+        <member name="M:SocketServerTest.ServerForm.AllUser_Send(System.Byte[],SocketServerTest.User)">
             <summary>
-            전체 유저중 지정한 유저를 제외하고 메시지를 전송 합니다.
+            접속중인 모든 유저에게 메시지를 보낸다<br />
+            이미 체팅명령 헤더가 붙은 경우 이것으로 메시지를 보낸다.
             </summary>
-            <param name="sMsg"></param>
-            <param name="insUser">제외할 유저</param>
+            <param name="byteData"></param>
+            <param name="user">제외할 유저. 없으면 null</param>
         </member>
         <member name="F:SocketServerTest.ServerForm.components">
             <summary>
@@ -320,18 +324,26 @@
             <param name="sMag"></param>
             <param name="typeCommand"></param>
         </member>
-        <member name="M:SocketServerTest.User.SendMsg_User(ChatGlobal.ChatCommandType,System.String)">
+        <member name="M:SocketServerTest.User.SendMsg_User(ChatGlobal.ChatCommandType,System.Byte[])">
             <summary>
             이 유저에게 체팅 명령 문자열을 만들어 메시지를 보낸다.
             </summary>
             <param name="typeChatCommand"></param>
-            <param name="sMsg"></param>
+            <param name="byteData"></param>
         </member>
-        <member name="M:SocketServerTest.User.SendMsg_User(System.String)">
+        <member name="M:SocketServerTest.User.SendMsg_User(ChatGlobal.ChatCommandType,System.String)">
             <summary>
             이 유저에게 메시지를 보낸다.
             </summary>
+            <param name="typeChatCommand"></param>
             <param name="sMsg"></param>
+        </member>
+        <member name="M:SocketServerTest.User.SendMsg_User(System.Byte[])">
+            <summary>
+            이 유저에게 메시지를 보낸다.<br />
+            이미 체팅명령 헤더가 붙은 경우 이것으로 메시지를 보낸다.
+            </summary>
+            <param name="byteData"></param>
         </member>
         <member name="M:SocketServerTest.User.Disconnect">
             <summary>

@@ -178,16 +178,20 @@ namespace DGSocketAssist2_Server
 		{
 			//서버에서 넘어온 정보
 			Socket socketClient = (Socket)sender;
-			//서버에서 넘어온 데이터
-			BufferData bdMsgData = new BufferData((byte[])e.UserToken);
-			
 
 			//유저가 연결 상태인지?
 			if (true == socketClient.Connected)
 			{//연결 상태이다
 
+				//읽을 데이터로 변환
+				BufferData bdMsgData = new BufferData((byte[])e.UserToken, true);
+
 				//넘어온 메시지 읽기
 				socketClient.Receive(bdMsgData.Buffer, bdMsgData.Length, SocketFlags.None);
+				//헤더를 자른다.
+				bdMsgData.CutHeader();
+				bdMsgData.CutBody();
+
 				//넘어온 메시지 전달
 				this.MessagedCall(bdMsgData.Buffer);
 				Debug.WriteLine("전달된 데이터 : {0}", bdMsgData.Buffer);
@@ -211,7 +215,9 @@ namespace DGSocketAssist2_Server
 		/// <param name="sMsg"></param>
 		public void Send(byte[] byteMessage)
 		{
-			BufferData bdMsg = new BufferData(byteMessage);
+			BufferData bdMsg = new BufferData(byteMessage, false);
+			//헤더 붙이기
+			bdMsg.AddHeader();
 
 			using (SocketAsyncEventArgs saeaSendArgs = new SocketAsyncEventArgs())
 			{

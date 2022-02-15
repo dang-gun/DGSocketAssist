@@ -52,6 +52,8 @@ namespace SocketClientTest
 			GloblaStatic.MainForm = this;
 			this.Text = string.Format("Socket Client Test({0})"
 										, ChatSetting.SiteTitle);
+
+			this.UI_Setting(typeState.None);
 		}
 
 		#region 메뉴 - 서버
@@ -141,14 +143,27 @@ namespace SocketClientTest
 		#endregion
 
 		#region 보내기 UI
+
+		private void tsmiSendTest_Click(object sender, EventArgs e)
+		{
+			this.SendMsg(ChatCommandType.MsgSend, "0123456");
+		}
+
 		/// <summary>
-		/// 로그인/메시지 보내기 버튼 클릭
+		/// 메시지 보내기 버튼 클릭
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
 		private void btnSend_Click(object sender, EventArgs e)
 		{
 			this.SendMsg(ChatCommandType.MsgSend, txtMsg.Text);
+
+			//화면에 내메시지 출력
+			this.DisplayMsg(
+				String.Format("{0}(나) : {1}"
+								, txtID.Text
+								, this.txtMsg.Text));
+
 			this.txtMsg.Text = "";
 		}
 
@@ -157,7 +172,7 @@ namespace SocketClientTest
 			//명령어 만들기
 			byte[] byteTemp = File.ReadAllBytes(txtDir.Text);
 			//전송 요청
-			this.SendMsg(ChatCommandType.FileSend, byteTemp);
+			this.SendByte(ChatCommandType.FileSend, byteTemp);
 		}
 
 		/// <summary>
@@ -167,7 +182,7 @@ namespace SocketClientTest
 		/// <param name="e"></param>
 		private void btnLogin_Click(object sender, EventArgs e)
 		{
-			if ("" == txtMsg.Text)
+			if ("" == txtID.Text)
 			{
 				//입력값이 없으면 리턴
 				MessageBox.Show("아이디를 넣고 시도해 주세요");
@@ -254,45 +269,40 @@ namespace SocketClientTest
 		/// <param name="message"></param>
 		private void Client_OnMessaged(Client sender, byte[] byteMessage)
 		{
-			//구분자로 명령을 구분 한다.
-			string[] sData = GloblaStatic.ChatCmd.ChatCommandCut(byteMessage);
+			//명령어 분리
+			byte[] byteBodyData = byteMessage;
+			ChatCommandType typeCommand
+				= GloblaStatic.ChatCmd
+					.ChatHeaderToChatCommand(ref byteBodyData);
 
-			//데이터 개수 확인
-			if ((1 <= sData.Length))
+			switch (typeCommand)
 			{
-				//0이면 빈메시지이기 때문에 별도의 처리는 없다.
+				case ChatCommandType.MsgSend:    //메시지인 경우
+					Command_Msg(ChatSetting.ByteArrayToString(byteBodyData));
+					break;
+				case ChatCommandType.ID_Check:    //아이디 체크 시도
+												  //로그인 요청
+					this.Login();
+					break;
+				case ChatCommandType.ID_Check_Ok:    //아이디 성공
+					SendMeg_IDCheck_Ok();
+					break;
+				case ChatCommandType.ID_Check_Fail:  //아이디 실패
+					SendMeg_IDCheck_Fail();
+					break;
+				case ChatCommandType.User_Connect:   //다른 유저가 접속 했다.
+					SendMeg_User_Connect(ChatSetting.ByteArrayToString(byteBodyData));
+					break;
+				case ChatCommandType.User_Disonnect: //다른 유저가 접속을 끊었다.
+					SendMeg_User_Disconnect(ChatSetting.ByteArrayToString(byteBodyData));
+					break;
+				case ChatCommandType.User_List:  //유저 리스트 갱신
+					SendMeg_User_List(ChatSetting.ByteArrayToString(byteBodyData));
+					break;
 
-				//넘어온 명령
-				ChatCommandType typeCommand
-					= GloblaStatic.ChatCmd.StrIntToType(sData[0]);
-
-				switch (typeCommand)
-				{
-					case ChatCommandType.None:   //없다
-						break;
-					case ChatCommandType.MsgSend:    //메시지인 경우
-						Command_Msg(sData[1]);
-						break;
-					case ChatCommandType.ID_Check:    //아이디 체크 시도
-													  //로그인 요청
-						this.Login();
-						break;
-					case ChatCommandType.ID_Check_Ok:    //아이디 성공
-						SendMeg_IDCheck_Ok();
-						break;
-					case ChatCommandType.ID_Check_Fail:  //아이디 실패
-						SendMeg_IDCheck_Fail();
-						break;
-					case ChatCommandType.User_Connect:   //다른 유저가 접속 했다.
-						SendMeg_User_Connect(sData[1]);
-						break;
-					case ChatCommandType.User_Disonnect: //다른 유저가 접속을 끊었다.
-						SendMeg_User_Disconnect(sData[1]);
-						break;
-					case ChatCommandType.User_List:  //유저 리스트 갱신
-						SendMeg_User_List(sData[1]);
-						break;
-				}
+				case ChatCommandType.None:   //없다
+				default:
+					break;
 			}
 		}
 		#endregion
@@ -312,13 +322,6 @@ namespace SocketClientTest
 		/// </summary>
 		private void SendMeg_IDCheck_Ok()
 		{
-			this.Invoke(new Action(
-				delegate ()
-				{
-					labID.Text = txtMsg.Text;
-					txtMsg.Text = "";
-				}));
-
 			//UI갱신
 			UI_Setting(typeState.Connect);
 
@@ -392,7 +395,7 @@ namespace SocketClientTest
 		/// </summary>
 		private void Login()
 		{
-			this.SendMsg(ChatCommandType.ID_Check, txtMsg.Text);
+			this.SendMsg(ChatCommandType.ID_Check, txtID.Text);
 		}
 
 		/// <summary>
@@ -430,7 +433,10 @@ namespace SocketClientTest
 			ChatCommandType typeChatCommand
 			, byte[] sData)
 		{
-
+			GloblaStatic.Client.Send(
+				GloblaStatic.ChatCmd.ChatString(
+					typeChatCommand
+					, sData));
 		}
 
 
@@ -451,32 +457,43 @@ namespace SocketClientTest
 						this.Invoke(new Action(
 						delegate ()
 						{
-							txtMsg.Enabled = true;
-							btnSend.Text = "로그인";
-							btnSend.Enabled = true;
+							txtMsg.Enabled = false;
+							btnSend.Enabled = false;
+							btnImageSend.Enabled = false;
+
+							txtID.Enabled = true;
+							btnLogin.Enabled = true;
 						}));
 					}
 					else
 					{
-						txtMsg.Enabled = true;
-						btnSend.Text = "로그인";
+						txtMsg.Enabled = false;
+						btnSend.Enabled = false;
+						btnImageSend.Enabled = false;
 
-						btnSend.Enabled = true;
+						txtID.Enabled = true;
+						btnLogin.Enabled = true;
 					}
 
 					break;
 				case typeState.Connecting:  //연결중
 					txtMsg.Enabled = false;
-					btnSend.Text = "연결중";
 					btnSend.Enabled = false;
+					btnImageSend.Enabled = false;
+
+					txtID.Enabled = false;
+					btnLogin.Enabled = false;
 					break;
 				case typeState.Connect: //연결완료
 					this.Invoke(new Action(
 						delegate ()
 						{
 							txtMsg.Enabled = true;
-							btnSend.Text = "보내기";
 							btnSend.Enabled = true;
+							btnImageSend.Enabled = true;
+
+							txtID.Enabled = false;
+							btnLogin.Enabled = false;
 						}));
 					break;
 			}

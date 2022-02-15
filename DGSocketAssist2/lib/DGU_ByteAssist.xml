@@ -45,6 +45,22 @@
             <param name="byteA"></param>
             <returns></returns>
         </member>
+        <member name="M:DGU.DGU_ByteAssist.ByteArray.Cut_Left(System.Byte[],System.Int32)">
+            <summary>
+            데이터의 왼쪽에서 부터 지정된 위치만큼 잘라서 두 데이터를 리턴한다.
+            </summary>
+            <param name="byteA"></param>
+            <param name="nLength"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DGU.DGU_ByteAssist.ByteArray.Get_Left(System.Byte[],System.Int32)">
+            <summary>
+            왼쪽부터 지정한 길이만큼 데이터를 가지고 온다.
+            </summary>
+            <param name="byteA"></param>
+            <param name="nLength"></param>
+            <returns></returns>
+        </member>
         <member name="M:DGU.DGU_ByteAssist.ByteArray.ArrayCopyOffset(System.Byte[],System.Byte[],System.Int32)">
             <summary>
             원본에서 저장할 대상에 크기만큼 복사한후 계산된 위치를 반환한다.

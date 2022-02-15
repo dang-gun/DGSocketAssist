@@ -33,7 +33,6 @@
 		{
 			this.components = new System.ComponentModel.Container();
 			this.button1 = new System.Windows.Forms.Button();
-			this.labID = new System.Windows.Forms.Label();
 			this.btnSend = new System.Windows.Forms.Button();
 			this.txtMsg = new System.Windows.Forms.TextBox();
 			this.listUser = new System.Windows.Forms.ListBox();
@@ -44,7 +43,9 @@
 			this.serverToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiConnectReady = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiConnect = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiSendTest = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiSendMessage = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiSendFile = new System.Windows.Forms.ToolStripMenuItem();
 			this.btnLogin = new System.Windows.Forms.Button();
 			this.pbDownImage = new System.Windows.Forms.PictureBox();
 			this.btnImageSend = new System.Windows.Forms.Button();
@@ -69,15 +70,6 @@
 			this.button1.Text = "자동 메시지";
 			this.button1.UseVisualStyleBackColor = true;
 			// 
-			// labID
-			// 
-			this.labID.Location = new System.Drawing.Point(1, 371);
-			this.labID.Name = "labID";
-			this.labID.Size = new System.Drawing.Size(100, 23);
-			this.labID.TabIndex = 21;
-			this.labID.Text = "ID 출력";
-			this.labID.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-			// 
 			// btnSend
 			// 
 			this.btnSend.Location = new System.Drawing.Point(446, 369);
@@ -90,9 +82,9 @@
 			// 
 			// txtMsg
 			// 
-			this.txtMsg.Location = new System.Drawing.Point(107, 371);
+			this.txtMsg.Location = new System.Drawing.Point(15, 371);
 			this.txtMsg.Name = "txtMsg";
-			this.txtMsg.Size = new System.Drawing.Size(331, 21);
+			this.txtMsg.Size = new System.Drawing.Size(423, 21);
 			this.txtMsg.TabIndex = 17;
 			// 
 			// listUser
@@ -140,7 +132,9 @@
 			this.serverToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiConnectReady,
             this.tsmiConnect,
-            this.tsmiSendMessage});
+            this.tsmiSendTest,
+            this.tsmiSendMessage,
+            this.tsmiSendFile});
 			this.serverToolStripMenuItem.Name = "serverToolStripMenuItem";
 			this.serverToolStripMenuItem.Size = new System.Drawing.Size(77, 20);
 			this.serverToolStripMenuItem.Text = "Server Test";
@@ -148,23 +142,36 @@
 			// tsmiConnectReady
 			// 
 			this.tsmiConnectReady.Name = "tsmiConnectReady";
-			this.tsmiConnectReady.Size = new System.Drawing.Size(150, 22);
+			this.tsmiConnectReady.Size = new System.Drawing.Size(154, 22);
 			this.tsmiConnectReady.Text = "접속 준비";
 			this.tsmiConnectReady.Click += new System.EventHandler(this.tsmiConnectReady_Click);
 			// 
 			// tsmiConnect
 			// 
 			this.tsmiConnect.Name = "tsmiConnect";
-			this.tsmiConnect.Size = new System.Drawing.Size(150, 22);
+			this.tsmiConnect.Size = new System.Drawing.Size(154, 22);
 			this.tsmiConnect.Text = "접속";
 			this.tsmiConnect.Click += new System.EventHandler(this.tsmiConnect_Click);
+			// 
+			// tsmiSendTest
+			// 
+			this.tsmiSendTest.Name = "tsmiSendTest";
+			this.tsmiSendTest.Size = new System.Drawing.Size(154, 22);
+			this.tsmiSendTest.Text = "보내기(테스트)";
+			this.tsmiSendTest.Click += new System.EventHandler(this.tsmiSendTest_Click);
 			// 
 			// tsmiSendMessage
 			// 
 			this.tsmiSendMessage.Name = "tsmiSendMessage";
-			this.tsmiSendMessage.Size = new System.Drawing.Size(150, 22);
-			this.tsmiSendMessage.Text = "메시지 보내기";
+			this.tsmiSendMessage.Size = new System.Drawing.Size(154, 22);
+			this.tsmiSendMessage.Text = "보내기(체팅)";
 			this.tsmiSendMessage.Click += new System.EventHandler(this.tsmiSendMessage_Click);
+			// 
+			// tsmiSendFile
+			// 
+			this.tsmiSendFile.Name = "tsmiSendFile";
+			this.tsmiSendFile.Size = new System.Drawing.Size(154, 22);
+			this.tsmiSendFile.Text = "보내기(파일)";
 			// 
 			// btnLogin
 			// 
@@ -280,7 +287,6 @@
 			this.Controls.Add(this.pbDownImage);
 			this.Controls.Add(this.btnLogin);
 			this.Controls.Add(this.button1);
-			this.Controls.Add(this.labID);
 			this.Controls.Add(this.btnSend);
 			this.Controls.Add(this.txtMsg);
 			this.Controls.Add(this.listUser);
@@ -303,7 +309,6 @@
 		#endregion
 
 		private System.Windows.Forms.Button button1;
-		private System.Windows.Forms.Label labID;
 		private System.Windows.Forms.Button btnSend;
 		private System.Windows.Forms.TextBox txtMsg;
 		private System.Windows.Forms.ListBox listUser;
@@ -326,6 +331,8 @@
 		private System.Windows.Forms.Label label4;
 		private System.Windows.Forms.TextBox txtID;
 		private System.Windows.Forms.TextBox txtPort;
+		private System.Windows.Forms.ToolStripMenuItem tsmiSendTest;
+		private System.Windows.Forms.ToolStripMenuItem tsmiSendFile;
 	}
 }
 

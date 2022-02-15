@@ -108,7 +108,7 @@ namespace SocketServerTest
 			this.UserReadyCall();
 
 			//아이디 체크를 시작하라고 알림
-			this.SendMsg_User(ChatCommandType.ID_Check, "");
+			this.SendMsg_User(ChatCommandType.ID_Check, new byte[0]);
 		}
 
         private void ClientListenerMe_OnDisconnectCompleted(ClientListener sender)
@@ -120,38 +120,30 @@ namespace SocketServerTest
 			ClientListener sender
 			, byte[] byteMessage)
 		{
-			//구분자로 명령을 구분 한다.
-			string[] sData = GloblaStatic.ChatCmd.ChatCommandCut(byteMessage);
+			//명령어 분리
+			byte[] byteBodyData = byteMessage;
+			ChatCommandType typeCommand
+				= GloblaStatic.ChatCmd
+					.ChatHeaderToChatCommand(ref byteBodyData);
 
-
-			//데이터 개수 확인
-			if ((1 <= sData.Length))
+			switch (typeCommand)
 			{
-				//0이면 빈메시지이기 때문에 별도의 처리는 없다.
+				case ChatCommandType.None:   //없다
+					break;
+				case ChatCommandType.MsgSend:    //메시지인 경우
+					SendMeg_Main(ChatSetting.ByteArrayToString(byteBodyData), typeCommand);
+					break;
+				case ChatCommandType.ID_Check:   //아이디 체크
+					SendMeg_Main(ChatSetting.ByteArrayToString(byteBodyData), typeCommand);
+					break;
 
-				//넘어온 명령
-				ChatCommandType typeCommand
-					= GloblaStatic.ChatCmd.StrIntToType(sData[0]);
+				case ChatCommandType.User_List_Get:  //유저리스트 갱신 요청
+					SendMeg_Main("", typeCommand);
+					break;
 
-				switch (typeCommand)
-				{
-					case ChatCommandType.None:   //없다
-						break;
-					case ChatCommandType.MsgSend:    //메시지인 경우
-						SendMeg_Main(sData[1], typeCommand);
-						break;
-					case ChatCommandType.ID_Check:   //아이디 체크
-						SendMeg_Main(sData[1], typeCommand);
-						break;
-
-					case ChatCommandType.User_List_Get:  //유저리스트 갱신 요청
-						SendMeg_Main("", typeCommand);
-						break;
-
-					case ChatCommandType.Login:  //로그인 완료
-						OnLoginComplet(this);
-						break;
-				}
+				case ChatCommandType.Login:  //로그인 완료
+					OnLoginComplet(this);
+					break;
 			}
 		}
 
@@ -172,25 +164,43 @@ namespace SocketServerTest
 		/// 이 유저에게 체팅 명령 문자열을 만들어 메시지를 보낸다.
 		/// </summary>
 		/// <param name="typeChatCommand"></param>
-		/// <param name="sMsg"></param>
+		/// <param name="byteData"></param>
 		public void SendMsg_User(
 			ChatCommandType typeChatCommand
-			, string sMsg)
+			, byte[] byteData)
 		{
-			string sToss
-				= GloblaStatic.ChatCmd.ChatCommandString(
+			byte[] byteToss
+				= GloblaStatic.ChatCmd.ChatString(
 					typeChatCommand
-					, sMsg);
-			this.ClientListenerMe.Send(ChatSetting.StringToByteArray(sToss));
+					, byteData);
+			this.ClientListenerMe.Send(byteToss);
 		}
 
 		/// <summary>
 		/// 이 유저에게 메시지를 보낸다.
 		/// </summary>
+		/// <param name="typeChatCommand"></param>
 		/// <param name="sMsg"></param>
-		public void SendMsg_User(string sMsg)
+		public void SendMsg_User(ChatCommandType typeChatCommand, string sMsg)
 		{
-			this.ClientListenerMe.Send(ChatSetting.StringToByteArray(sMsg));
+			//명령 만들기
+			byte[] byteSendData
+				= GloblaStatic.ChatCmd
+					.ChatString(
+						typeChatCommand
+						, sMsg);
+
+			this.ClientListenerMe.Send(byteSendData);
+		}
+
+		/// <summary>
+		/// 이 유저에게 메시지를 보낸다.<br />
+		/// 이미 체팅명령 헤더가 붙은 경우 이것으로 메시지를 보낸다.
+		/// </summary>
+		/// <param name="byteData"></param>
+		public void SendMsg_User(byte[] byteData)
+		{
+			this.ClientListenerMe.Send(byteData);
 		}
 
 		/// <summary>

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -144,14 +145,14 @@ namespace SocketServerTest
 		/// <param name="e"></param>
 		private void btnSend_Click(object sender, EventArgs e)
 		{
-			string sCmdMsg
+			byte[] byteCmdMsg
 				= GloblaStatic.ChatCmd
-					.ChatCommandString(
+					.ChatString(
 						ChatCommandType.MsgSend
 						, "Server : " + this.txtSendMsg.Text);
 
 			//전체로 메시지 전송
-			GloblaStatic.Server.AllMessage(ChatSetting.StringToByteArray(sCmdMsg));
+			GloblaStatic.Server.AllMessage(byteCmdMsg);
 		}
 
 
@@ -276,7 +277,8 @@ namespace SocketServerTest
 			, byte[] byteMessage)
 		{
 			DisplayLog("클라이언트 메시지 : " + sender.SocketMe.RemoteEndPoint);
-			DisplayLog(ChatSetting.ByteArrayToString(byteMessage));
+			Debug.WriteLine("클라이언트 메시지 : " + byteMessage);
+			//DisplayLog(ChatSetting.ByteArrayToString(byteMessage));
 
 			//서버폼에서는 이것을 명령어가 왔음으로 처리하고 마무리한다.
 			//명령어 처리는 유저 클래스에서 하고
@@ -312,8 +314,10 @@ namespace SocketServerTest
 					sbMsg.Append(sender.UserID);
 					sbMsg.Append(" : ");
 					sbMsg.Append(e.m_strMsg);
+					//화면에 출력
+					DisplayLog(sbMsg.ToString());
 
-					Commd_SendMsg(sbMsg.ToString());
+					Commd_SendMsg(sbMsg.ToString(), sender);
 					break;
 				case ChatCommandType.ID_Check:   //id체크
 					Commd_IDCheck(sender, e.m_strMsg);
@@ -336,15 +340,15 @@ namespace SocketServerTest
 			this.Commd_User_List_Get(sender);
 
 			//전체 유저에게 접속자를 알린다.
-			string sSendData 
+			byte[] byteSendData 
 				= GloblaStatic.ChatCmd
-					.ChatCommandString(
+					.ChatString(
 						ChatCommandType.User_Connect
 						, sender.UserID);
 			
 
 			//전체 유저에게 메시지 전송(지금 로그인 한 접속자는 제외)
-			AllUser_Send(sSendData, sender);
+			AllUser_Send(byteSendData, sender);
 
 			//로그 유저 리스트에 추가
 			this.Invoke(new Action(
@@ -374,12 +378,12 @@ namespace SocketServerTest
 				}));
 
 			//다른 유저들에게 이 유저가 끊겼음을 알린다.
-			string sCmdMsg
+			byte[] byteCmdMsg
 				= GloblaStatic.ChatCmd
-					.ChatCommandString(
+					.ChatString(
 						ChatCommandType.User_Disonnect
 						, sender.UserID);
-			this.AllUser_Send(sCmdMsg, sender);
+			this.AllUser_Send(byteCmdMsg, sender);
 
 
 			//클라이언트의 접속 끊김 처리가 시작되면 리스트에서 제거한다.
@@ -392,16 +396,18 @@ namespace SocketServerTest
 		/// 명령 처리 - 메시지 보내기
 		/// </summary>
 		/// <param name="sMsg"></param>
-		private void Commd_SendMsg(string sMsg)
+		/// <param name="sender">호출자. 호출자한테도 보내고 싶으면 null로 보낸다</param>
+		private void Commd_SendMsg(string sMsg, User sender)
 		{
-			string sSendData
+			byte[] byteSendData
 				= GloblaStatic.ChatCmd
-					.ChatCommandString(
+					.ChatString(
 						ChatCommandType.MsgSend
-						, string.Empty);
+						, sMsg);
 
 			//전체 유저에게 메시지 전송
-			this.AllUser_Send(sSendData);
+			//호출자는 제외
+			this.AllUser_Send(byteSendData, sender);
 		}
 
 		/// <summary>
@@ -432,14 +438,7 @@ namespace SocketServerTest
 				//아이디를 지정하고
 				insUser.UserID = sID;
 
-				//명령어 만들기
-				string sSendData
-					= GloblaStatic.ChatCmd
-						.ChatCommandString(
-							ChatCommandType.ID_Check_Ok
-							, string.Empty);
-
-				insUser.SendMsg_User(sSendData);
+				insUser.SendMsg_User(ChatCommandType.ID_Check_Ok, new byte[0]);
 
 				//유저가 접속 했음을 직접 알리지 말고 'ID_Check_Ok'를 받은
 				//클라이언트가 직접 요청한다.
@@ -447,13 +446,7 @@ namespace SocketServerTest
 			else
 			{
 				//검사 실패를 알린다.
-				string sSendData
-					= GloblaStatic.ChatCmd
-						.ChatCommandString(
-							ChatCommandType.ID_Check_Fail
-							, string.Empty);
-
-				insUser.SendMsg_User(sSendData);
+				insUser.SendMsg_User(ChatCommandType.ID_Check_Fail, new byte[0]);
 			}
 		}
 
@@ -472,47 +465,57 @@ namespace SocketServerTest
 				sbList.Append(",");
 			}
 
-			//명령 만들기
-			string sSendData
-				= GloblaStatic.ChatCmd
-					.ChatCommandString(
-						ChatCommandType.User_List
-						, sbList.ToString());
-
 			//요청에 응답해준다.
-			insUser.SendMsg_User(sSendData);
+			insUser.SendMsg_User(ChatCommandType.User_List, sbList.ToString());
 		}
 
 		/// <summary>
 		/// 접속중인 모든 유저에게 메시지를 보낸다
 		/// </summary>
-		/// <param name="sMsg"></param>
-		private void AllUser_Send(string sMsg)
+		/// <param name="typeChatCommand"></param>
+		/// <param name="byteData"></param>
+		/// <param name="user">제외할 유저. 없으면 null</param>
+		private void AllUser_Send(
+			ChatCommandType typeChatCommand
+			, byte[] byteData
+			, User user)
 		{
+			//명령 만들기
+			byte[] byteSendData
+				= GloblaStatic.ChatCmd
+					.ChatString(
+						typeChatCommand
+						, byteData);
+
 			//모든 유저에게 메시지를 전송 한다.
-			foreach (User insUser in m_listUser)
-			{
-				insUser.SendMsg_User(sMsg);
-			}
+			this.AllUser_Send(byteSendData, user);
 		}
 
 		/// <summary>
-		/// 전체 유저중 지정한 유저를 제외하고 메시지를 전송 합니다.
+		/// 접속중인 모든 유저에게 메시지를 보낸다<br />
+		/// 이미 체팅명령 헤더가 붙은 경우 이것으로 메시지를 보낸다.
 		/// </summary>
-		/// <param name="sMsg"></param>
-		/// <param name="insUser">제외할 유저</param>
-		private void AllUser_Send(string sMsg, User insUser)
+		/// <param name="byteData"></param>
+		/// <param name="user">제외할 유저. 없으면 null</param>
+		private void AllUser_Send(
+			byte[] byteData
+			, User user)
 		{
 			//모든 유저에게 메시지를 전송 한다.
-			foreach (User insUser_Temp in this.m_listUser)
+			foreach (User itemUser in m_listUser)
 			{
 				//제외 유저
-				if (insUser_Temp.UserID != insUser.UserID)
-				{
-					//제외 유저가 아니라면 메시지를 보낸다.
-					insUser_Temp.SendMsg_User(sMsg);
+				if ((null == user)
+					|| (itemUser.UserID != user.UserID))
+				{//제외할 유저가 없거나.
+				 //제외할 유저가 아니라면
+
+					//메시지를 보낸다.
+					itemUser.SendMsg_User(byteData);
 				}
+				
 			}
-		}	
+		}
+
     }
 }
