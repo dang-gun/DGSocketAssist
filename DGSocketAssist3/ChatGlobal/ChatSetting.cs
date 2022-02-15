@@ -17,6 +17,12 @@ namespace ChatGlobal
 		public static string SiteTitle = "Socket - SocketAsyncEventArgs";
 
 		/// <summary>
+		/// 체팅에 사용될 명령어가 차지할 byte 크기
+		/// </summary>
+		public static Int16 ChatCommandSize = 2;
+
+
+		/// <summary>
 		/// 명령어 구분용 문자
 		/// </summary>
 		public static char Delimeter1 = '▦';

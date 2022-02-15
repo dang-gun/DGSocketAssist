@@ -5,10 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Reference Include="DGU_ByteAssist">
-      <HintPath>..\lib\DGU_ByteAssist.dll</HintPath>
-      <CopyLocal>True</CopyLocal>
-    </Reference>
+    <ProjectReference Include="..\DGSocketAssist2_Global\DGSocketAssist2_Global.csproj" />
   </ItemGroup>
 
 </Project>
