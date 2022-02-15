@@ -85,9 +85,9 @@
       <Project>{8be4e01d-871a-4a29-8d1c-4628b486b7a1}</Project>
       <Name>ChatGlobal</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DGSocketAssist2_Client\DGSocketAssist2_Client.csproj">
-      <Project>{bcd98187-e37c-4916-958d-e024492f2ef7}</Project>
-      <Name>DGSocketAssist2_Client</Name>
+    <ProjectReference Include="..\DGSocketAssist3_Client\DGSocketAssist3_Client.csproj">
+      <Project>{D4EA8C67-A39C-4588-B27A-0914A32265E7}</Project>
+      <Name>DGSocketAssist3_Client</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

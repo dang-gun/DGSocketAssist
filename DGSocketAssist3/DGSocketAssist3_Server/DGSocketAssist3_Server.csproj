@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DGSocketAssist2_Global\DGSocketAssist2_Global.csproj" />
+    <ProjectReference Include="..\DGSocketAssist3_Global\DGSocketAssist3_Global.csproj" />
   </ItemGroup>
 
 </Project>

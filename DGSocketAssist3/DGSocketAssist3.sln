@@ -5,11 +5,11 @@ VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatGlobal", "ChatGlobal\ChatGlobal.csproj", "{FF304B6F-E039-42C4-BB73-3D00476AC458}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DGSocketAssist2_Client", "DGSocketAssist2_Client\DGSocketAssist2_Client.csproj", "{D4EA8C67-A39C-4588-B27A-0914A32265E7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DGSocketAssist3_Client", "DGSocketAssist3_Client\DGSocketAssist3_Client.csproj", "{D4EA8C67-A39C-4588-B27A-0914A32265E7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DGSocketAssist2_Global", "DGSocketAssist2_Global\DGSocketAssist2_Global.csproj", "{11A40B72-1EEB-4601-8D4F-281003645D45}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DGSocketAssist3_Global", "DGSocketAssist3_Global\DGSocketAssist3_Global.csproj", "{11A40B72-1EEB-4601-8D4F-281003645D45}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DGSocketAssist2_Server", "DGSocketAssist2_Server\DGSocketAssist2_Server.csproj", "{AD8F696F-E6C0-4BBE-9A84-A2B12CCF5270}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DGSocketAssist3_Server", "DGSocketAssist3_Server\DGSocketAssist3_Server.csproj", "{AD8F696F-E6C0-4BBE-9A84-A2B12CCF5270}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocketClientTest", "SocketClientTest\SocketClientTest.csproj", "{B619DC2E-EE49-463C-96CC-C3174CFD421C}"
 EndProject
