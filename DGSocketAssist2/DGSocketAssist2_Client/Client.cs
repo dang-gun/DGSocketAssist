@@ -136,6 +136,15 @@ namespace DGSocketAssist2_Client
 		public Socket SocketMe { get; private set; }
 
 		/// <summary>
+		/// 서버로 전송용 SocketAsyncEventArgs
+		/// </summary>
+		private SocketAsyncEventArgs m_saeaSend = null;
+		/// <summary>
+		/// 수신용 SocketAsyncEventArgs
+		/// </summary>
+		private SocketAsyncEventArgs m_saeaReceive = null;
+
+		/// <summary>
 		/// 서버 주소
 		/// </summary>
 		public IPEndPoint ServerIP { get; private set; }
@@ -173,6 +182,19 @@ namespace DGSocketAssist2_Client
 					, SocketType.Stream
 					, ProtocolType.Tcp);
 			this.ServerIP = ip;
+
+			//전송용 SocketAsyncEventArgs 세팅
+			this.m_saeaSend = new SocketAsyncEventArgs();
+			this.m_saeaSend.RemoteEndPoint = this.ServerIP;
+			this.m_saeaSend.Completed -= SaeaSend_Completed;
+			this.m_saeaSend.Completed += SaeaSend_Completed;
+
+			//수신용 SocketAsyncEventArgs 세팅
+			this.m_saeaReceive = new SocketAsyncEventArgs();
+			this.m_saeaReceive.RemoteEndPoint = this.ServerIP;
+			this.m_saeaReceive.SetBuffer(new Byte[SettingData.BufferFullSize], 0, SettingData.BufferFullSize);
+			this.m_saeaReceive.Completed -= SaeaReceive_Completed;
+			this.m_saeaReceive.Completed += SaeaReceive_Completed;
 		}
 
 		/// <summary>
@@ -180,25 +202,25 @@ namespace DGSocketAssist2_Client
 		/// </summary>
 		public void ConnectServer()
 		{
-			//데이터 구조 생성
-			SocketAsyncEventArgs saeaServer = new SocketAsyncEventArgs();
-			saeaServer.RemoteEndPoint = this.ServerIP;
+			//접속용 SocketAsyncEventArgs를 생성
+			SocketAsyncEventArgs saeaConnect = new SocketAsyncEventArgs();
+			saeaConnect.RemoteEndPoint = this.ServerIP;
 			//연결 완료 이벤트 연결
-			saeaServer.Completed -= SaeaServer_Completed;
-			saeaServer.Completed += SaeaServer_Completed;
+			saeaConnect.Completed -= SaeaConnect_Completed;
+			saeaConnect.Completed += SaeaConnect_Completed;
 
 			Debug.WriteLine("서버 연결 중");
 			//서버 메시지 대기
-			this.SocketMe.ConnectAsync(saeaServer);
+			this.SocketMe.ConnectAsync(saeaConnect);
 		}
 
 		/// <summary>
-		/// 연결 완료 이벤트에 연결됨.
+		/// 연결 완료 이벤트에 연결됨
 		/// <para>서버에 연결되었음에만 사용하는 이벤트이다.</para>
 		/// </summary>
 		/// <param name="sender">호출한 개체</param>
 		/// <param name="e">SocketAsync 이벤트</param>
-		private void SaeaServer_Completed(object sender, SocketAsyncEventArgs e)
+		private void SaeaConnect_Completed(object sender, SocketAsyncEventArgs e)
 		{
 			this.SocketMe = (Socket)sender;
 
@@ -209,16 +231,11 @@ namespace DGSocketAssist2_Client
 				//서버에 보낼 객체를 만든다.
 				//using (SocketAsyncEventArgs saeaReceiveArgs = new SocketAsyncEventArgs())
 				{
-					SocketAsyncEventArgs saeaReceiveArgs = new SocketAsyncEventArgs();
+
 					//보낼 데이터를 설정하고
-					saeaReceiveArgs.UserToken = bdReceiveMsg.Buffer;
-					//데이터 길이 세팅
-					saeaReceiveArgs.SetBuffer(bdReceiveMsg.Buffer, 0, bdReceiveMsg.Length);
-					//받음 완료 이벤트 연결(2번째)
-					saeaReceiveArgs.Completed -= SaeaReceiveArgs_Completed;
-					saeaReceiveArgs.Completed += SaeaReceiveArgs_Completed;
+					this.m_saeaReceive.UserToken = bdReceiveMsg.Buffer;
 					//첫 메시지 받기 준비 
-					this.SocketMe.ReceiveAsync(saeaReceiveArgs);
+					this.SocketMe.ReceiveAsync(this.m_saeaReceive);
 					this.ReceiveReadyCall();
 				}
 				
@@ -234,12 +251,12 @@ namespace DGSocketAssist2_Client
 		}
 
 		/// <summary>
-		/// 받음 완료 이벤트 연결됨 2번째.
+		/// 수신 완료 이벤트 연결됨
 		/// <para>실제 데이터를 수신받는 이벤트이다.</para>
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private void SaeaReceiveArgs_Completed(object sender, SocketAsyncEventArgs e)
+		private void SaeaReceive_Completed(object sender, SocketAsyncEventArgs e)
 		{
 			Socket socketClient = (Socket)sender;
 			BufferData bdRecieveMsg = new BufferData((byte[])e.UserToken, true);
@@ -284,20 +301,12 @@ namespace DGSocketAssist2_Client
 			//헤더를 붙인다.
 			bdSendMsg.AddHeader();
 
-			using (SocketAsyncEventArgs saeaSendArgs = new SocketAsyncEventArgs())
-			{
-				//서버에 보낼 객체를 만든다.
-				SocketAsyncEventArgs saeaServer = new SocketAsyncEventArgs();
-				//데이터 길이 세팅
-				saeaServer.SetBuffer(bdSendMsg.Buffer, 0, bdSendMsg.Length);
-				//보내기 완료 이벤트 연결
-				saeaServer.Completed -= SaeaSendArgs_Completed;
-				saeaServer.Completed += SaeaSendArgs_Completed;
-				//보낼 데이터 설정
-				saeaServer.UserToken = bdSendMsg.Buffer;
-				//보내기 시작
-				this.SocketMe.SendAsync(saeaServer);
-			}//end using saeaSendArgs
+			//데이터 길이 세팅
+			this.m_saeaSend.SetBuffer(bdSendMsg.Buffer, 0, bdSendMsg.Length);
+			//보낼 데이터 설정
+			this.m_saeaSend.UserToken = bdSendMsg.Buffer;
+			//보내기 시작
+			this.SocketMe.SendAsync(this.m_saeaSend);
 		}
 
 		/// <summary>
@@ -306,7 +315,7 @@ namespace DGSocketAssist2_Client
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private void SaeaSendArgs_Completed(object sender, SocketAsyncEventArgs e)
+		private void SaeaSend_Completed(object sender, SocketAsyncEventArgs e)
 		{
 			Socket socketSend = (Socket)sender;
 			byte[] byteMessage = (byte[])e.UserToken;

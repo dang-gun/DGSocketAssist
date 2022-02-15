@@ -144,7 +144,6 @@ namespace DGSocketAssist1_Client
 		/// </summary>
 		private SocketAsyncEventArgs m_saeaReceive = null;
 
-
 		/// <summary>
 		/// 서버 주소
 		/// </summary>
