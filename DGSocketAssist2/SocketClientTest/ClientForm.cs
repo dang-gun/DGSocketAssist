@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -471,12 +472,20 @@ namespace SocketClientTest
 						this.Invoke(new Action(
 						delegate ()
 						{
-							txtMsg.Enabled = false;
-							btnSend.Enabled = false;
-							btnImageSend.Enabled = false;
+							try
+							{
+								txtMsg.Enabled = false;
+								btnSend.Enabled = false;
+								btnImageSend.Enabled = false;
 
-							txtID.Enabled = true;
-							btnLogin.Enabled = true;
+								txtID.Enabled = true;
+								btnLogin.Enabled = true;
+							}
+							catch (Exception ex)
+							{
+								Debug.WriteLine("UI전환 에러 : " + ex.Message);
+							}
+							
 						}));
 					}
 					else

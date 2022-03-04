@@ -229,11 +229,8 @@ namespace DGSocketAssist2_Client
 				BufferData bdReceiveMsg = new BufferData();
 
 				//서버에 보낼 객체를 만든다.
-				//using (SocketAsyncEventArgs saeaReceiveArgs = new SocketAsyncEventArgs())
 				{
-
 					//보낼 데이터를 설정하고
-					//this.m_saeaReceive.UserToken = bdReceiveMsg.Buffer;
 					this.m_saeaReceive.SetBuffer(bdReceiveMsg.Buffer, 0, bdReceiveMsg.Length);
 					//첫 메시지 받기 준비 
 					this.SocketMe.ReceiveAsync(this.m_saeaReceive);
@@ -311,7 +308,7 @@ namespace DGSocketAssist2_Client
 			//헤더를 붙인다.
 			bdSendMsg.AddHeader();
 
-			//데이터 길이 세팅
+			//데이터 넣기
 			this.m_saeaSend.SetBuffer(bdSendMsg.Buffer, 0, bdSendMsg.Length);
 			//보내기 시작
 			this.SocketMe.SendAsync(this.m_saeaSend);
