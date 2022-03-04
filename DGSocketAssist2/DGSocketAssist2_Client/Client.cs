@@ -263,13 +263,14 @@ namespace DGSocketAssist2_Client
 
 			if (true == socketClient.Connected)
 			{
-                //연결이 되어 있다.
+				//연결이 되어 있다.
 
-                //데이터 수신
-                socketClient.Receive(
-                    bdRecieveMsg.Buffer
-					, bdRecieveMsg.Length
-					, SocketFlags.None);
+				//수신된 데이터 복사
+				//이 프로젝트에서는 버퍼가 찰때까지 기다리는 처리를 하지 않는다.
+				//이 때문에 완성되지 않은 버퍼가 들어올 가능성과
+				//SocketAsyncEventArgs.Completed가 여러번 오는것을 대비할수 없다.
+				bdRecieveMsg.Buffer = e.Buffer;
+
 				//헤더 분리
 				bdRecieveMsg.CutHeader();
 				bdRecieveMsg.CutBody();
@@ -317,10 +318,6 @@ namespace DGSocketAssist2_Client
 		/// <param name="e"></param>
 		private void SaeaSend_Completed(object sender, SocketAsyncEventArgs e)
 		{
-			Socket socketSend = (Socket)sender;
-			byte[] byteMessage = (byte[])e.UserToken;
-			//데이터 보내기 마무리
-			socketSend.Send(byteMessage);
 		}
 
 		/// <summary>
