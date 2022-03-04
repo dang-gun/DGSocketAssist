@@ -244,7 +244,6 @@ namespace DGSocketAssist2_Server
 			//데이터 길이 세팅
 			this.m_saeaSend.SetBuffer(bdMsg.Buffer, 0, bdMsg.Length);
 			//보낼 데이터 설정
-			//this.m_saeaSend.UserToken = bdMsg.Buffer;
 			Debug.WriteLine("데이터 전달 : {0}", bdMsg.Buffer);
 			//보내기
 			this.SocketMe.SendAsync(this.m_saeaSend);
