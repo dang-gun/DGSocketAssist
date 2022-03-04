@@ -391,13 +391,16 @@ namespace SocketServerTest
 					}
 				}));
 
-			//다른 유저들에게 이 유저가 끊겼음을 알린다.
-			byte[] byteCmdMsg
-				= GloblaStatic.ChatCmd
-					.ChatString(
-						ChatCommandType.User_Disonnect
-						, sender.UserID);
-			this.AllUser_Send(byteCmdMsg, sender);
+			if (null != sender.UserID)
+			{
+				//다른 유저들에게 이 유저가 끊겼음을 알린다.
+				byte[] byteCmdMsg
+					= GloblaStatic.ChatCmd
+						.ChatString(
+							ChatCommandType.User_Disonnect
+							, sender.UserID);
+				this.AllUser_Send(byteCmdMsg, sender);
+			}
 
 
 			//클라이언트의 접속 끊김 처리가 시작되면 리스트에서 제거한다.
