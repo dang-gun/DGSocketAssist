@@ -233,7 +233,8 @@ namespace DGSocketAssist2_Client
 				{
 
 					//보낼 데이터를 설정하고
-					this.m_saeaReceive.UserToken = bdReceiveMsg.Buffer;
+					//this.m_saeaReceive.UserToken = bdReceiveMsg.Buffer;
+					this.m_saeaReceive.SetBuffer(bdReceiveMsg.Buffer, 0, bdReceiveMsg.Length);
 					//첫 메시지 받기 준비 
 					this.SocketMe.ReceiveAsync(this.m_saeaReceive);
 					this.ReceiveReadyCall();
@@ -259,17 +260,17 @@ namespace DGSocketAssist2_Client
 		private void SaeaReceive_Completed(object sender, SocketAsyncEventArgs e)
 		{
 			Socket socketClient = (Socket)sender;
-			BufferData bdRecieveMsg = new BufferData((byte[])e.UserToken, true);
+			
 
 			if (true == socketClient.Connected)
-			{
-				//연결이 되어 있다.
+			{//연결이 되어 있다.
+
 
 				//수신된 데이터 복사
 				//이 프로젝트에서는 버퍼가 찰때까지 기다리는 처리를 하지 않는다.
 				//이 때문에 완성되지 않은 버퍼가 들어올 가능성과
 				//SocketAsyncEventArgs.Completed가 여러번 오는것을 대비할수 없다.
-				bdRecieveMsg.Buffer = e.Buffer;
+				BufferData bdRecieveMsg = new BufferData(e.Buffer, true);
 
 				//헤더 분리
 				bdRecieveMsg.CutHeader();
@@ -278,10 +279,18 @@ namespace DGSocketAssist2_Client
 				//메시지 수신을 알림
 				this.MessagedCall(bdRecieveMsg.Buffer);
 
-				Debug.WriteLine("다음 데이터 받을 준비 ");
-				//다음 메시지를 받을 준비를 한다.
-				socketClient.ReceiveAsync(e);
-				this.ReceiveReadyCall();
+				try
+				{
+					Debug.WriteLine("다음 데이터 받을 준비 ");
+					//다음 메시지를 받을 준비를 한다.
+					socketClient.ReceiveAsync(e);
+					this.ReceiveReadyCall();
+				}
+				catch (Exception ex)
+				{//유저가 중간에 끊어지면 여기서 에러가 날가능성이 있다.
+					Debug.WriteLine("error SaeaReceive_Completed : " + ex.Message);
+				}
+				
 			}
 			else
 			{
@@ -304,8 +313,6 @@ namespace DGSocketAssist2_Client
 
 			//데이터 길이 세팅
 			this.m_saeaSend.SetBuffer(bdSendMsg.Buffer, 0, bdSendMsg.Length);
-			//보낼 데이터 설정
-			this.m_saeaSend.UserToken = bdSendMsg.Buffer;
 			//보내기 시작
 			this.SocketMe.SendAsync(this.m_saeaSend);
 		}

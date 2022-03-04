@@ -161,7 +161,7 @@ namespace DGSocketAssist2_Server
 			//데이터 구조 생성
 			BufferData bdMsgData = new BufferData();
 			//리시브용 데이터 구조 지정
-			this.m_saeaReceive.UserToken = bdMsgData.Buffer;
+			this.m_saeaReceive.SetBuffer(bdMsgData.Buffer, 0, bdMsgData.Length);
 			Debug.WriteLine("첫 데이터 받기 준비");
 			//첫 데이터 받기 시작
 			this.SocketMe.ReceiveAsync(this.m_saeaReceive);
@@ -196,15 +196,13 @@ namespace DGSocketAssist2_Server
 			if (true == socketClient.Connected)
 			{//연결 상태이다
 
-				//읽을 데이터로 변환
-				BufferData bdMsgData = new BufferData((byte[])e.UserToken, true);
-
-				//넘어온 메시지 읽기
 				//수신된 데이터 복사
 				//이 프로젝트에서는 버퍼가 찰때까지 기다리는 처리를 하지 않는다.
 				//이 때문에 완성되지 않은 버퍼가 들어올 가능성과
 				//SocketAsyncEventArgs.Completed가 여러번 오는것을 대비할수 없다.
-				bdMsgData.Buffer = e.Buffer;
+				BufferData bdMsgData = new BufferData(e.Buffer, true);
+
+				
 				//헤더를 자른다.
 				bdMsgData.CutHeader();
 				bdMsgData.CutBody();
@@ -213,11 +211,18 @@ namespace DGSocketAssist2_Server
 				this.MessagedCall(bdMsgData.Buffer);
 				Debug.WriteLine("전달된 데이터 : {0}", bdMsgData.Buffer);
 
-				//다음 데이터를 기다린다.
-				//'Read'에서 무한루프 없이 구현하기 위해 두번째부터는 여기서 대기하도록
-				//구성되어 있다.
-				socketClient.ReceiveAsync(e);
-				Debug.WriteLine("데이터 받기 준비");
+				try
+				{
+					//다음 데이터를 기다린다.
+					//'Read'에서 무한루프 없이 구현하기 위해 두번째부터는 여기서 대기하도록
+					//구성되어 있다.
+					socketClient.ReceiveAsync(e);
+					Debug.WriteLine("데이터 받기 준비");
+				}
+				catch (Exception ex)
+				{//유저가 중간에 끊어지면 여기서 에러가 날가능성이 있다.
+					Debug.WriteLine("error SaeaReceive_Completed : " + ex.Message);
+				}
 			}
 			else
 			{//아니다
@@ -239,7 +244,7 @@ namespace DGSocketAssist2_Server
 			//데이터 길이 세팅
 			this.m_saeaSend.SetBuffer(bdMsg.Buffer, 0, bdMsg.Length);
 			//보낼 데이터 설정
-			this.m_saeaSend.UserToken = bdMsg.Buffer;
+			//this.m_saeaSend.UserToken = bdMsg.Buffer;
 			Debug.WriteLine("데이터 전달 : {0}", bdMsg.Buffer);
 			//보내기
 			this.SocketMe.SendAsync(this.m_saeaSend);
