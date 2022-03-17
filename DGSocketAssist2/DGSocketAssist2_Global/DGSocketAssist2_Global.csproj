@@ -1,14 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net48</TargetFramework>
+    <TargetFramework>net471</TargetFramework>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
     <Reference Include="DGU_ByteAssist">
       <HintPath>..\lib\DGU_ByteAssist.dll</HintPath>
-      <CopyLocal>True</CopyLocal>
     </Reference>
   </ItemGroup>
 

@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DGU_StringAssist</name>
+    </assembly>
+    <members>
+        <member name="T:DGU.StringAssist.StringNumber">
+            <summary>
+            문자열로된 숫자를 처리하기위한 지원 기능
+            </summary>
+        </member>
+        <member name="M:DGU.StringAssist.StringNumber.IsNumeric(System.String)">
+            <summary>
+            입력된 문자열이 숫자로 변환 가능한지 여부를 판단한다.
+            <para>null 이거나 빈 문자열은 false가 리턴된다.</para>
+            </summary>
+            <param name="value">판단할 문자열</param>
+            <returns></returns>
+        </member>
+        <member name="M:DGU.StringAssist.StringNumber.StringToInt(System.String)">
+            <summary>
+            문자열을 숫자로 바꾼다.
+            <para>숫자로 바꿀수 없는 문자열은 0이 리턴된다.</para>
+            </summary>
+            <param name="sData">바꿀 데이터</param>
+            <returns>변환된 숫자.</returns>
+        </member>
+        <member name="T:DGU.StringAssist.StringSplit">
+            <summary>
+            문자열 자르기 관련 기능
+            </summary>
+        </member>
+        <member name="M:DGU.StringAssist.StringSplit.NLengthArray(System.String,System.Int32)">
+            <summary>
+            문자열을 지정된 길이만큼 여러번 잘라 배열로 만든다.
+            </summary>
+            <param name="sData"></param>
+            <param name="nCutLength">자를 길이</param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

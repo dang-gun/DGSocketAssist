@@ -4,7 +4,15 @@
         <name>DGU_ByteAssist</name>
     </assembly>
     <members>
-        <!-- Badly formed XML comment ignored for member "T:DGU.DGU_ByteAssist.ByteArray" -->
+        <member name="T:DGU.DGU_ByteAssist.ByteArray">
+            <summary>
+            byte 배열을 처리하기위한 유틸리티
+            <see href="https://github.com/dang-gun/DGUtility_DotNet/tree/main/DGU_ByteAssist">DGUtility_DotNet/DGU_ByteAssist/</see>/>
+            <para>Buffer.BlockCopy는 인덱스 기반, Array.Copy는 참조 기반이다.</para>
+            <para>성능은 Array.Copy가 약간 더 빠르다.</para>
+            <see href="http://stackoverflow.com/questions/1389821/array-copy-vs-buffer-blockcopy">Array.Copy vs Buffer.BlockCopy</see>
+            </summary>
+        </member>
         <member name="M:DGU.DGU_ByteAssist.ByteArray.Combine(System.Byte[],System.Byte[])">
             <summary>
             byteA와 byteB를 합친다.
@@ -17,6 +25,15 @@
             <summary>
             byteB의 내용을 그대로 byteA로 복사한다.<br />
             입력값의 크기가 다른건 예외처리 하지 않음.
+            </summary>
+            <param name="byteA"></param>
+            <param name="byteB"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DGU.DGU_ByteAssist.ByteArray.Copy_CutAll(System.Byte[]@,System.Byte[])">
+            <summary>
+            byteB의 내용을 그대로 byteA로 복사하는데 byteA 크기 만큼만 복사한다.
+            (byteA의 크기조절 없음)
             </summary>
             <param name="byteA"></param>
             <param name="byteB"></param>
