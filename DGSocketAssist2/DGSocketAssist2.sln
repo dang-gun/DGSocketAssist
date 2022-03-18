@@ -3,17 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DGSocketAssist2_Global", "DGSocketAssist2_Global\DGSocketAssist2_Global.csproj", "{74D5EB9C-7539-4972-A6B0-53BAB741E644}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DGSocketAssist2_Global", "DGSocketAssist2_Global\DGSocketAssist2_Global.csproj", "{74D5EB9C-7539-4972-A6B0-53BAB741E644}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DGSocketAssist2_Client", "DGSocketAssist2_Client\DGSocketAssist2_Client.csproj", "{BCD98187-E37C-4916-958D-E024492F2EF7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DGSocketAssist2_Client", "DGSocketAssist2_Client\DGSocketAssist2_Client.csproj", "{BCD98187-E37C-4916-958D-E024492F2EF7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DGSocketAssist2_Server", "DGSocketAssist2_Server\DGSocketAssist2_Server.csproj", "{782C5D71-1DA5-4BE8-9874-690DB8314E87}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DGSocketAssist2_Server", "DGSocketAssist2_Server\DGSocketAssist2_Server.csproj", "{782C5D71-1DA5-4BE8-9874-690DB8314E87}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatGlobal", "ChatGlobal\ChatGlobal.csproj", "{8BE4E01D-871A-4A29-8D1C-4628B486B7A1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatGlobal", "ChatGlobal\ChatGlobal.csproj", "{8BE4E01D-871A-4A29-8D1C-4628B486B7A1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocketClientTest", "SocketClientTest\SocketClientTest.csproj", "{B619DC2E-EE49-463C-96CC-C3174CFD421C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocketServerTest", "SocketServerTest\SocketServerTest.csproj", "{D333DD90-4EF1-4A5B-9524-0E47DDF69CE9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocketClientNet5Test", "SocketClientNet5Test\SocketClientNet5Test.csproj", "{2A48091F-5F19-4A99-BB4A-1B35A8EC71A7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{D333DD90-4EF1-4A5B-9524-0E47DDF69CE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D333DD90-4EF1-4A5B-9524-0E47DDF69CE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D333DD90-4EF1-4A5B-9524-0E47DDF69CE9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A48091F-5F19-4A99-BB4A-1B35A8EC71A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A48091F-5F19-4A99-BB4A-1B35A8EC71A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A48091F-5F19-4A99-BB4A-1B35A8EC71A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A48091F-5F19-4A99-BB4A-1B35A8EC71A7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
