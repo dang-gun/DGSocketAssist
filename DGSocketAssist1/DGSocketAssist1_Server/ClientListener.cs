@@ -81,7 +81,7 @@ namespace DGSocketAssist1_Server
 		}
 
 		/// <summary>
-		/// 메시지가 수신
+		/// 메시지 수신
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="message"></param>
@@ -154,10 +154,12 @@ namespace DGSocketAssist1_Server
 		}
 
 		/// <summary>
-		/// 연결된 클라이언트에서 전송한 데이터를 읽기위해 대기한다.
-		/// <para>모든 이벤트 연결이 끝난 후 호출하는 것이 좋다.</para>
+		/// 연결된 클라이언트에서 전송한 첫 데이터를 읽기위해 대기한다.
 		/// </summary>
-		public void Listening()
+		/// <remarks>
+		/// 모든 이벤트 연결이 끝난 후 호출하는 것이 좋다.
+		/// </remarks>
+		public void FirstListening()
 		{
 			//데이터 구조 생성
 			MessageData MsgData = new MessageData();

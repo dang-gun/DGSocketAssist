@@ -212,7 +212,7 @@ namespace DGSocketAssist1_Server
 			this.OnStart();
 			Debug.WriteLine("첫번째 클라이언트 접속 대기");
 
-			//클라이언트 연결시 사용될 
+			//클라이언트 연결시 사용될 SocketAsyncEventArgs
 			SocketAsyncEventArgs saeaUser = new SocketAsyncEventArgs();
 			//클라이언트가 연결되었을때 이벤트
 			saeaUser.Completed -= ClientConnect_Completed;
@@ -250,7 +250,7 @@ namespace DGSocketAssist1_Server
 			this.ConnectedCall(newUser);
 
 			//클라이언트의 데이터 전송을 대기한다.
-			newUser.Listening();
+			newUser.FirstListening();
 
 
 			//다시 클라이언트 접속 대기 시작
@@ -324,7 +324,10 @@ namespace DGSocketAssist1_Server
 			Console.WriteLine("서버를 종료합니다.");
 		}
 
-
+		/// <summary>
+		/// w전체 유저에게 메시지를 전달한다.
+		/// </summary>
+		/// <param name="sMsg"></param>
 		public void AllMessage(string sMsg)
 		{
 			foreach (ClientListener itemCL in this.ClientList)

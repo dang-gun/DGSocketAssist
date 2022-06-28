@@ -251,7 +251,7 @@ namespace DGSocketAssist3_Server
 			this.ConnectedCall(newUser);
 
 			//클라이언트의 데이터 전송을 대기한다.
-			newUser.Listening();
+			newUser.FirstListening();
 
 
 			//다시 클라이언트 접속 대기 시작

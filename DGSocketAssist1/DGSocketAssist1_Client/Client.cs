@@ -287,7 +287,7 @@ namespace DGSocketAssist1_Client
 
 
 		/// <summary>
-		/// 연결된 이 클라이언트에게 메시지를 전송 한다.
+		/// 연결된 이 서버로 메시지를 전송 한다.
 		/// </summary>
 		/// <param name="sMsg"></param>
 		public void Send(string sMsg)

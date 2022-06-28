@@ -156,7 +156,7 @@ namespace DGSocketAssist2_Server
 		/// 연결된 클라이언트에서 전송한 데이터를 읽기위해 대기한다.
 		/// <para>모든 이벤트 연결이 끝난 후 호출하는 것이 좋다.</para>
 		/// </summary>
-		public void Listening()
+		public void FirstListening()
 		{
 			//데이터 구조 생성
 			BufferData bdMsgData = new BufferData();
