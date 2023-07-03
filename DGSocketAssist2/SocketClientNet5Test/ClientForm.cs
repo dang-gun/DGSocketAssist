@@ -469,24 +469,24 @@ namespace SocketClientNet5Test
 				case typeState.None:    //기본
 					if (true == InvokeRequired)
 					{
-						this.Invoke(new Action(
-						delegate ()
-						{
-							try
-							{
-								txtMsg.Enabled = false;
-								btnSend.Enabled = false;
-								btnImageSend.Enabled = false;
+                        try
+                        {
+                            this.Invoke(new Action(
+                            delegate ()
+                            {
+                                txtMsg.Enabled = false;
+                                btnSend.Enabled = false;
+                                btnImageSend.Enabled = false;
 
-								txtID.Enabled = true;
-								btnLogin.Enabled = true;
-							}
-							catch (Exception ex)
-							{
-								Debug.WriteLine("UI전환 에러 : " + ex.Message);
-							}
-
-						}));
+                                txtID.Enabled = true;
+                                btnLogin.Enabled = true;
+                            }));
+                        }
+                        catch (Exception ex)
+                        {
+                            Debug.WriteLine("UI전환 에러 : " + ex.Message);
+                        }
+                        
 					}
 					else
 					{

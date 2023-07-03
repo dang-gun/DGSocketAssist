@@ -234,33 +234,35 @@ namespace DGSocketAssist2_Server
 		/// <exception cref="NotImplementedException"></exception>
 		private void ClientConnect_Completed(object sender, SocketAsyncEventArgs e)
 		{
-			Debug.WriteLine("클라이언트 접속됨 : {0}"
+			if (null != e.AcceptSocket.RemoteEndPoint)
+			{
+				Debug.WriteLine("클라이언트 접속됨 : {0}"
 				, ((IPEndPoint)e.AcceptSocket.RemoteEndPoint).ToString());
 
-			//유저 객체를 만든다.
-			ClientListener newUser = new ClientListener(e.AcceptSocket);
-			//각 이벤트 연결
-			newUser.OnValidationComplete += NewUser_OnValidationComplete;
-			newUser.OnDisconnect += NewUser_OnDisconnect;
-			newUser.OnDisconnectCompleted += NewUser_OnDisconnectCompleted;
-			newUser.OnMessaged += NewUser_OnMessaged;
+				//유저 객체를 만든다.
+				ClientListener newUser = new ClientListener(e.AcceptSocket);
+				//각 이벤트 연결
+				newUser.OnValidationComplete += NewUser_OnValidationComplete;
+				newUser.OnDisconnect += NewUser_OnDisconnect;
+				newUser.OnDisconnectCompleted += NewUser_OnDisconnectCompleted;
+				newUser.OnMessaged += NewUser_OnMessaged;
 
-			//리스트에 클라이언트 추가
-			this.ClientList.Add(newUser);
-			//클라이언트 접속을 알림.
-			this.ConnectedCall(newUser);
+				//리스트에 클라이언트 추가
+				this.ClientList.Add(newUser);
+				//클라이언트 접속을 알림.
+				this.ConnectedCall(newUser);
 
-			//클라이언트의 데이터 전송을 대기한다.
-			newUser.FirstListening();
+				//클라이언트의 데이터 전송을 대기한다.
+				newUser.FirstListening();
 
-
-			//다시 클라이언트 접속 대기 시작
-			Debug.WriteLine("클라이언트 접속 대기");
-			//이렇게 구성하는 이유는 'Start'에서 무한 루프 없이
-			//클라이언트 대기를 구현하기 위해서이다.
-			Socket socketServer = (Socket)sender;
-			e.AcceptSocket = null;
-			socketServer.AcceptAsync(e);
+				//다시 클라이언트 접속 대기 시작
+				Debug.WriteLine("클라이언트 접속 대기");
+				//이렇게 구성하는 이유는 'Start'에서 무한 루프 없이
+				//클라이언트 대기를 구현하기 위해서이다.
+				Socket socketServer = (Socket)sender;
+				e.AcceptSocket = null;
+				socketServer.AcceptAsync(e);
+			}
 		}
 
 

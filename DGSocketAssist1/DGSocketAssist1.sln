@@ -15,6 +15,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocketClientTest", "SocketC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatGlobal", "ChatGlobal\ChatGlobal.csproj", "{C9D9C138-9D6D-4009-8AB2-ABB79CCCFC3D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocketClientNet5Test", "SocketClientNet5Test\SocketClientNet5Test.csproj", "{F50CE29F-88C1-4CFC-A830-05881EEF30D2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DGSocketAssist1_Client_Upgrade", "DGSocketAssist1_Client_Upgrade\DGSocketAssist1_Client_Upgrade.csproj", "{895F67D5-8F9D-49BA-B387-47D168B5349D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +49,14 @@ Global
 		{C9D9C138-9D6D-4009-8AB2-ABB79CCCFC3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C9D9C138-9D6D-4009-8AB2-ABB79CCCFC3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C9D9C138-9D6D-4009-8AB2-ABB79CCCFC3D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F50CE29F-88C1-4CFC-A830-05881EEF30D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F50CE29F-88C1-4CFC-A830-05881EEF30D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F50CE29F-88C1-4CFC-A830-05881EEF30D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F50CE29F-88C1-4CFC-A830-05881EEF30D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{895F67D5-8F9D-49BA-B387-47D168B5349D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{895F67D5-8F9D-49BA-B387-47D168B5349D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{895F67D5-8F9D-49BA-B387-47D168B5349D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{895F67D5-8F9D-49BA-B387-47D168B5349D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

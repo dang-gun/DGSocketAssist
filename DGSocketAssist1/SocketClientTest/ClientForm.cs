@@ -53,13 +53,26 @@ namespace SocketClientTest
 										, ChatSetting.SiteTitle);
 		}
 
-		#region 메뉴 - 서버
-		/// <summary>
-		/// 메뉴 - 서버 - 접속 준비
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		private void tsmiConnectReady_Click(object sender, EventArgs e)
+        /// <summary>
+        /// 폼이 닫치기 전에 발생
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ClientForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (null != GloblaStatic.Client)
+            {
+                GloblaStatic.Client.Disconnect(true);
+            }
+        }
+
+        #region 메뉴 - 서버
+        /// <summary>
+        /// 메뉴 - 서버 - 접속 준비
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void tsmiConnectReady_Click(object sender, EventArgs e)
 		{
 			string nIP = "127.0.0.1";
 			int nPort = Convert.ToInt32(txtPort.Text);
@@ -484,17 +497,6 @@ namespace SocketClientTest
 
 		}
 
-		/// <summary>
-		/// 폼이 닫치기 전에 발생
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		private void ClientForm_FormClosing(object sender, FormClosingEventArgs e)
-		{
-			if(null != GloblaStatic.Client)
-            {
-				GloblaStatic.Client.Disconnect(true);
-			}
-		}
+		
 	}
 }

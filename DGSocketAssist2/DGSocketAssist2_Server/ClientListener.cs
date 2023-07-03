@@ -153,9 +153,11 @@ namespace DGSocketAssist2_Server
 		}
 
 		/// <summary>
-		/// 연결된 클라이언트에서 전송한 데이터를 읽기위해 대기한다.
-		/// <para>모든 이벤트 연결이 끝난 후 호출하는 것이 좋다.</para>
+		/// 연결된 클라이언트에서 전송한 첫 데이터를 읽기위해 대기한다.
 		/// </summary>
+		/// <remarks>
+		/// 모든 이벤트 연결이 끝난 후 호출하는 것이 좋다.
+		/// </remarks>
 		public void FirstListening()
 		{
 			//데이터 구조 생성
@@ -202,7 +204,6 @@ namespace DGSocketAssist2_Server
 				//SocketAsyncEventArgs.Completed가 여러번 오는것을 대비할수 없다.
 				BufferData bdMsgData = new BufferData(e.Buffer, true);
 
-				
 				//헤더를 자른다.
 				bdMsgData.CutHeader();
 				bdMsgData.CutBody();

@@ -297,15 +297,15 @@ namespace DGSocketAssist1_Client
 			//데이터를 넣고
 			mdSendMsg.SetData(sMsg);
 
-			using (SocketAsyncEventArgs saeaSendArgs = new SocketAsyncEventArgs())
-			{
-				//데이터 길이 세팅
-				this.m_saeaSend.SetBuffer(BitConverter.GetBytes(mdSendMsg.DataLength), 0, 4);
-				//보낼 데이터 설정
-				this.m_saeaSend.UserToken = mdSendMsg;
-				//보내기 시작
-				this.SocketMe.SendAsync(this.m_saeaSend);
-			}//end using saeaSendArgs
+
+
+            //데이터 길이 세팅
+            this.m_saeaSend.SetBuffer(BitConverter.GetBytes(mdSendMsg.DataLength), 0, 4);
+            //보낼 데이터 설정
+            this.m_saeaSend.UserToken = mdSendMsg;
+			//보내기 시작
+			this.SocketMe.SendAsync(this.m_saeaSend);
+			
 		}
 
 		/// <summary>

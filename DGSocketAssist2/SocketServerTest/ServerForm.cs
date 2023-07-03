@@ -103,15 +103,28 @@ namespace SocketServerTest
 										, ChatSetting.SiteTitle);
 		}
 
+        /// <summary>
+        /// 폼이 닫치기 전에 발생
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ServerForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (null != GloblaStatic.Server)
+            {
+                GloblaStatic.Server.Stop();
+            }
+        }
 
-		#region UI 관련
 
-		/// <summary>
-		/// 서버 시작
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		private void btnStart_Click(object sender, EventArgs e)
+        #region UI 관련
+
+        /// <summary>
+        /// 서버 시작
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnStart_Click(object sender, EventArgs e)
 		{
 			//버튼 표시
 			BtnDisplay(false);
@@ -214,18 +227,7 @@ namespace SocketServerTest
 
 		#endregion
 
-		/// <summary>
-		/// 폼이 닫치기 전에 발생
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		private void ServerForm_FormClosing(object sender, FormClosingEventArgs e)
-		{
-			if (null != GloblaStatic.Server)
-			{
-				GloblaStatic.Server.Stop();
-			}
-		}
+
 
 
 		#region 서버 이벤트 콜백
