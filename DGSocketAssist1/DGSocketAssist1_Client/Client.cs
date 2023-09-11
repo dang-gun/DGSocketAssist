@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -183,8 +184,32 @@ namespace DGSocketAssist1_Client
 					, ProtocolType.Tcp);
 			this.ServerIP = ip;
 
-			//전송용 SocketAsyncEventArgs 세팅
-			this.m_saeaSend = new SocketAsyncEventArgs();
+
+            /* the native structure
+				struct tcp_keepalive {
+				ULONG onoff;
+				ULONG keepalivetime;
+				ULONG keepaliveinterval;
+				};
+*/
+            //keepAlive설정
+            //https://www.sysnet.pe.kr/2/0/1825
+            //https://stackoverflow.com/questions/169170/what-is-the-best-way-to-do-keep-alive-socket-checking-in-net
+            int size = sizeof(UInt32);
+            UInt32 on = 1;
+			//10초에 한번씩 서버에 확인 요청
+            UInt32 keepAliveInterval = 10000;
+			//확인이 안되면 1초마다 반복 요청
+            UInt32 retryInterval = 1000;
+            byte[] inArray = new byte[size * 3];
+            Array.Copy(BitConverter.GetBytes(on), 0, inArray, 0, size);
+            Array.Copy(BitConverter.GetBytes(keepAliveInterval), 0, inArray, size, size);
+            Array.Copy(BitConverter.GetBytes(retryInterval), 0, inArray, size * 2, size);
+
+            this.SocketMe.IOControl(IOControlCode.KeepAliveValues, inArray, null);
+
+            //전송용 SocketAsyncEventArgs 세팅
+            this.m_saeaSend = new SocketAsyncEventArgs();
 			this.m_saeaSend.RemoteEndPoint = this.ServerIP;
 			this.m_saeaSend.Completed -= SaeaSend_Completed;
 			this.m_saeaSend.Completed += SaeaSend_Completed;

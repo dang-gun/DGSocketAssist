@@ -173,7 +173,15 @@ namespace DGSocketAssist3_Client
 					, SocketType.Stream
 					, ProtocolType.Tcp);
 			this.ServerIP = ip;
-		}
+
+            //https://github.com/dotnet/runtime/issues/27759
+            this.SocketMe.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, true);
+            this.SocketMe.SetSocketOption(SocketOptionLevel.Tcp, SocketOptionName.TcpKeepAliveTime, 3);
+            this.SocketMe.SetSocketOption(SocketOptionLevel.Tcp, SocketOptionName.TcpKeepAliveInterval, 1);
+            this.SocketMe.SetSocketOption(SocketOptionLevel.Tcp, SocketOptionName.TcpKeepAliveRetryCount, 3);
+
+
+        }
 
 		/// <summary>
 		/// 서버에 연결시도를 한다.
