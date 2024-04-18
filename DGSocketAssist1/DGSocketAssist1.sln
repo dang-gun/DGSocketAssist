@@ -15,9 +15,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocketClientTest", "SocketC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatGlobal", "ChatGlobal\ChatGlobal.csproj", "{C9D9C138-9D6D-4009-8AB2-ABB79CCCFC3D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocketClientNet5Test", "SocketClientNet5Test\SocketClientNet5Test.csproj", "{F50CE29F-88C1-4CFC-A830-05881EEF30D2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SocketClientNet5Test", "SocketClientNet5Test\SocketClientNet5Test.csproj", "{F50CE29F-88C1-4CFC-A830-05881EEF30D2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DGSocketAssist1_Client_Upgrade", "DGSocketAssist1_Client_Upgrade\DGSocketAssist1_Client_Upgrade.csproj", "{895F67D5-8F9D-49BA-B387-47D168B5349D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Chat Sample", "Chat Sample", "{B10400C8-A6B9-4A25-9EC1-694F4E9C23A5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -60,6 +62,12 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{1018500D-F852-43B1-BB3C-692EB9B5F9E1} = {B10400C8-A6B9-4A25-9EC1-694F4E9C23A5}
+		{2D5A0A5C-A959-4FD1-8280-3C82CB16EB90} = {B10400C8-A6B9-4A25-9EC1-694F4E9C23A5}
+		{C9D9C138-9D6D-4009-8AB2-ABB79CCCFC3D} = {B10400C8-A6B9-4A25-9EC1-694F4E9C23A5}
+		{F50CE29F-88C1-4CFC-A830-05881EEF30D2} = {B10400C8-A6B9-4A25-9EC1-694F4E9C23A5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {22ACF2E8-2DC7-4EE0-A8A1-ABE76BE508ED}
