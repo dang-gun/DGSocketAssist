@@ -233,19 +233,17 @@ namespace DGSocketAssist1_Client
                 this.m_saeaReceive.UserToken = mdReceiveMsg;
 
 
-                Task.Run(() => {
-                    //첫 메시지 받기 준비 
-                    bool bReceive_Completed = this.SocketMe.ReceiveAsync(this.m_saeaReceive);
+                //.NET5 부터는 ReceiveAsync 상황에 따라서 동기/비동기로 돌아간다.
+                //이 부분은 별도의 스래드를 만들어 사용했더니 가끔 데이터를 받지 못하는현상이 일어났다.
+                //그래서 별도 스래드 처리를 제거하였다.
+                //첫 메시지 받기 준비 
+                if (false == this.SocketMe.ReceiveAsync(this.m_saeaReceive))
+                {
+                    this.SaeaReceive_Completed(this.SocketMe, this.m_saeaReceive);
+                }
+                this.ReceiveReadyCall();
 
-                    if (false == bReceive_Completed)
-                    {
-                        this.SaeaReceive_Completed(this.SocketMe, this.m_saeaReceive);
-                    }
 
-                    this.ReceiveReadyCall();
-                });
-
-                
                 Debug.WriteLine("서버 연결 성공");
                 //서버 연결 성공을 알림
                 this.ConnectionCompleteCall();
@@ -286,17 +284,12 @@ namespace DGSocketAssist1_Client
 
                 Debug.WriteLine("다음 데이터 받을 준비 ");
 
-                Task.Run(() => {
-                    //다음 메시지를 받을 준비를 한다.
-                    bool bReceive_Completed = socketClient.ReceiveAsync(e);
-
-                    if (false == bReceive_Completed)
-                    {
-                        this.SaeaReceive_Completed(this.SocketMe, this.m_saeaReceive);
-                    }
-
-                    this.ReceiveReadyCall();
-                });
+                //다음 메시지를 받을 준비를 한다.
+                if (false == socketClient.ReceiveAsync(e))
+                {
+                    this.SaeaReceive_Completed(this.SocketMe, this.m_saeaReceive);
+                }
+                this.ReceiveReadyCall();
             }
             else
             {
@@ -323,19 +316,14 @@ namespace DGSocketAssist1_Client
             this.m_saeaSend.SetBuffer(BitConverter.GetBytes(mdSendMsg.DataLength), 0, 4);
             //보낼 데이터 설정
             this.m_saeaSend.UserToken = mdSendMsg;
-            
-            
+
+
 
             //.NET5 부터는 SendAsync가 상황에 따라서 동기/비동기로 돌아간다.
-            Task.Run(() => {
-                //보내기 시작
-                bool bSendCompleted = this.SocketMe.SendAsync(this.m_saeaSend);
-
-                if (false == bSendCompleted)
-                {
-                    this.SaeaSend_Completed(this.SocketMe, this.m_saeaSend);
-                }
-            });
+            if (false == this.SocketMe.SendAsync(this.m_saeaSend))
+            {
+                this.SaeaSend_Completed(this.SocketMe, this.m_saeaSend);
+            }
 
         }
 
