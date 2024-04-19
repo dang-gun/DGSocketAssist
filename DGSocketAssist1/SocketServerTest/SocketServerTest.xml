@@ -212,22 +212,22 @@
             이 메서드의 내용을 코드 편집기로 수정하지 마세요.
             </summary>
         </member>
-        <member name="T:SocketServerTest.GloblaStatic">
+        <member name="T:SocketServerTest.GlobalStatic">
             <summary>
             프로그램 변수
             </summary>
         </member>
-        <member name="F:SocketServerTest.GloblaStatic.MainForm">
+        <member name="F:SocketServerTest.GlobalStatic.MainForm">
             <summary>
             사용할 메인폼
             </summary>
         </member>
-        <member name="F:SocketServerTest.GloblaStatic.Server">
+        <member name="F:SocketServerTest.GlobalStatic.Server">
             <summary>
             서버 동작을 할 리스너
             </summary>
         </member>
-        <member name="F:SocketServerTest.GloblaStatic.ChatCmd">
+        <member name="F:SocketServerTest.GlobalStatic.ChatCmd">
             <summary>
             체팅 명령어 처리 유틸
             </summary>

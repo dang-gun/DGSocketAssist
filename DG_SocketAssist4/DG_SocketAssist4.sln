@@ -1,0 +1,62 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34330.188
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DG_SocketAssist4.Global", "DG_SocketAssist4.Global\DG_SocketAssist4.Global.csproj", "{1F5DA1AE-180A-4092-9436-7968B8B0157A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DG_SocketAssist4.Server", "DG_SocketAssist4.Server\DG_SocketAssist4.Server.csproj", "{66DC723F-3C97-49B1-87E6-2F0A256351EB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DG_SocketAssist4.Client", "DG_SocketAssist4.Client\DG_SocketAssist4.Client.csproj", "{BE4E3384-74FC-41F6-9485-87EA57AFDD58}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Chat Sample", "Chat Sample", "{90D7A021-CAEC-4996-9902-B80E9E9C40F4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatGlobal", "ChatGlobal\ChatGlobal.csproj", "{B4709563-680E-4564-80AA-B2E8B83CC59F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocketServer4Test", "SocketServer4Test\SocketServer4Test.csproj", "{B330AE9F-0481-48B3-AEA2-D213A9033AA1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocketClient4Test", "SocketClient4Test\SocketClient4Test.csproj", "{3F39D14B-F758-4224-8C8C-7B2E8CA73D6B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1F5DA1AE-180A-4092-9436-7968B8B0157A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F5DA1AE-180A-4092-9436-7968B8B0157A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F5DA1AE-180A-4092-9436-7968B8B0157A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F5DA1AE-180A-4092-9436-7968B8B0157A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66DC723F-3C97-49B1-87E6-2F0A256351EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66DC723F-3C97-49B1-87E6-2F0A256351EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66DC723F-3C97-49B1-87E6-2F0A256351EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66DC723F-3C97-49B1-87E6-2F0A256351EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE4E3384-74FC-41F6-9485-87EA57AFDD58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE4E3384-74FC-41F6-9485-87EA57AFDD58}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE4E3384-74FC-41F6-9485-87EA57AFDD58}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE4E3384-74FC-41F6-9485-87EA57AFDD58}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4709563-680E-4564-80AA-B2E8B83CC59F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4709563-680E-4564-80AA-B2E8B83CC59F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4709563-680E-4564-80AA-B2E8B83CC59F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4709563-680E-4564-80AA-B2E8B83CC59F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B330AE9F-0481-48B3-AEA2-D213A9033AA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B330AE9F-0481-48B3-AEA2-D213A9033AA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B330AE9F-0481-48B3-AEA2-D213A9033AA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B330AE9F-0481-48B3-AEA2-D213A9033AA1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F39D14B-F758-4224-8C8C-7B2E8CA73D6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F39D14B-F758-4224-8C8C-7B2E8CA73D6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F39D14B-F758-4224-8C8C-7B2E8CA73D6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F39D14B-F758-4224-8C8C-7B2E8CA73D6B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B4709563-680E-4564-80AA-B2E8B83CC59F} = {90D7A021-CAEC-4996-9902-B80E9E9C40F4}
+		{B330AE9F-0481-48B3-AEA2-D213A9033AA1} = {90D7A021-CAEC-4996-9902-B80E9E9C40F4}
+		{3F39D14B-F758-4224-8C8C-7B2E8CA73D6B} = {90D7A021-CAEC-4996-9902-B80E9E9C40F4}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {824E792E-BB21-42F5-8969-F1C7C70CE5D8}
+	EndGlobalSection
+EndGlobal

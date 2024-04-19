@@ -119,7 +119,7 @@ namespace SocketServerTest
         private void ClientListenerMe_OnMessaged(ClientListener sender, string message)
 		{
 			//구분자로 명령을 구분 한다.
-			string[] sData = GloblaStatic.ChatCmd.ChatCommandCut(message);
+			string[] sData = GlobalStatic.ChatCmd.ChatCommandCut(message);
 
 
 			//데이터 개수 확인
@@ -129,7 +129,7 @@ namespace SocketServerTest
 
 				//넘어온 명령
 				ChatCommandType typeCommand
-					= GloblaStatic.ChatCmd.StrIntToType(sData[0]);
+					= GlobalStatic.ChatCmd.StrIntToType(sData[0]);
 
 				switch (typeCommand)
 				{
@@ -174,7 +174,7 @@ namespace SocketServerTest
 		public void SendMsg_User(ChatCommandType typeChatCommand, string sMsg)
 		{
 			string sToss
-				= GloblaStatic.ChatCmd.ChatCommandString(
+				= GlobalStatic.ChatCmd.ChatCommandString(
 					typeChatCommand
 					, sMsg);
 			this.ClientListenerMe.Send(sToss);

@@ -1,4 +1,4 @@
-﻿using DGSocketAssist1_Global;
+﻿using DG_SocketAssist4.Global;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -9,19 +9,43 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DGSocketAssist1_Client
+namespace DG_SocketAssist4.Client
 {
-	/// <summary>
-	/// 서버연결에 사용하는 클라이언트.
-	/// </summary>
-	public class Client
+    /// <summary>
+    /// 서버연결에 사용하는 클라이언트.
+	/// <para>클라이언트 입장에서 서버에 접속하기위한 클라이언트</para>
+    /// </summary>
+    public class ClientSocket
 	{
-		#region 클라이언트 이벤트
-		/// <summary>
-		/// 서버 접속 완료
-		/// </summary>
-		/// <param name="sender"></param>
-		public delegate void ConnectionCompleteDelegate(Client sender);
+        #region 클라이언트 이벤트
+        /// <summary>
+        /// 로그용 대리자
+        /// </summary>
+        /// <param name="nLogType">로그 성격</param>
+        /// <param name="sMessage"></param>
+        public delegate void LogDelegate(int nLogType, string sMessage);
+        /// <summary>
+        /// 로그 발생 이벤트
+        /// </summary>
+        public event LogDelegate OnLog;
+        /// <summary>
+        /// 로그 발생 이벤트 호출
+        /// </summary>
+        /// <param name="nLogType"></param>
+        /// <param name="sMessage"></param>
+        private void OnLogCall(int nLogType, string sMessage)
+        {
+            if (null != this.OnLog)
+            {
+                this.OnLog(nLogType, sMessage);
+            }
+        }
+
+        /// <summary>
+        /// 서버 접속 완료
+        /// </summary>
+        /// <param name="sender"></param>
+        public delegate void ConnectionCompleteDelegate(ClientSocket sender);
 		/// <summary>
 		/// 서버 접속 완료
 		/// </summary>
@@ -45,7 +69,7 @@ namespace DGSocketAssist1_Client
 		/// 클라이언트 끊김 처리가 시작되었음을 알린다.
 		/// </summary>
 		/// <param name="sender"></param>
-		public delegate void DisconnectDelegate(Client sender);
+		public delegate void DisconnectDelegate(ClientSocket sender);
 		/// <summary>
 		/// 클라이언 끊김 처리가 시작되었음을 알린다.
 		/// <para>클라이언트가 어떤 사유에서든 끊겼음을 의미한다.</para>
@@ -67,7 +91,7 @@ namespace DGSocketAssist1_Client
 		/// 클라이언트 끊김 처리 완료
 		/// </summary>
 		/// <param name="sender"></param>
-		public delegate void DisconnectCompletedDelegate(Client sender);
+		public delegate void DisconnectCompletedDelegate(ClientSocket sender);
 		/// <summary>
 		/// 클라이언트가 끊김처리가 완료 되었다.
 		/// </summary>
@@ -88,7 +112,7 @@ namespace DGSocketAssist1_Client
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="message"></param>
-		public delegate void ReceiveReadyDelegate(Client sender);
+		public delegate void ReceiveReadyDelegate(ClientSocket sender);
 		/// <summary>
 		/// 데이터 수신 준비 완료.
 		/// </summary>
@@ -114,7 +138,7 @@ namespace DGSocketAssist1_Client
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="message"></param>
-		public delegate void MessagedDelegate(Client sender, string message);
+		public delegate void MessagedDelegate(ClientSocket sender, string message);
 		/// <summary>
 		/// 메시지가 수신됨
 		/// </summary>
@@ -155,7 +179,7 @@ namespace DGSocketAssist1_Client
 		/// </summary>
 		/// <param name="sIP">서버 ip</param>
 		/// <param name="nPort">서버 포트</param>
-		public Client(string sIP, int nPort)
+		public ClientSocket(string sIP, int nPort)
 		{
 			this.SocketSetting(
 				new IPEndPoint(
@@ -166,7 +190,7 @@ namespace DGSocketAssist1_Client
 		/// 서버와 연결할 클라이언트 생성. 
 		/// </summary>
 		/// <param name="address">서버 주소</param>
-		public Client(IPEndPoint address)
+		public ClientSocket(IPEndPoint address)
 		{
 			this.SocketSetting(address);
 		}
@@ -184,29 +208,20 @@ namespace DGSocketAssist1_Client
 					, ProtocolType.Tcp);
 			this.ServerIP = ip;
 
-
-            /* the native structure
-				struct tcp_keepalive {
-				ULONG onoff;
-				ULONG keepalivetime;
-				ULONG keepaliveinterval;
-				};
-*/
-            //keepAlive설정
-            //https://www.sysnet.pe.kr/2/0/1825
-            //https://stackoverflow.com/questions/169170/what-is-the-best-way-to-do-keep-alive-socket-checking-in-net
-   //         int size = sizeof(UInt32);
-   //         UInt32 on = 1;
-			////10초에 한번씩 서버에 확인 요청
-   //         UInt32 keepAliveInterval = 10000;
-			////확인이 안되면 1초마다 반복 요청
-   //         UInt32 retryInterval = 1000;
-   //         byte[] inArray = new byte[size * 3];
-   //         Array.Copy(BitConverter.GetBytes(on), 0, inArray, 0, size);
-   //         Array.Copy(BitConverter.GetBytes(keepAliveInterval), 0, inArray, size, size);
-   //         Array.Copy(BitConverter.GetBytes(retryInterval), 0, inArray, size * 2, size);
-
-   //         this.SocketMe.IOControl(IOControlCode.KeepAliveValues, inArray, null);
+            //KeepAlive 설정
+            //닷넷을 통한 KeepAlive설정은 .NET Core 3.0이상에서만 지원한다.
+            //https://learn.microsoft.com/ko-kr/dotnet/api/system.net.sockets.socketoptionname?view=netcore-3.0#system-net-sockets-socketoptionname-tcpkeepalivetime
+            //윈도우의 경우 IOControl를 통해서 적용할 수 있다.
+            //this.socketServer.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, true);
+            //this.socketServer.SetSocketOption(SocketOptionLevel.Tcp, SocketOptionName.TcpKeepAliveTime, 10000);
+            //this.socketServer.SetSocketOption(SocketOptionLevel.Tcp, SocketOptionName.TcpKeepAliveInterval, 5000);
+            // Windows 10 version 1703 or later
+            //https://learn.microsoft.com/en-us/windows/win32/winsock/ipproto-tcp-socket-options?WT.mc_id=DT-MVP-4038148
+            //if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
+            //    && Environment.OSVersion.Version >= new Version(10, 0, 15063))
+            //{//윈도우10, 1703 이후 버전(windows server 2019)
+            //    this.socketServer.SetSocketOption(SocketOptionLevel.Tcp, SocketOptionName.TcpKeepAliveRetryCount, _keepalive.TcpKeepAliveRetryCount);
+            //}
 
             //전송용 SocketAsyncEventArgs 세팅
             this.m_saeaSend = new SocketAsyncEventArgs();
@@ -234,9 +249,9 @@ namespace DGSocketAssist1_Client
 			saeaConnect.Completed -= SaeaConnect_Completed;
 			saeaConnect.Completed += SaeaConnect_Completed;
 
-			Debug.WriteLine("서버 연결 중");
-			//서버 메시지 대기
-			this.SocketMe.ConnectAsync(saeaConnect);
+            this.OnLogCall(0, "서버 연결 중");
+            //서버 메시지 대기
+            this.SocketMe.ConnectAsync(saeaConnect);
 		}
 
 		/// <summary>
@@ -256,13 +271,20 @@ namespace DGSocketAssist1_Client
 				//서버에 수신대기할 개체를 설정한다.
 				//보낼 데이터를 설정하고
 				this.m_saeaReceive.UserToken = mdReceiveMsg;
-				//첫 메시지 받기 준비 
-				this.SocketMe.ReceiveAsync(this.m_saeaReceive);
-				this.ReceiveReadyCall();
 
-				Debug.WriteLine("서버 연결 성공");
-				//서버 연결 성공을 알림
-				this.ConnectionCompleteCall();
+                //.NET5 부터는 ReceiveAsync 상황에 따라서 동기/비동기로 돌아간다.
+                //이 부분은 별도의 스래드를 만들어 사용했더니 가끔 데이터를 받지 못하는현상이 일어났다.
+                //그래서 별도 스래드 처리를 제거하였다.
+                //첫 메시지 받기 준비 
+                if (false == this.SocketMe.ReceiveAsync(this.m_saeaReceive))
+                {
+                    this.SaeaReceive_Completed(this.SocketMe, this.m_saeaReceive);
+                }
+                this.ReceiveReadyCall();
+
+                this.OnLogCall(0, "서버 연결 성공");
+                //서버 연결 성공을 알림
+                this.ConnectionCompleteCall();
 			}
 			else
 			{
@@ -298,10 +320,13 @@ namespace DGSocketAssist1_Client
                 //메시지 수신을 알림
                 this.MessagedCall(mdRecieveMsg.GetData());
 
-				Debug.WriteLine("다음 데이터 받을 준비 ");
-				//다음 메시지를 받을 준비를 한다.
-				socketClient.ReceiveAsync(e);
-				this.ReceiveReadyCall();
+                this.OnLogCall(0, "다음 데이터 받을 준비 ");
+                //다음 메시지를 받을 준비를 한다.
+                if (false == socketClient.ReceiveAsync(e))
+                {
+                    this.SaeaReceive_Completed(this.SocketMe, this.m_saeaReceive);
+                }
+                this.ReceiveReadyCall();
 			}
 			else
 			{

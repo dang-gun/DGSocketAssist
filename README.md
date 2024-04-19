@@ -1,9 +1,20 @@
 # DGSocketAssist
-DGSocketAssist 예제 관리를 위한 저장소<br />
-C# Socket + SocketAsyncEventArgs 사용을 이해하기 위한 라이브러리<br />
-C#에서 C# Socket과 SocketAsyncEventArgs를 사용할때 메커니즘을 공부할때 사용하라고 만든 라이브러리입니다.<br />
-<br />
-이 라이브러리로 만든 체팅프로그램 셈플이 폼함되어 있습니다.
+
+DGSocketAssist 예제 관리를 위한 저장소
+
+C# Socket + SocketAsyncEventArgs 사용을 이해하기 위한 라이브러리
+
+C#에서 C# Socket과 SocketAsyncEventArgs를 사용할때 메커니즘을 공부할때 사용하라고 만든 라이브러리입니다.
+
+이 솔루션은 학습을 목적으로 만들어져 실무에서 검증되지 않았습니다.
+
+(저는 이 솔루션을 사용하여 실무에서 사용하고 있지만 권장하지 않습니다.)
+
+실무에 사용하려면 검증된 다른 라이브러리를 사용하는 것이 좋습니다.
+
+
+이 라이브러리로 만든 체팅프로그램 셈플이 포함되어 있습니다.
+
 <br />
 <br />
 

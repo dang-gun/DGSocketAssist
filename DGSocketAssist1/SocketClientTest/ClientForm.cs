@@ -48,7 +48,7 @@ namespace SocketClientTest
 		{
 			InitializeComponent();
 
-			GloblaStatic.MainForm = this;
+			GlobalStatic.MainForm = this;
 			this.Text = string.Format("Socket Client Test({0})"
 										, ChatSetting.SiteTitle);
 		}
@@ -60,9 +60,9 @@ namespace SocketClientTest
         /// <param name="e"></param>
         private void ClientForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (null != GloblaStatic.Client)
+            if (null != GlobalStatic.Client)
             {
-                GloblaStatic.Client.Disconnect(true);
+                GlobalStatic.Client.Disconnect(true);
             }
         }
 
@@ -78,12 +78,12 @@ namespace SocketClientTest
 			int nPort = Convert.ToInt32(txtPort.Text);
 
 			//클라이언트 개체 생성
-			GloblaStatic.Client = new Client(nIP, nPort);
-			GloblaStatic.Client.OnConnectionComplete += ServerTestClient_OnConnectionComplete;
-			GloblaStatic.Client.OnDisconnect += ServerTestClient_OnDisconnect;
-			GloblaStatic.Client.OnDisconnectCompleted += ServerTestClient_OnDisconnectCompleted;
-			GloblaStatic.Client.OnReceiveReady += ServerTestClient_OnReceiveReady;
-			GloblaStatic.Client.OnMessaged += ServerTestClient_OnMessaged;
+			GlobalStatic.Client = new Client(nIP, nPort);
+			GlobalStatic.Client.OnConnectionComplete += ServerTestClient_OnConnectionComplete;
+			GlobalStatic.Client.OnDisconnect += ServerTestClient_OnDisconnect;
+			GlobalStatic.Client.OnDisconnectCompleted += ServerTestClient_OnDisconnectCompleted;
+			GlobalStatic.Client.OnReceiveReady += ServerTestClient_OnReceiveReady;
+			GlobalStatic.Client.OnMessaged += ServerTestClient_OnMessaged;
 
 			DisplayMsg("서버 준비 완료");
 		}
@@ -139,7 +139,7 @@ namespace SocketClientTest
 		/// <param name="e"></param>
 		private void tsmiConnect_Click(object sender, EventArgs e)
 		{
-			GloblaStatic.Client.ConnectServer();
+			GlobalStatic.Client.ConnectServer();
 		}
 		/// <summary>
 		/// 메뉴 - 서버 - 메시지 보내기
@@ -148,7 +148,7 @@ namespace SocketClientTest
 		/// <param name="e"></param>
 		private void tsmiSendMessage_Click(object sender, EventArgs e)
 		{
-			GloblaStatic.Client.Send(txtMsg.Text);
+			GlobalStatic.Client.Send(txtMsg.Text);
 		}
 		#endregion
 
@@ -175,21 +175,21 @@ namespace SocketClientTest
 						//유아이를 세팅하고
 						UI_Setting(typeState.Connecting);
 
-						string nIP = "127.0.0.1";
+						string sIP = "127.0.0.1";
 						int nPort = Convert.ToInt32(txtPort.Text);
 
 						//클라이언트 개체 생성
-						GloblaStatic.Client = new Client(nIP, nPort);
-						GloblaStatic.Client.OnConnectionComplete += Client_OnConnectionComplete;
-						GloblaStatic.Client.OnDisconnect += Client_OnDisconnect;
-						GloblaStatic.Client.OnDisconnectCompleted += Client_OnDisconnectCompleted;
-						GloblaStatic.Client.OnReceiveReady += Client_OnReceiveReady;
-						GloblaStatic.Client.OnMessaged += Client_OnMessaged;
+						GlobalStatic.Client = new Client(sIP, nPort);
+						GlobalStatic.Client.OnConnectionComplete += Client_OnConnectionComplete;
+						GlobalStatic.Client.OnDisconnect += Client_OnDisconnect;
+						GlobalStatic.Client.OnDisconnectCompleted += Client_OnDisconnectCompleted;
+						GlobalStatic.Client.OnReceiveReady += Client_OnReceiveReady;
+						GlobalStatic.Client.OnMessaged += Client_OnMessaged;
 
-						DisplayMsg("서버 준비 완료");
+						DisplayMsg("클라이언트 준비 완료");
 
 						//서버 접속 시작
-						GloblaStatic.Client.ConnectServer();
+						GlobalStatic.Client.ConnectServer();
 					}
 					break;
 
@@ -221,7 +221,7 @@ namespace SocketClientTest
 		private void Client_OnDisconnect(Client sender)
 		{
 			//접속 끊김
-			GloblaStatic.Client = null;
+			GlobalStatic.Client = null;
 
 			//유아이를 세팅하고
 			UI_Setting(typeState.None);
@@ -255,7 +255,7 @@ namespace SocketClientTest
 		private void Client_OnMessaged(Client sender, string message)
 		{
 			//구분자로 명령을 구분 한다.
-			string[] sData = GloblaStatic.ChatCmd.ChatCommandCut(message);
+			string[] sData = GlobalStatic.ChatCmd.ChatCommandCut(message);
 
 			//데이터 개수 확인
 			if ((1 <= sData.Length))
@@ -264,7 +264,7 @@ namespace SocketClientTest
 
 				//넘어온 명령
 				ChatCommandType typeCommand
-					= GloblaStatic.ChatCmd.StrIntToType(sData[0]);
+					= GlobalStatic.ChatCmd.StrIntToType(sData[0]);
 
 				switch (typeCommand)
 				{
@@ -333,7 +333,7 @@ namespace SocketClientTest
 		{
 			DisplayMsg("로그인 실패 : 다른 아이디를 이용해 주세요.");
 			//연결 끊기
-			GloblaStatic.Client.Disconnect(true);
+			GlobalStatic.Client.Disconnect(true);
 		}
 
 		/// <summary>
@@ -414,12 +414,12 @@ namespace SocketClientTest
 			, string sMessage)
 		{
 			string sToss 
-				= GloblaStatic.ChatCmd
+				= GlobalStatic.ChatCmd
 					.ChatCommandString(
 						typeChatCommand
 						, sMessage);
 
-			GloblaStatic.Client.Send(sToss);
+			GlobalStatic.Client.Send(sToss);
 		}
 
 

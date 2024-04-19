@@ -95,7 +95,7 @@ namespace SocketServerTest
 		{
 			InitializeComponent();
 
-			GloblaStatic.MainForm = this;
+			GlobalStatic.MainForm = this;
 
 			this.Text = string.Format("Socket Server Test({0})"
 										, ChatSetting.SiteTitle);
@@ -115,15 +115,15 @@ namespace SocketServerTest
 			BtnDisplay(false);
 
 			int nPort = Convert.ToInt32(txtPort.Text);
-			GloblaStatic.Server = new Server(nPort);
-			GloblaStatic.Server.OnStart += Server_OnStart;
-			GloblaStatic.Server.OnStop += Server_OnStop;
+			GlobalStatic.Server = new Server(nPort);
+			GlobalStatic.Server.OnStart += Server_OnStart;
+			GlobalStatic.Server.OnStop += Server_OnStop;
 
-			GloblaStatic.Server.OnConnected += Server_OnConnected;
-			GloblaStatic.Server.OnValidationComplete += Server_ValidationComplete;
-			GloblaStatic.Server.OnDisconnect += Server_OnDisconnected;
-			GloblaStatic.Server.OnMessaged += Server_OnMessaged;
-			GloblaStatic.Server.Start();
+			GlobalStatic.Server.OnConnected += Server_OnConnected;
+			GlobalStatic.Server.OnValidationComplete += Server_ValidationComplete;
+			GlobalStatic.Server.OnDisconnect += Server_OnDisconnected;
+			GlobalStatic.Server.OnMessaged += Server_OnMessaged;
+			GlobalStatic.Server.Start();
 
 			//유저 리스트 초기화
 			this.m_listUser = new List<User>();
@@ -133,7 +133,7 @@ namespace SocketServerTest
 		private void btnStop_Click(object sender, EventArgs e)
 		{
 			//서버 중지
-			GloblaStatic.Server.Stop();
+			GlobalStatic.Server.Stop();
 			BtnDisplay(true);
 		}
 
@@ -145,13 +145,13 @@ namespace SocketServerTest
 		private void btnSend_Click(object sender, EventArgs e)
 		{
 			string sCmdMsg
-				= GloblaStatic.ChatCmd
+				= GlobalStatic.ChatCmd
 					.ChatCommandString(
 						ChatCommandType.Msg
 						, "Server : " + this.txtSendMsg.Text);
 
 			//전체로 메시지 전송
-			GloblaStatic.Server.AllMessage(sCmdMsg);
+			GlobalStatic.Server.AllMessage(sCmdMsg);
 		}
 
 
@@ -211,9 +211,9 @@ namespace SocketServerTest
 		/// <param name="e"></param>
 		private void ServerForm_FormClosing(object sender, FormClosingEventArgs e)
 		{
-			if (null != GloblaStatic.Server)
+			if (null != GlobalStatic.Server)
 			{
-				GloblaStatic.Server.Stop();
+				GlobalStatic.Server.Stop();
 			}
 		}
 
@@ -335,7 +335,7 @@ namespace SocketServerTest
 
 			//전체 유저에게 접속자를 알린다.
 			string sSendData 
-				= GloblaStatic.ChatCmd
+				= GlobalStatic.ChatCmd
 					.ChatCommandString(
 						ChatCommandType.User_Connect
 						, sender.UserID);
@@ -375,7 +375,7 @@ namespace SocketServerTest
 			{
 				//다른 유저들에게 이 유저가 끊겼음을 알린다.
 				string sCmdMsg
-					= GloblaStatic.ChatCmd
+					= GlobalStatic.ChatCmd
 						.ChatCommandString(
 							ChatCommandType.User_Disonnect
 							, sender.UserID);
@@ -397,7 +397,7 @@ namespace SocketServerTest
 		private void Commd_SendMsg(string sMsg)
 		{
 			string sSendData
-				= GloblaStatic.ChatCmd
+				= GlobalStatic.ChatCmd
 					.ChatCommandString(
 						ChatCommandType.Msg
 						, sMsg);
@@ -436,7 +436,7 @@ namespace SocketServerTest
 
 				//명령어 만들기
 				string sSendData
-					= GloblaStatic.ChatCmd
+					= GlobalStatic.ChatCmd
 						.ChatCommandString(
 							ChatCommandType.ID_Check_Ok
 							, string.Empty);
@@ -450,7 +450,7 @@ namespace SocketServerTest
 			{
 				//검사 실패를 알린다.
 				string sSendData
-					= GloblaStatic.ChatCmd
+					= GlobalStatic.ChatCmd
 						.ChatCommandString(
 							ChatCommandType.ID_Check_Fail
 							, string.Empty);
@@ -476,7 +476,7 @@ namespace SocketServerTest
 
 			//명령 만들기
 			string sSendData
-				= GloblaStatic.ChatCmd
+				= GlobalStatic.ChatCmd
 					.ChatCommandString(
 						ChatCommandType.User_List
 						, sbList.ToString());

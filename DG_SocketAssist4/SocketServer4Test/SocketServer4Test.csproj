@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{2D5A0A5C-A959-4FD1-8280-3C82CB16EB90}</ProjectGuid>
+    <ProjectGuid>{B330AE9F-0481-48B3-AEA2-D213A9033AA1}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>SocketClientTest</RootNamespace>
-    <AssemblyName>SocketClientTest</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <RootNamespace>SocketServer4Test</RootNamespace>
+    <AssemblyName>SocketServer4Test</AssemblyName>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
@@ -22,8 +22,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>
-    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -48,17 +46,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ClientForm.cs">
+    <Compile Include="Global\GlobalDelegate.cs" />
+    <Compile Include="Faculty\ServerModel.cs" />
+    <Compile Include="Faculty\User\UserListModel.cs" />
+    <Compile Include="Faculty\User\UserDataModel.cs" />
+    <Compile Include="ServerForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ClientForm.Designer.cs">
-      <DependentUpon>ClientForm.cs</DependentUpon>
+    <Compile Include="ServerForm.Designer.cs">
+      <DependentUpon>ServerForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="GlobalStatic.cs" />
+    <Compile Include="Global\GlobalStatic.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="ClientForm.resx">
-      <DependentUpon>ClientForm.cs</DependentUpon>
+    <EmbeddedResource Include="ServerForm.resx">
+      <DependentUpon>ServerForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -84,12 +86,12 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ChatGlobal\ChatGlobal.csproj">
-      <Project>{c9d9c138-9d6d-4009-8ab2-abb79cccfc3d}</Project>
+      <Project>{b4709563-680e-4564-80aa-b2e8b83cc59f}</Project>
       <Name>ChatGlobal</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DGSocketAssist1_Client\DGSocketAssist1_Client.csproj">
-      <Project>{f6ef3442-6fc2-41eb-b783-1281d2812ffb}</Project>
-      <Name>DGSocketAssist1_Client</Name>
+    <ProjectReference Include="..\DG_SocketAssist4.Server\DG_SocketAssist4.Server.csproj">
+      <Project>{66dc723f-3c97-49b1-87e6-2f0a256351eb}</Project>
+      <Name>DG_SocketAssist4.Server</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
