@@ -18,6 +18,7 @@ namespace SocketServer4Test.Faculty.User
     /// 리스너 관리는 ServerSocket에서 하고 있으므로 여기서는 
     /// 이 프로젝트에서 사용하는 유저(클라이언트)를 정의한다.
     /// <para>UserDataModel관련 처리는 웬만하면 외부에서 하지 말고 여기에 위임하도록 구현하는 것이 좋다.</para>
+    /// <para>접속/끊김은 ServerModel에서 하고 여기는 ServerModel에서 호출할 수 있도록 구현한다.</para>
     /// </remarks>
 	public class UserListModel
     {
@@ -34,24 +35,6 @@ namespace SocketServer4Test.Faculty.User
             if (null != this.OnLog)
             {
                 this.OnLog(nLogType, sMessage);
-            }
-        }
-
-
-        /// <summary>
-        /// 유저 준비 이벤트
-        /// <para>유저가 접속되기만 한 상태로 아직 서버의 허가가 나지 않은 상태이다.<br />
-        /// </para>
-        /// </summary>
-        public event UserReadyDelegate OnUserReady;
-        /// <summary>
-        /// 유저 준비가 완료되었음을 외부에 알림
-        /// </summary>
-        private void UserReadyCall(UserDataModel sender)
-        {
-            if (null != OnUserReady)
-            {
-                this.OnUserReady(sender);
             }
         }
 
@@ -89,32 +72,32 @@ namespace SocketServer4Test.Faculty.User
             this.UserList = new List<UserDataModel>();
         }
 
-        #region 접속자 임시 리스트(로그인 전) 관련
+        #region 접속자 임시 리스트(사인인 전) 관련
         /// <summary>
-        /// 접속자 임시 리스트(로그인 전)
+        /// 접속자 임시 리스트(사인인 전)
         /// </summary>
+        /// <remarks>
+        /// 사인인 전과 후로 나누어 리스트를 가지고 있는 이유는 유저 리스트를 좀더 효율 적으로 검색하기 위함이다.
+        /// </remarks>
         private List<UserDataModel> UserList_Temp = null;
         /// <summary>
         /// 접속자 개체를 만들어 임시 리스트에 추가하고 로그인 작업을 시작한다.
         /// </summary>
         /// <param name="sender"></param>
-        public void UserCheckStart(ClientListener sender)
+        public void UserCheckStart(ClientModel sender)
         {
             if (null != sender)
             {
                 UserDataModel newUser = new UserDataModel(sender);
                 newUser.OnLog += NewUser_OnLog;
 
-                newUser.OnUserReady += NewUser_OnUserReady;
                 newUser.OnSendMessage += NewUser_OnSendMessage;
-                newUser.OnLoginComplet += NewUser_OnLoginComplet;
-                newUser.OnDisconnectCompleted += NewUser_OnDisconnectCompleted;
 
                 //임시 리스트에 추가
                 this.UserList_Temp.Add(newUser);
 
                 //아이디 체크 준비가 끝났음을 알림
-                newUser.SendMsg_User(ChatCommandType.ID_Check_Ready, "");
+                newUser.SendMsg_User(ChatCommandType.Client_Ready, "");
             }
         }
 
@@ -138,7 +121,7 @@ namespace SocketServer4Test.Faculty.User
             //임시 리스트에서 제거한다.
             this.UserList_Temp.Remove(sender);
 
-            this.OnLogCall(0, "접속 허가 완료 : " + sender.UserId);
+            this.OnLogCall(0, "접속 허가 완료 : " + sender.UserName);
         }
 
         public void UserCheckFail(UserDataModel sender)
@@ -169,7 +152,7 @@ namespace SocketServer4Test.Faculty.User
         { 
             get 
             {
-                return this.UserList.Select(s => s.UserId).ToArray();
+                return this.UserList.Select(s => s.UserName).ToArray();
             } 
         }
 
@@ -178,12 +161,12 @@ namespace SocketServer4Test.Faculty.User
         /// 리스너로 유저를 찾아 리스트에서 제거한다.
         /// </summary>
         /// <param name="sender"></param>
-        public void UserList_Remove(ClientListener sender)
+        public void UserList_Remove(ClientModel sender)
         {
             if (null != sender)
             {
                 //같은 리스너를 가진 유저를 찾는다.
-                UserDataModel findUser = FindUser(sender);
+                UserDataModel findUser = this.FindUser(sender);
                 if (null != findUser)
                 {//유저를 찾았다
                  //리스트에서 지운다.
@@ -210,12 +193,12 @@ namespace SocketServer4Test.Faculty.User
         /// </summary>
         /// <param name="sender"></param>
         /// <returns></returns>
-        public UserDataModel FindUser(ClientListener sender)
+        public UserDataModel FindUser(ClientModel sender)
         {
             //같은 리스너를 가진 유저를 찾는다.
             UserDataModel findUser
                 = this.UserList
-                    .Where(w => w.ClientListenerMe == sender)
+                    .Where(w => w.ClientMe == sender)
                     .FirstOrDefault();
 
             return findUser;
@@ -231,7 +214,7 @@ namespace SocketServer4Test.Faculty.User
             //같은 리스너를 가진 유저를 찾는다.
             UserDataModel findUser
                 = this.UserList
-                    .Where(w => w.UserId == sId)
+                    .Where(w => w.UserName == sId)
                     .FirstOrDefault();
 
             return findUser;
@@ -242,16 +225,6 @@ namespace SocketServer4Test.Faculty.User
 
         #region 유저 이벤트 콜백 처리 관련
 
-        /// <summary>
-        /// 유저 개체가 준비됨
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <exception cref="NotImplementedException"></exception>
-        private void NewUser_OnUserReady(UserDataModel sender)
-        {
-            //유저 개체가 준비되었을때 필요한 동작을 여기서 함.
-            this.UserReadyCall(sender);
-        }
 
         /// <summary>
         /// 유저가 서버에 알리는 메시지 이벤트
@@ -295,39 +268,6 @@ namespace SocketServer4Test.Faculty.User
 
             ////로그 남기기
             //DisplayLog(string.Format("*** 접속자 : {0} ***", sender.UserId));
-        }
-
-        /// <summary>
-        /// 유저의 끊김 처리가 시작되었다.
-        /// </summary>
-        /// <param name="sender"></param>
-        private void NewUser_OnDisconnectCompleted(UserDataModel sender)
-        {
-            //로그 유저 리스트에서 제거
-            //this.Invoke(new Action(
-            //    delegate ()
-            //    {
-            //        if (null != sender.UserId)
-            //        {
-            //            listUser.Items.RemoveAt(listUser.FindString(sender.UserId));
-            //        }
-            //    }));
-
-            //if (null != sender.UserId)
-            //{
-            //    //다른 유저들에게 이 유저가 끊겼음을 알린다.
-            //    string sCmdMsg
-            //        = GlobalStatic.ChatCmd
-            //            .ChatCommandString(
-            //                ChatCommandType.User_Disonnect
-            //                , sender.UserId);
-            //    this.AllUser_Send(sCmdMsg, sender);
-            //}
-
-            
-
-            ////클라이언트의 접속 끊김 처리가 시작되면 리스트에서 제거한다.
-            //this.UserList_Remove(sender);
         }
         #endregion
 

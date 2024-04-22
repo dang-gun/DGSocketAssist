@@ -10,11 +10,18 @@ using System.Threading.Tasks;
 
 namespace DG_SocketAssist4.Server
 {
-	/// <summary>
-	/// 연결된 클라이언트
-	/// <para>서버입장에서 접속된 클라이언트 1개</para>
-	/// </summary>
-	public class ClientListener
+    /// <summary>
+    /// 연결된 클라이언트
+    /// <para>직접적인 서버 연결과 관련된 처리만 한다.</para>
+	/// <para>ClientModel와 1:1 매칭된다.</para>
+    /// </summary>
+	/// <remarks>
+	/// ClientListener를 외부에 노출시키기 않기 위해 ClientModel를 사용해야 한다.
+	/// <para>
+	/// 내부에서는 ClientListener를 사용하고 외부에서는 ClientModel를 사용한 것이 컨샙이다.
+	/// </para>
+	/// </remarks>
+    internal class ClientListener
 	{
         #region 외부로 알릴 이벤트
         /// <summary>
@@ -39,29 +46,6 @@ namespace DG_SocketAssist4.Server
                 this.OnLog(nLogType, sMessage);
             }
         }
-
-        /// <summary>
-        /// 접속 완료 대리자
-        /// </summary>
-        /// <param name="sender"></param>
-        public delegate void ConnectCompleteDelegate(ClientListener sender);
-        /// <summary>
-        /// 접속 완료되면 발생함
-        /// <para>정상적인 접속인지 확인이 끝나면 발생함<br />
-        /// 무결성 검사는 m_ValidationFunc를 통해 할 수 있다.
-        /// </para>
-        /// </summary>
-        public event ConnectCompleteDelegate OnConnectComplete;
-		/// <summary>
-		/// 무결성 검사 완료되었음을 외부에 알린다.
-		/// </summary>
-		private void OnConnectCompleteCall()
-		{
-			if (null != OnConnectComplete)
-			{
-				this.OnConnectComplete(this);
-			}
-		}
 
 		/// <summary>
 		/// 클라이언트 끊김 처리가 시작되었음을 알린다.
@@ -141,24 +125,11 @@ namespace DG_SocketAssist4.Server
 		/// </summary>
 		private SocketAsyncEventArgs m_saeaReceive = null;
 
-		#region 클라이언트 유효성(validation) 검사용 함수 정의
-		/// <summary>
-		/// 유효성 검사에 사용할 함수를 전달하기위한 대리자.
-		/// </summary>
-		/// <param name="sender">검사를 요청한 클라이언트</param>
-		/// <returns></returns>
-		public delegate bool ValidationDelegate(ClientListener sender);
-		/// <summary>
-		/// 유효성 검사에 사용할 함수
-		/// </summary>
-		private ValidationDelegate m_ValidationFunc = null;
-		#endregion
-
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="socketMe">전달받은 Socket</param>
-		public ClientListener(Socket socketMe)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="socketMe">전달받은 Socket</param>
+        internal ClientListener(Socket socketMe)
 		{
 			//소캣을 저장한다.
 			this.SocketMe = socketMe;
@@ -175,16 +146,17 @@ namespace DG_SocketAssist4.Server
 			this.m_saeaReceive.Completed += SaeaReceive_Completed;
 
 
-			//여기서 바로 Listening을 시작하면 이벤트가 연결되기 전에 동작이 진행될수 있다.
-		}
+            //여기서 바로 Listening을 시작하면 이벤트가 연결되기 전에 동작이 진행될수 있다.
+            //외부에서 원하는 타이밍에 FirstListening를 호출해야 한다.
+        }
 
-		/// <summary>
-		/// 연결된 클라이언트에서 전송한 첫 데이터를 읽기위해 대기한다.
-		/// </summary>
-		/// <remarks>
-		/// 모든 이벤트 연결이 끝난 후 호출하는 것이 좋다.
-		/// </remarks>
-		public void FirstListening()
+        /// <summary>
+        /// 연결된 클라이언트에서 전송한 첫 데이터를 읽기위해 대기한다.
+        /// </summary>
+        /// <remarks>
+        /// 모든 이벤트 연결이 끝난 후 호출하는 것이 좋다.
+        /// </remarks>
+        public void FirstListening()
 		{
 			//데이터 구조 생성
 			MessageData MsgData = new MessageData();
@@ -194,21 +166,6 @@ namespace DG_SocketAssist4.Server
 			this.OnLogCall(0, "첫 데이터 받기 준비");
             //첫 데이터 받기 시작
             this.SocketMe.ReceiveAsync(this.m_saeaReceive);
-
-
-			if (null != m_ValidationFunc)
-			{//유효성 검사용 함수가 있다.
-				if (false == m_ValidationFunc(this))
-				{//유효성 검사 실패
-					//접속을 끊는다.
-					this.Disconnect(true);
-					return;
-				}
-			}
-			//유효성 검사 함수가 없다면 검사를 하지 않는다.
-
-			//외부에 접속허가를 알림
-			this.OnConnectCompleteCall();
 		}
 
 		/// <summary>

@@ -32,27 +32,6 @@ namespace SocketServer4Test.Faculty.User
 
 
         /// <summary>
-        /// 유저 준비
-        /// </summary>
-        /// <param name="sender"></param>
-        public delegate void UserReadyDelegate(UserDataModel sender);
-        /// <summary>
-        /// 유저 준비 이벤트
-        /// <para>유저가 접속되기만 한 상태로 아직 서버의 허가가 나지 않은 상태이다.<br />
-        /// </summary>
-        public event UserReadyDelegate OnUserReady;
-        /// <summary>
-        /// 유저 준비가 완료되었음을 외부에 알림
-        /// </summary>
-        private void UserReadyCall()
-        {
-            if (null != OnUserReady)
-            {
-                this.OnUserReady(this);
-            }
-        }
-
-        /// <summary>
         /// 서버로 메시지를 보내는 대리자
         /// </summary>
         /// <param name="sender"></param>
@@ -74,76 +53,56 @@ namespace SocketServer4Test.Faculty.User
             }
         }
 
-        /// <summary>
-        /// 유저 로그인 완료
-        /// </summary>
-        /// <param name="sender"></param>
-        public delegate void LoginCompletDelegate(UserDataModel sender);
-        /// <summary>
-        /// 유저 로그인 완료되면 발생함
-        /// </summary>
-        public event LoginCompletDelegate OnLoginComplet;
-
-        /// <summary>
-        /// 클라이언트 끊김 처리 완료
-        /// </summary>
-        /// <param name="sender"></param>
-        public delegate void DisconnectCompletedDelegate(UserDataModel sender);
-        /// <summary>
-        /// 클라이언트가 끊김처리가 완료 되었다.
-        /// </summary>
-        public event DisconnectCompletedDelegate OnDisconnectCompleted;
-        /// <summary>
-        /// 클라이언트 끊김 처리 완료되었음을 외부에 알림
-        /// </summary>
-        private void DisconnectCompletedCall()
-        {
-            if (null != OnDisconnectCompleted)
-            {
-                this.OnDisconnectCompleted(this);
-            }
-        }
         #endregion
 
 
         /// <summary>
         /// 이 유저의 클라이언트 리스너 개체
         /// </summary>
-        public ClientListener ClientListenerMe { get; private set; }
+        public ClientModel ClientMe { get; private set; }
 
         /// <summary>
         /// 이 유저의 구분용 ID
         /// </summary>
-        public string UserId { get; set; }
+        public string UserName { get; set; }
 
 
         /// <summary>
         /// 유저 객체를 생성합니다.
         /// </summary>
         /// <param name="newClientListener">접속된 클라이언트의 리스너 개체</param>
-        public UserDataModel(ClientListener newClientListener)
+        public UserDataModel(ClientModel newClientListener)
         {
-            //소켓 저장
-            this.ClientListenerMe = newClientListener;
-
-            this.ClientListenerMe.OnValidationComplete
+            //리스너 저장
+            this.ClientMe = newClientListener;
+            //로그
+            this.ClientMe.OnLog += ClientListenerMe_OnLog;
 
 
             //메시지 분석 연결
-            this.ClientListenerMe.OnMessaged += ClientListenerMe_OnMessaged;
-            //끊김 이벤트 연결
-            this.ClientListenerMe.OnDisconnectCompleted += ClientListenerMe_OnDisconnectCompleted;
-
-            //유저 준비를 알림
-            this.UserReadyCall();
+            this.ClientMe.OnMessaged += ClientListenerMe_OnMessaged;
         }
 
-        private void ClientListenerMe_OnDisconnectCompleted(ClientListener sender)
+        
+        /// <summary>
+        /// 로그 전달 요청
+        /// </summary>
+        /// <param name="nLogType"></param>
+        /// <param name="sMessage"></param>
+        private void ClientListenerMe_OnLog(int nLogType, string sMessage)
         {
-            DisconnectCompletedCall();
+            this.OnLogCall(nLogType
+                , string.Format("[ClientListener:{0}] {1}"
+                                , nLogType
+                                , sMessage));
         }
 
-        private void ClientListenerMe_OnMessaged(ClientListener sender, string message)
+        /// <summary>
+        /// 메시지 수신
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="message"></param>
+        private void ClientListenerMe_OnMessaged(ClientModel sender, string message)
         {
             //구분자로 명령을 구분 한다.
             string[] sData = GlobalStatic.ChatCmd.ChatCommandCut(message);
@@ -163,18 +122,15 @@ namespace SocketServer4Test.Faculty.User
                     case ChatCommandType.None:   //없다
                         break;
                     case ChatCommandType.Msg:    //메시지인 경우
-                        SendMeg_Main(sData[1], typeCommand);
+                        this.SendMeg_Main(typeCommand, sData[1]);
                         break;
-                    case ChatCommandType.ID_Check:   //아이디 체크
-                        SendMeg_Main(sData[1], typeCommand);
+
+                    case ChatCommandType.SignIn:   //아이디 체크
+                        this.SendMeg_Main(typeCommand, sData[1]);
                         break;
 
                     case ChatCommandType.User_List_Get:  //유저리스트 갱신 요청
-                        SendMeg_Main("", typeCommand);
-                        break;
-
-                    case ChatCommandType.Login:  //로그인 완료
-                        OnLoginComplet(this);
+                        this.SendMeg_Main(typeCommand, "");
                         break;
                 }
             }
@@ -186,7 +142,7 @@ namespace SocketServer4Test.Faculty.User
         /// </summary>
         /// <param name="sMag"></param>
         /// <param name="typeCommand"></param>
-        private void SendMeg_Main(string sMag, ChatCommandType typeCommand)
+        private void SendMeg_Main(ChatCommandType typeCommand, string sMag)
         {
             MessageEventArgs e = new MessageEventArgs(sMag, typeCommand);
 
@@ -204,7 +160,7 @@ namespace SocketServer4Test.Faculty.User
                 = GlobalStatic.ChatCmd.ChatCommandString(
                     typeChatCommand
                     , sMsg);
-            this.ClientListenerMe.Send(sToss);
+            this.ClientMe.Send(sToss);
         }
 
         /// <summary>
@@ -213,7 +169,7 @@ namespace SocketServer4Test.Faculty.User
         /// <param name="sMsg"></param>
         public void SendMsg_User(string sMsg)
         {
-            this.ClientListenerMe.Send(sMsg);
+            this.ClientMe.Send(sMsg);
         }
 
         /// <summary>
@@ -221,7 +177,7 @@ namespace SocketServer4Test.Faculty.User
         /// </summary>
         public void Disconnect()
         {
-            this.ClientListenerMe.Disconnect(true);
+            this.ClientMe.Disconnect();
         }
     }
 }

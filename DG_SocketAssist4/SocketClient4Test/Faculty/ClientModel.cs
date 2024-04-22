@@ -140,19 +140,21 @@ namespace SocketClient4Test.Faculty
                     case ChatCommandType.Msg://메시지인 경우
                         this.Commd_ReceiveMsg(sData[1]);
                         break;
-                    case ChatCommandType.ID_Check_Ready:
+
+                    case ChatCommandType.Client_Ready:
                         //로그인 시작
-                        this.SendMsg(ChatCommandType.ID_Check, this.Id);
+                        this.SendMsg(ChatCommandType.SignIn, this.Id);
                         break;
-                    case ChatCommandType.ID_Check_Ok:
-                        this.Log("로그인 성공 : " + this.Id);
+                    case ChatCommandType.SignIn_Ok:
+                        this.Log("사인인 성공 : " + this.Id);
                         GlobalStatic.MainForm.UI_Setting(ClientForm.typeState.Connect);
                         this.UserList_Add(this.Id);
                         break;
-                    case ChatCommandType.ID_Check_Fail:
-                        this.Log("로그인 실패 : " + this.Id);
+                    case ChatCommandType.SignIn_Fail:
+                        this.Log("사인인 실패 : " + this.Id);
                         GlobalStatic.MainForm.UI_Setting(ClientForm.typeState.None);
                         break;
+
                     //case ChatCommandType.User_Connect:   //다른 유저가 접속 했다.
                     //    SendMeg_User_Connect(sData[1]);
                     //    break;

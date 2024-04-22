@@ -17,23 +17,30 @@ namespace ChatGlobal
 		None = 0,
 
         /// <summary>
-        /// 아이디 체크 준비(S->C)
-        /// <para>아이디를 체크할 준비가 끝났음을 클라이언트에게 알린다.<br />
-        /// 클라이언트는 이후 ID_Check명령에 아이디를 넣어 전달한다.</para>
+        /// [S->C] 클라이언트가 정상적으로 접속되어 다음 메시지를 춘비하고 있는 상태
         /// </summary>
-        ID_Check_Ready,
+        Client_Ready,
+
+
         /// <summary>
-        /// 아이디 체크 요청(C->S)
+        /// [C->S] 서버에게 사인을 요청한다.
+		/// <para>사인인용 데이터를 같이 보내야함</para>
         /// </summary>
-        ID_Check,
+        SignIn,
         /// <summary>
-        /// 아이디 체크 성공(S->C)
+        /// [S->C] 사인인이 성공하여 서버에서 사인인 과정이 완료됨
         /// </summary>
-        ID_Check_Ok,
+        SignIn_Ok,
         /// <summary>
-        /// 아이디 체크 실패(S->C)
+        /// [S->C] 사인인이 실패하여 서버에서 끊김 처리가 진행중
         /// </summary>
-        ID_Check_Fail,
+        SignIn_Fail,
+
+        /// <summary>
+        /// [C->S] 사인 아웃 요청
+        /// </summary>
+        Signout,
+
 
 		/// <summary>
 		/// 접속한 유저가 있다.
@@ -52,18 +59,7 @@ namespace ChatGlobal
 		/// </summary>
 		User_List_Get,
 
-		/// <summary>
-		/// 아이디 무셜성이 확인 된후 호출함
-		/// </summary>
-		Login,
-		/// <summary>
-		/// 서버에서 모든 로그인 과정이 완료 되었다고 클라이언트에게 알림
-		/// </summary>
-		Login_Complete,
-		/// <summary>
-		/// 로그아웃
-		/// </summary>
-		Logout,
+		
 
 		/// <summary>
 		/// 메시지 전송

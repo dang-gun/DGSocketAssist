@@ -15,6 +15,9 @@ namespace DG_SocketAssist4.Server
 	/// <summary>
 	/// 클라이언트의 접속을 기다리는 서버
 	/// </summary>
+	/// <remarks>
+	/// 클라이언트의 접속과 끊김은 여기서만 처리한다.
+	/// </remarks>
 	public class ServerSocket
 	{
         #region 서버 이벤트
@@ -77,16 +80,17 @@ namespace DG_SocketAssist4.Server
 		/// 클라이언트 접속
 		/// </summary>
 		/// <param name="sender"></param>
-		public delegate void OnConnectedDelegate(ClientListener sender);
-		/// <summary>
-		/// 클라이언트 접속함.
-		/// </summary>
-		public event OnConnectedDelegate OnConnected;
+		public delegate void OnConnectedDelegate(ClientModel sender);
+        /// <summary>
+        /// 클라이언트 접속함.
+        /// <para>무결성 검사가 아직 진행되지 않은 접속.</para>
+        /// </summary>
+        public event OnConnectedDelegate OnConnected;
 		/// <summary>
 		/// 클라이언트 접속을 외부에 알림
 		/// </summary>
 		/// <param name="sender"></param>
-		public void ConnectedCall(ClientListener sender)
+		public void ConnectedCall(ClientModel sender)
 		{
 			if (null != this.OnConnected)
 			{
@@ -94,43 +98,21 @@ namespace DG_SocketAssist4.Server
 			}
 		}
 
-		/// <summary>
-		/// 무결성 검사 완료
-		/// </summary>
-		/// <param name="sender"></param>
-		public delegate void ValidationCompleteDelegate(ClientListener sender);
-		/// <summary>
-		/// 무결성 검사가 끝남.
-		/// 로그인 처리와 같은 무결성 검사가 끝나서 서버에 진입한(혹은 가능한)
-		/// 상태가 되면 발생한다.
-		/// </summary>
-		public event ValidationCompleteDelegate OnValidationComplete;
-		/// <summary>
-		/// 무결성 검사 끝남을 외부에 알림
-		/// </summary>
-		/// <param name="sender"></param>
-		public void ValidationCompleteCall(ClientListener sender)
-		{
-			if (null != this.OnValidationComplete)
-			{
-				this.OnValidationComplete(sender);
-			}
-		}
 
 		/// <summary>
 		/// 클라이언트가 끊김 처리가 시작됨
 		/// </summary>
 		/// <param name="sender"></param>
-		public delegate void DisconnectDelegate(ClientListener sender);
+		public delegate void DisconnectDelegate(ClientModel sender);
 		/// <summary>
 		/// 클라이언트가 끊김 처리가 시작되었다.
 		/// </summary>
 		public event DisconnectDelegate OnDisconnect;
-		/// <summary>
-		/// 클라이언트가 끊김 처리가 시작되었음을 외부에 알림
-		/// </summary>
-		/// <param name="sender"></param>
-		public void DisconnectCall(ClientListener sender)
+        /// <summary>
+        /// 클라이언트가 끊김 처리가 시작되었음을 외부에 알림
+        /// </summary>
+        /// <param name="sender"></param>
+        private void OnDisconnectCall(ClientModel sender)
 		{
 			if (null != this.OnDisconnect)
 			{
@@ -142,7 +124,7 @@ namespace DG_SocketAssist4.Server
 		/// 클라이언트 끊김 처리 완료
 		/// </summary>
 		/// <param name="sender"></param>
-		public delegate void DisconnectCompletedDelegate(ClientListener sender);
+		public delegate void DisconnectCompletedDelegate(ClientModel sender);
 		/// <summary>
 		/// 클라이언트가 끊김처리가 완료 되었다.
 		/// </summary>
@@ -150,43 +132,55 @@ namespace DG_SocketAssist4.Server
 		/// <summary>
 		/// 클라이언트 끊김 처리 완료되었음을 외부에 알림
 		/// </summary>
-		private void DisconnectCompletedCall(ClientListener sender)
+		private void OnDisconnectCompletedCall(ClientModel sender)
 		{
 			if (null != OnDisconnectCompleted)
 			{
 				this.OnDisconnectCompleted(sender);
 			}
 		}
+        #endregion
 
-		/// <summary>
-		/// 메시지가 수신
-		/// </summary>
-		/// <param name="sender"></param>
-		public delegate void MessagedDelegate(ClientListener sender, string message);
-		/// <summary>
-		/// 메시지가 수신됨
-		/// </summary>
-		public event MessagedDelegate OnMessaged;
-		/// <summary>
-		/// 메시지 수신을 외부에 알림
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="message"></param>
-		public void MessagedCall(
-			ClientListener sender
-			, string message)
+
+        #region 클라이언트 유효성(validation) 검사용 함수 정의
+        /// <summary>
+        /// 접속된 클라이언트의 유효성(블랙리스트에 있는지 등등)을 검사하는 함수 대리자
+        /// </summary>
+        /// <param name="e">접속된 클라이언트의 소켓 이벤트 개체</param>
+        /// <returns></returns>
+        public delegate bool ClientConnectCheckDelegate(SocketAsyncEventArgs e);
+        /// <summary>
+        /// 유효성 검사에 사용할 함수
+        /// </summary>
+        public ClientConnectCheckDelegate ClientConnectCheckFunc = null;
+        /// <summary>
+        /// 유효성 검사를 한다.
+        /// </summary>
+        /// <param name="e"></param>
+        /// <returns></returns>
+        private bool ClientConnectCheckCall(SocketAsyncEventArgs e)
 		{
-			if (null != this.OnMessaged)
-			{
-				this.OnMessaged(sender, message);
-			}
-		}
-		#endregion
+			bool bReturn = false;
 
-		/// <summary>
-		/// 접속한 클라이언트 리스트
-		/// </summary>
-		public List<ClientListener> ClientList = new List<ClientListener>();
+			if(null == this.ClientConnectCheckFunc)
+			{//검사 함수가 없다.
+
+				//무조건 통과
+				bReturn = true;
+            }
+			else
+			{
+                bReturn = this.ClientConnectCheckFunc(e);
+            }
+
+			return bReturn;
+		}
+        #endregion
+
+        /// <summary>
+        /// 접속한 클라이언트 리스트
+        /// </summary>
+        public List<ClientModel> ClientList { get; private set; }
 
 		/// <summary>
 		/// 서버 소켓
@@ -199,6 +193,8 @@ namespace DG_SocketAssist4.Server
 		/// <param name="nPort">사용할 포트</param>
 		public ServerSocket(int nPort)
 		{
+			this.ClientList = new List<ClientModel>();
+
             //서버 세팅
             this.socketServer 
 				= new Socket(AddressFamily.InterNetwork
@@ -268,26 +264,29 @@ namespace DG_SocketAssist4.Server
 				string.Format("클라이언트 접속됨 : {0}"
 							, ((IPEndPoint)e.AcceptSocket.RemoteEndPoint).ToString()));
 
-            //유저 객체를 만든다.
-            ClientListener newUser = new ClientListener(e.AcceptSocket);
-            //각 이벤트 연결
-            newUser.OnLog += NewUser_OnLog;
+			if(true == this.ClientConnectCheckCall(e))
+			{//성공
 
+                //클라이언트 리스너 개체를 만든다.
+                //여기서 하는 클라이언트 리스너의 처리는 접속과 끊김 뿐임으로
+                //다른 기능은 외부에서 연결하여 사용해야 한다.
+                ClientListener newUser = new ClientListener(e.AcceptSocket);
 
-            newUser.OnConnectComplete += NewUser_OnValidationComplete;
-			newUser.OnDisconnect += NewUser_OnDisconnect;
-			newUser.OnDisconnectCompleted += NewUser_OnDisconnectCompleted;
-			newUser.OnMessaged += NewUser_OnMessaged;
+				//클라이언트 모델을 생성한다
+				ClientModel newCM = new ClientModel(newUser);
+                newCM.OnDisconnect += NewCM_OnDisconnect;
+                newCM.OnDisconnectCompleted += NewCM_OnDisconnectCompleted;
 
-			//리스트에 클라이언트 추가
-			this.ClientList.Add(newUser);
-			//클라이언트 접속을 알림.
-			this.ConnectedCall(newUser);
+                //리스트에 클라이언트 추가
+                this.ClientList.Add(newCM);
+                //클라이언트 접속을 알림.
+                this.ConnectedCall(newCM);
 
-			//클라이언트의 데이터 전송을 대기한다.
-			newUser.FirstListening();
+				//첫 메시지 대기
+				newCM.FirstListening();
+            }
 
-
+            
 			//다시 클라이언트 접속 대기 시작
             this.OnLogCall(0, "다음 클라이언트 접속 대기");
 
@@ -299,56 +298,27 @@ namespace DG_SocketAssist4.Server
 		}
 
 
-
-        private void NewUser_OnLog(int nLogType, string sMessage)
-        {
-            this.OnLogCall(nLogType
-                , string.Format("[ClientListener:{0}] {1}"
-								, nLogType
-								, sMessage));
-        }
-
         /// <summary>
-        /// 로그인 처리와 같은 무결성 검사가 끝났다.
+        /// 클라이언트가 끊김 처리가 시작되었다.
         /// </summary>
         /// <param name="sender"></param>
-        private void NewUser_OnValidationComplete(ClientListener sender)
-		{
-			//무결성 검사 끝남을 알림
-			this.ValidationCompleteCall(sender);
-		}
+        private void NewCM_OnDisconnect(ClientModel sender)
+        {
+            this.OnDisconnectCall(sender);
+        }
+        /// <summary>
+        /// 클라이언트 끊김 처리가 완료됨
+        /// </summary>
+        /// <param name="sender"></param>
+        private void NewCM_OnDisconnectCompleted(ClientModel sender)
+        {
+            //연결이 끊긴 클라이언트를 제거한다.
+            this.ClientList.Remove(sender);
+            sender = null;
 
-		/// <summary>
-		/// 클라이언트가 끊김 처리가 시작되었다.
-		/// </summary>
-		/// <param name="sender"></param>
-		private void NewUser_OnDisconnect(ClientListener sender)
-		{
-			this.DisconnectCall(sender);
-		}
-		/// <summary>
-		/// 클라이언트 끊김 처리가 완료됨
-		/// </summary>
-		/// <param name="sender"></param>
-		private void NewUser_OnDisconnectCompleted(ClientListener sender)
-		{
-			//연결이 끊긴 클라이언트를 제거한다.
-			this.ClientList.Remove(sender);
-			sender = null;
+            this.OnDisconnectCompletedCall(sender);
+        }
 
-			this.DisconnectCompletedCall(sender);
-		}
-
-		/// <summary>
-		/// 메시지 수신
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="message"></param>
-		/// <exception cref="NotImplementedException"></exception>
-		private void NewUser_OnMessaged(ClientListener sender, string message)
-		{
-			this.MessagedCall(sender, message);
-		}
 
 		/// <summary>
 		/// 서버를 정지 시킨다.
@@ -370,12 +340,12 @@ namespace DG_SocketAssist4.Server
         }
 
 		/// <summary>
-		/// w전체 유저에게 메시지를 전달한다.
+		/// 전체 유저에게 메시지를 전달한다.
 		/// </summary>
 		/// <param name="sMsg"></param>
 		public void AllMessage(string sMsg)
 		{
-			foreach (ClientListener itemCL in this.ClientList)
+			foreach (ClientModel itemCL in this.ClientList)
 			{
 				itemCL.Send(sMsg);
 			}//end foreach itemCL

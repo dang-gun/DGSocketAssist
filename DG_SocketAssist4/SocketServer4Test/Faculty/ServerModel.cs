@@ -31,17 +31,21 @@ namespace SocketServer4Test.Faculty
             //서버 개체 생성
             this.Server = new ServerSocket(nPort);
             this.Server.OnLog += this.Server_OnLog;
-            this.Server.OnConnected += Server_OnConnected;
+            this.Server.OnConnected += this.Server_OnConnected;
+            this.Server.OnDisconnect += Server_OnDisconnect;
+            this.Server.OnDisconnectCompleted += Server_OnDisconnectCompleted;
+
 
             this.UserList = new UserListModel();
             this.UserList.OnLog += UserList_OnLog;
 
-            this.UserList.OnUserReady += UserList_OnUserReady;
             this.UserList.OnMessaged += UserList_OnMessaged;
+
 
             this.Server.Start();
         }
 
+        
         /// <summary>
         /// 서버 종료
         /// </summary>
@@ -51,7 +55,7 @@ namespace SocketServer4Test.Faculty
         }
 
 
-        #region 유저 리스트 이벤트
+        #region 서버 소켓 이벤트
 
         /// <summary>
         /// 서버에서 절달된 로그
@@ -71,16 +75,30 @@ namespace SocketServer4Test.Faculty
         /// </summary>
         /// <param name="sender"></param>
         /// <exception cref="System.NotImplementedException"></exception>
-        private void Server_OnConnected(ClientListener sender)
+        private void Server_OnConnected(ClientModel sender)
         {
             //유저 체크 시작
             this.UserList.UserCheckStart(sender);
         }
 
-        private void Server_OnMessaged(ClientListener sender, string message)
+        /// <summary>
+        /// 클라이언트 접속끊김이 감지되어 끊김 작업이 시작됨
+        /// </summary>
+        /// <param name="sender"></param>
+        private void Server_OnDisconnectCompleted(ClientModel sender)
         {
-            throw new System.NotImplementedException();
+            
         }
+        /// <summary>
+        /// 클라이언트 끊김 작업이 완료됨
+        /// </summary>
+        /// <param name="sender"></param>
+        private void Server_OnDisconnect(ClientModel sender)
+        {
+            //리스트에서 제거
+            this.UserList.UserList_Remove(sender);
+        }
+
         #endregion
 
 
@@ -94,10 +112,6 @@ namespace SocketServer4Test.Faculty
         }
 
 
-        private void UserList_OnUserReady(UserDataModel sender)
-        {
-            
-        }
 
         private void UserList_OnMessaged(
             UserDataModel sender
@@ -111,7 +125,7 @@ namespace SocketServer4Test.Faculty
                     this.Commd_ReceiveMsg(sender, e.m_strMsg);
                     break;
 
-                case ChatCommandType.ID_Check:   //id체크
+                case ChatCommandType.SignIn:   //id체크
                     this.Commd_IDCheck(sender, e.m_strMsg);
                     break;
                 case ChatCommandType.User_List_Get:  //유저 리스트 갱신 요청
@@ -143,20 +157,20 @@ namespace SocketServer4Test.Faculty
             {//사용 가능
 
                 //아이디를 지정하고
-                sender.UserId = sID;
+                sender.UserName = sID;
 
                 //명령어 만들기
                 string sSendData
                     = GlobalStatic.ChatCmd
                         .ChatCommandString(
-                            ChatCommandType.ID_Check_Ok
+                            ChatCommandType.SignIn_Ok
                             , string.Empty);
 
                 sender.SendMsg_User(sSendData);
 
                 //유저 체크 성공
                 this.UserList.UserCheckOk(sender);
-                this.UserList_Add(sender.UserId);
+                this.UserList_Add(sender.UserName);
             }
             else
             {
@@ -164,7 +178,7 @@ namespace SocketServer4Test.Faculty
                 string sSendData
                     = GlobalStatic.ChatCmd
                         .ChatCommandString(
-                            ChatCommandType.ID_Check_Fail
+                            ChatCommandType.SignIn_Fail
                             , string.Empty);
 
                 sender.SendMsg_User(sSendData);
@@ -183,7 +197,7 @@ namespace SocketServer4Test.Faculty
         {
             string sTossMsg
                 = string.Format("{0} : {1}"
-                    , sender.UserId
+                    , sender.UserName
                     , sMsg);
 
             GlobalStatic.MainForm.DisplayMsg(sTossMsg);
