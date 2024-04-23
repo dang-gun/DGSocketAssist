@@ -25,7 +25,7 @@ namespace DG_SocketAssist4.Global
         /// <summary>
         /// 다음 요청이 들어있는 큐
         /// </summary>
-        private Queue<string> Send = new Queue<string>();
+        private Queue<byte[]> Send = new Queue<byte[]>();
 
         /// <summary>
         /// 큐에 남아있는 데이터 수
@@ -42,7 +42,7 @@ namespace DG_SocketAssist4.Global
         /// 큐에 추가할 패턴. 완성된 패턴을 넣는다.
         /// </summary>
         /// <param name="byteSendData"></param>
-        public void Add(string byteSendData)
+        public void Add(byte[] byteSendData)
         {
             if (0 < byteSendData.Length)
             {//데이터가 있다.
@@ -54,9 +54,9 @@ namespace DG_SocketAssist4.Global
         /// 큐의 맨앞에 잇는 데이터를 추출한다. 없으면 byte[0]가 리턴됨
         /// </summary>
         /// <returns></returns>
-        public string Get()
+        public byte[] Get()
         {
-            string byteReturn = string.Empty;
+            byte[] byteReturn = new byte[0];
 
             if (0 < Send.Count)
             {

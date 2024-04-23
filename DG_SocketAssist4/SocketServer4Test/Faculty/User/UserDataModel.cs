@@ -101,11 +101,14 @@ namespace SocketServer4Test.Faculty.User
         /// 메시지 수신
         /// </summary>
         /// <param name="sender"></param>
-        /// <param name="message"></param>
-        private void ClientListenerMe_OnMessaged(ClientModel sender, string message)
+        /// <param name="byteData"></param>
+        private void ClientListenerMe_OnMessaged(ClientModel sender, byte[] byteData)
         {
+            //원본 데이터를 문자열로 바꾼다.
+            string sDataOri = Encoding.UTF8.GetString(byteData);
+
             //구분자로 명령을 구분 한다.
-            string[] sData = GlobalStatic.ChatCmd.ChatCommandCut(message);
+            string[] sData = GlobalStatic.ChatCmd.ChatCommandCut(sDataOri);
 
 
             //데이터 개수 확인
@@ -172,7 +175,11 @@ namespace SocketServer4Test.Faculty.User
             this.OnLogCall(0, string.Format("[UserDataModel.SendMsg_User] 보내기 요청({0}) : {1}"
                                             , this.UserName
                                             , sMsg));
-            this.ClientMe.Send(sMsg);
+
+            //원본 데이터를 문자열로 바꾼다.
+            byte[] byteDataOri = Encoding.UTF8.GetBytes(sMsg);
+
+            this.ClientMe.Send(byteDataOri);
         }
 
         /// <summary>

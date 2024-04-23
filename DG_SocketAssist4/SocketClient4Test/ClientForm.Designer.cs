@@ -44,6 +44,7 @@
             this.tsmiConnectReady = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiConnect = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiSendMessage = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiUserListCall = new System.Windows.Forms.ToolStripMenuItem();
             this.label2 = new System.Windows.Forms.Label();
             this.txtIp = new System.Windows.Forms.TextBox();
             this.listLog = new System.Windows.Forms.ListBox();
@@ -147,7 +148,8 @@
             this.serverToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiConnectReady,
             this.tsmiConnect,
-            this.tsmiSendMessage});
+            this.tsmiSendMessage,
+            this.tsmiUserListCall});
             this.serverToolStripMenuItem.Name = "serverToolStripMenuItem";
             this.serverToolStripMenuItem.Size = new System.Drawing.Size(77, 20);
             this.serverToolStripMenuItem.Text = "Server Test";
@@ -155,20 +157,28 @@
             // tsmiConnectReady
             // 
             this.tsmiConnectReady.Name = "tsmiConnectReady";
-            this.tsmiConnectReady.Size = new System.Drawing.Size(150, 22);
+            this.tsmiConnectReady.Size = new System.Drawing.Size(194, 22);
             this.tsmiConnectReady.Text = "접속 준비";
             // 
             // tsmiConnect
             // 
             this.tsmiConnect.Name = "tsmiConnect";
-            this.tsmiConnect.Size = new System.Drawing.Size(150, 22);
+            this.tsmiConnect.Size = new System.Drawing.Size(194, 22);
             this.tsmiConnect.Text = "접속";
             // 
             // tsmiSendMessage
             // 
             this.tsmiSendMessage.Name = "tsmiSendMessage";
-            this.tsmiSendMessage.Size = new System.Drawing.Size(150, 22);
+            this.tsmiSendMessage.Size = new System.Drawing.Size(194, 22);
             this.tsmiSendMessage.Text = "메시지 보내기";
+            this.tsmiSendMessage.Click += new System.EventHandler(this.tsmiSendMessage_Click);
+            // 
+            // tsmiUserListCall
+            // 
+            this.tsmiUserListCall.Name = "tsmiUserListCall";
+            this.tsmiUserListCall.Size = new System.Drawing.Size(194, 22);
+            this.tsmiUserListCall.Text = "유저 리스트 갱신 요청";
+            this.tsmiUserListCall.Click += new System.EventHandler(this.tsmiUserListCall_Click);
             // 
             // label2
             // 
@@ -246,6 +256,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txtIp;
         private System.Windows.Forms.ListBox listLog;
+        private System.Windows.Forms.ToolStripMenuItem tsmiUserListCall;
     }
 }
 

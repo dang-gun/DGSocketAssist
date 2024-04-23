@@ -260,5 +260,17 @@ namespace SocketClient4Test
                         this.listLog.Items.Add(sb.ToString());
                     }));
         }
+
+        private void tsmiUserListCall_Click(object sender, EventArgs e)
+        {
+            //유저 리스트 갱신 요청
+            GlobalStatic.MainClient
+                .SendMsg(ChatCommandType.User_List_Get, "");
+        }
+
+        private void tsmiSendMessage_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

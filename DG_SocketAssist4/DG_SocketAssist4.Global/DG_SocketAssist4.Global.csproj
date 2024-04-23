@@ -41,9 +41,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BtyeAssist.cs" />
+    <Compile Include="BufferDataModel.cs" />
     <Compile Include="DelegateList.cs" />
-    <Compile Include="MessageData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReceiveBufferTemp.cs" />
     <Compile Include="SendQueue.cs" />
     <Compile Include="SettingData.cs" />
   </ItemGroup>

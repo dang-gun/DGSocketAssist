@@ -46,7 +46,7 @@ namespace DG_SocketAssist4.Server
         /// 메시지 수신
         /// </summary>
         /// <param name="sender"></param>
-        public delegate void MessagedDelegate(ClientModel sender, string message);
+        public delegate void MessagedDelegate(ClientModel sender, byte[] byteData);
         /// <summary>
         /// 메시지가 수신됨
         /// </summary>
@@ -55,14 +55,14 @@ namespace DG_SocketAssist4.Server
         /// 메시지 수신을 외부에 알림
         /// </summary>
         /// <param name="sender"></param>
-        /// <param name="message"></param>
+        /// <param name="byteData"></param>
         public void MessagedCall(
             ClientModel sender
-            , string message)
+            , byte[] byteData)
         {
             if (null != this.OnMessaged)
             {
-                this.OnMessaged(sender, message);
+                this.OnMessaged(sender, byteData);
             }
         }
         #endregion
@@ -122,10 +122,10 @@ namespace DG_SocketAssist4.Server
         /// <summary>
         /// 가지고 있는 클라이언트에게 매시지를 보낸다.
         /// </summary>
-        /// <param name="sMessage"></param>
-        public void Send(string sMessage)
+        /// <param name="byteData"></param>
+        public void Send(byte[] byteData)
         {
-            this.ClientLis.Send(sMessage);
+            this.ClientLis.Send(byteData);
         }
 
         /// <summary>
@@ -191,11 +191,11 @@ namespace DG_SocketAssist4.Server
         /// 메시지 수신
         /// </summary>
         /// <param name="sender"></param>
-        /// <param name="message"></param>
+        /// <param name="byteData"></param>
         /// <exception cref="NotImplementedException"></exception>
-        private void ClientLis_OnMessaged(ClientListener sender, string message)
+        private void ClientLis_OnMessaged(ClientListener sender, byte[] byteData)
         {
-            this.MessagedCall(this, message);
+            this.MessagedCall(this, byteData);
         }
     }
 }

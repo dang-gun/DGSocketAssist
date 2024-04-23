@@ -123,14 +123,17 @@ namespace SocketClient4Test.Faculty
         /// <para>서버로 부터 온 메시지를 해석하여 처리한다.</para>
         /// </summary>
         /// <param name="sender"></param>
-        /// <param name="message"></param>
-        private void Client_OnMessaged(ClientSocket sender, string message)
+        /// <param name="byteData"></param>
+        private void Client_OnMessaged(ClientSocket sender, byte[] byteData)
         {
+            //원본 데이터를 문자열로 바꾼다.
+            string sDataOri = Encoding.UTF8.GetString(byteData);
+
             this.Log(string.Format("[Client_OnMessaged] {0}"
-                                    , message));
+                                    , sDataOri));
 
             //구분자로 명령을 구분 한다.
-            string[] sData = GlobalStatic.ChatCmd.ChatCommandCut(message);
+            string[] sData = GlobalStatic.ChatCmd.ChatCommandCut(sDataOri);
 
             //데이터 개수 확인
             if ((1 <= sData.Length))
@@ -187,13 +190,20 @@ namespace SocketClient4Test.Faculty
             ChatCommandType typeChatCommand
             , string sMessage)
         {
+            
+
             string sToss
                 = GlobalStatic.ChatCmd
                     .ChatCommandString(
                         typeChatCommand
                         , sMessage);
 
-            this.ClientMy.Send(sToss);
+            this.Log($"메시지 보내기 요청 : {sToss}");
+
+            //원본 데이터를 문자열로 바꾼다.
+            byte[] byteDataOri = Encoding.UTF8.GetBytes(sToss);
+
+            this.ClientMy.Send(byteDataOri);
         }
         #endregion
 

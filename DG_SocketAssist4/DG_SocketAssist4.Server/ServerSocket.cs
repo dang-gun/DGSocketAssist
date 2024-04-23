@@ -353,17 +353,5 @@ namespace DG_SocketAssist4.Server
 			this.OnStopCall();
             this.OnLogCall(0, "서버를 종료합니다.");
         }
-
-		/// <summary>
-		/// 전체 유저에게 메시지를 전달한다.
-		/// </summary>
-		/// <param name="sMsg"></param>
-		public void AllMessage(string sMsg)
-		{
-			foreach (ClientModel itemCL in this.ClientList)
-			{
-				itemCL.Send(sMsg);
-			}//end foreach itemCL
-		}
 	}
 }
