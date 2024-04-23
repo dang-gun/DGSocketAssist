@@ -39,6 +39,8 @@ namespace SocketServer4Test.Faculty.User
         }
 
 
+
+
         /// <summary>
         /// 유저로 부터 전달된 메시지 대리자
         /// </summary>
@@ -61,6 +63,23 @@ namespace SocketServer4Test.Faculty.User
         {
             if (null != OnMessaged)
             {
+                this.OnMessaged(sender, e);
+            }
+        }
+        /// <summary>
+        /// 유저로 부터 메시지가 전달 되었음을 알림.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="typeCommand"></param>
+        /// <param name="strMsg"></param>
+        private void OnMessagedCall(
+            UserDataModel sender
+            , ChatCommandType typeCommand
+            , string strMsg)
+        {
+            if (null != OnMessaged)
+            {
+                MessageEventArgs e = new MessageEventArgs(typeCommand, strMsg);
                 this.OnMessaged(sender, e);
             }
         }
@@ -96,6 +115,7 @@ namespace SocketServer4Test.Faculty.User
                 //임시 리스트에 추가
                 this.UserList_Temp.Add(newUser);
 
+
                 //아이디 체크 준비가 끝났음을 알림
                 newUser.SendMsg_User(ChatCommandType.Client_Ready, "");
             }
@@ -122,6 +142,11 @@ namespace SocketServer4Test.Faculty.User
             this.UserList_Temp.Remove(sender);
 
             this.OnLogCall(0, "접속 허가 완료 : " + sender.UserName);
+
+            this.OnMessagedCall(
+                sender
+                , ChatCommandType.User_Connect
+                , sender.UserName);
         }
 
         public void UserCheckFail(UserDataModel sender)
@@ -148,7 +173,7 @@ namespace SocketServer4Test.Faculty.User
         /// <summary>
         /// 유저 ID 리스트
         /// </summary>
-        public string[] UserIdList 
+        public string[] UserNameList 
         { 
             get 
             {
@@ -158,7 +183,7 @@ namespace SocketServer4Test.Faculty.User
 
 
         /// <summary>
-        /// 리스너로 유저를 찾아 리스트에서 제거한다.
+        /// 클라이언트 모델로 유저를 찾아 리스트에서 제거한다.
         /// </summary>
         /// <param name="sender"></param>
         public void UserList_Remove(ClientModel sender)
@@ -237,38 +262,6 @@ namespace SocketServer4Test.Faculty.User
             this.OnMessagedCall(sender, e);
         }
 
-        /// <summary>
-        /// 유저 로그인 완료.
-        /// 로그인 완료된 유저를 UI에 표시하고,
-        /// 기존 접속자들에게 다른 유저 접속 알린다.
-        /// </summary>
-        /// <param name="sender"></param>
-        private void NewUser_OnLoginComplet(UserDataModel sender)
-        {
-            //로그인이 완료된 유저에게 유저 리스트를 보낸다.
-            //this.Commd_User_List_Get(sender);
-
-            ////전체 유저에게 접속자를 알린다.
-            //string sSendData
-            //    = GlobalStatic.ChatCmd
-            //        .ChatCommandString(
-            //            ChatCommandType.User_Connect
-            //            , sender.UserId);
-
-
-            ////전체 유저에게 메시지 전송(지금 로그인 한 접속자는 제외)
-            //AllUser_Send(sSendData, sender);
-
-            ////로그 유저 리스트에 추가
-            //this.Invoke(new Action(
-            //    delegate ()
-            //    {
-            //        listUser.Items.Add(sender.UserId);
-            //    }));
-
-            ////로그 남기기
-            //DisplayLog(string.Format("*** 접속자 : {0} ***", sender.UserId));
-        }
         #endregion
 
         /// <summary>

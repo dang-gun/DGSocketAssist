@@ -77,7 +77,7 @@ namespace DG_SocketAssist4.Server
 
 		#region 클라이언트 이벤트
 		/// <summary>
-		/// 클라이언트 접속
+		/// 클라이언트 접속 성공
 		/// </summary>
 		/// <param name="sender"></param>
 		public delegate void OnConnectedDelegate(ClientModel sender);
@@ -242,12 +242,16 @@ namespace DG_SocketAssist4.Server
             //클라이언트 연결시 사용될 SocketAsyncEventArgs
             SocketAsyncEventArgs saeaUser = new SocketAsyncEventArgs();
 			//클라이언트가 연결되었을때 이벤트
-			saeaUser.Completed -= ClientConnect_Completed;
-			saeaUser.Completed += ClientConnect_Completed;
+			saeaUser.Completed -= this.ClientConnect_Completed;
+			saeaUser.Completed += this.ClientConnect_Completed;
 
 			//클라이언트 접속 대기 시작
 			//첫 클라이언트가 접속되기 전까지 여기서 대기를 하게 된다.
-			socketServer.AcceptAsync(saeaUser);
+			if(false == socketServer.AcceptAsync(saeaUser))
+			{
+                this.ClientConnect_Completed(this.socketServer, saeaUser);
+
+            }
 
 		}
 
@@ -274,16 +278,19 @@ namespace DG_SocketAssist4.Server
 
 				//클라이언트 모델을 생성한다
 				ClientModel newCM = new ClientModel(newUser);
+                newCM.OnLog += NewCM_OnLog;
+
                 newCM.OnDisconnect += NewCM_OnDisconnect;
                 newCM.OnDisconnectCompleted += NewCM_OnDisconnectCompleted;
 
                 //리스트에 클라이언트 추가
                 this.ClientList.Add(newCM);
+
+                //첫 메시지 대기
+                newCM.FirstListening();
+
                 //클라이언트 접속을 알림.
                 this.ConnectedCall(newCM);
-
-				//첫 메시지 대기
-				newCM.FirstListening();
             }
 
             
@@ -294,8 +301,16 @@ namespace DG_SocketAssist4.Server
             //클라이언트 대기를 구현하기 위해서이다.
             Socket socketServer = (Socket)sender;
 			e.AcceptSocket = null;
-			socketServer.AcceptAsync(e);
+			if (false == socketServer.AcceptAsync(e))
+			{
+                this.ClientConnect_Completed(socketServer, e);
+            }
 		}
+
+        private void NewCM_OnLog(int nLogType, string sMessage)
+        {
+            this.OnLogCall(nLogType, "[ServerSocket]" + sMessage);
+        }
 
 
         /// <summary>

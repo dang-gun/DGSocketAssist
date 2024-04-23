@@ -144,6 +144,7 @@ namespace DG_SocketAssist4.Server
         internal ClientModel(ClientListener clientLis)
         {
             this.ClientLis = clientLis;
+            this.ClientLis.OnLog += ClientLis_OnLog;
 
             this.ClientLis.OnDisconnect += ClientLis_OnDisconnect;
             this.ClientLis.OnDisconnectCompleted += ClientLis_OnDisconnectCompleted;
@@ -152,7 +153,12 @@ namespace DG_SocketAssist4.Server
 
         }
 
-        
+        private void ClientLis_OnLog(int nLogType, string sMessage)
+        {
+            this.OnLogCall(nLogType, sMessage);
+        }
+
+
 
         /// <summary>
         /// 끊김 처리가 시작됨

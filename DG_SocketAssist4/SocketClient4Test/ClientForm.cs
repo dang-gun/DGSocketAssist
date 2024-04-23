@@ -189,6 +189,29 @@ namespace SocketClient4Test
         }
 
         /// <summary>
+        /// 유저 리스트를 다시 넣는다.
+        /// </summary>
+        /// <remarks>기존 리스트를 비우고 전달받은 리스트를 다시 추가한다.</remarks>
+        /// <param name="sUserList"></param>
+        public void UserList_Add_List(string sUserList)
+        {
+            GlobalStatic.CrossThread_Winfom(this
+                , new Action(
+                    delegate ()
+                    {
+                        //리스트를 비우고
+                        listUser.Items.Clear();
+
+                        //리스트를 다시 채워준다.
+                        string[] sList = sUserList.Split(',');
+                        for (int i = 0; i < sList.Length; ++i)
+                        {
+                            listUser.Items.Add(sList[i]);
+                        }
+                    }));
+        }
+
+        /// <summary>
         /// 유저 리스트에 ID 제거
         /// </summary>
         /// <param name="sId"></param>

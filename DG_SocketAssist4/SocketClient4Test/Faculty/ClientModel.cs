@@ -45,6 +45,7 @@ namespace SocketClient4Test.Faculty
             this.ClientMy.OnConnectionComplete += Client_OnConnectionComplete;
             this.ClientMy.OnDisconnect += Client_OnDisconnect;
             this.ClientMy.OnDisconnectCompleted += Client_OnDisconnectCompleted;
+
             this.ClientMy.OnReceiveReady += Client_OnReceiveReady;
             this.ClientMy.OnMessaged += Client_OnMessaged;
 
@@ -61,7 +62,11 @@ namespace SocketClient4Test.Faculty
         /// </summary>
         public void Disconnect()
         {
-            this.ClientMy.Disconnect();
+            if(null != this.ClientMy)
+            {
+                this.ClientMy.Disconnect();
+            }
+
         }
 
         #region 클라이언트 이벤트 콜백
@@ -121,6 +126,9 @@ namespace SocketClient4Test.Faculty
         /// <param name="message"></param>
         private void Client_OnMessaged(ClientSocket sender, string message)
         {
+            this.Log(string.Format("[Client_OnMessaged] {0}"
+                                    , message));
+
             //구분자로 명령을 구분 한다.
             string[] sData = GlobalStatic.ChatCmd.ChatCommandCut(message);
 
@@ -149,6 +157,8 @@ namespace SocketClient4Test.Faculty
                         this.Log("사인인 성공 : " + this.Id);
                         GlobalStatic.MainForm.UI_Setting(ClientForm.typeState.Connect);
                         this.UserList_Add(this.Id);
+                        //유저 리스트 갱신 요청
+                        this.SendMsg(ChatCommandType.User_List_Get, "");
                         break;
                     case ChatCommandType.SignIn_Fail:
                         this.Log("사인인 실패 : " + this.Id);
@@ -161,9 +171,9 @@ namespace SocketClient4Test.Faculty
                     //case ChatCommandType.User_Disonnect: //다른 유저가 접속을 끊었다.
                     //    SendMeg_User_Disconnect(sData[1]);
                     //    break;
-                    //case ChatCommandType.User_List:  //유저 리스트 갱신
-                    //    SendMeg_User_List(sData[1]);
-                    //    break;
+                    case ChatCommandType.User_List:  //유저 리스트 갱신
+                        GlobalStatic.MainForm.UserList_Add_List(sData[1]);
+                        break;
                 }
             }
         }

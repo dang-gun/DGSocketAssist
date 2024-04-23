@@ -120,10 +120,15 @@ namespace DG_SocketAssist4.Server
 		/// 이 클라이언트에게 전송용 SocketAsyncEventArgs
 		/// </summary>
 		private SocketAsyncEventArgs m_saeaSend = null;
-		/// <summary>
-		/// 이 클라이언트에게서오는 수신용 SocketAsyncEventArgs
-		/// </summary>
-		private SocketAsyncEventArgs m_saeaReceive = null;
+        /// <summary>
+        /// 서버 전송시 m_saeaSend가 사용중일때 처리해주는 큐
+        /// </summary>
+        private SendQueue m_SendQueue = new SendQueue();
+
+        /// <summary>
+        /// 이 클라이언트에게서오는 수신용 SocketAsyncEventArgs
+        /// </summary>
+        private SocketAsyncEventArgs m_saeaReceive = null;
 
         /// <summary>
         /// 
@@ -164,8 +169,11 @@ namespace DG_SocketAssist4.Server
 			this.m_saeaReceive.UserToken = MsgData;
 			
 			this.OnLogCall(0, "첫 데이터 받기 준비");
-            //첫 데이터 받기 시작
-            this.SocketMe.ReceiveAsync(this.m_saeaReceive);
+			//첫 데이터 받기 시작
+			if (false == this.SocketMe.ReceiveAsync(this.m_saeaReceive))
+			{
+                this.SaeaReceive_Completed(this.SocketMe, this.m_saeaReceive);
+            }
 		}
 
 		/// <summary>
@@ -193,9 +201,12 @@ namespace DG_SocketAssist4.Server
                 this.OnLogCall(0, string.Format("전달된 데이터 : {0}", MsgData.GetData()));
 
                 //다음 데이터를 기다린다.
-                //'Read'에서 무한루프 없이 구현하기 위해 두번째부터는 여기서 대기하도록
-                //구성되어 있다.
-                socketClient.ReceiveAsync(e);
+                //'Read'에서 무한루프 없이 구현하기 위해 두번째부터는 여기서 대기하도록 구성되어 있다.
+                //다음 메시지를 받을 준비를 한다.
+                if (false == socketClient.ReceiveAsync(e))
+                {
+                    this.SaeaReceive_Completed(this.SocketMe, this.m_saeaReceive);
+                }
                 this.OnLogCall(0, "데이터 받기 준비");
             }
 			else
@@ -211,27 +222,66 @@ namespace DG_SocketAssist4.Server
 		/// <param name="sMsg"></param>
 		public void Send(string sMsg)
 		{
-			MessageData mdMsg = new MessageData();
-			mdMsg.SetData(sMsg);
+			if(string.Empty != sMsg)
+			{
+                this.m_SendQueue.Add(sMsg);
+            }
 
-			//데이터 길이 세팅
-			this.m_saeaSend.SetBuffer(BitConverter.GetBytes(mdMsg.DataLength), 0, 4);
-			//보낼 데이터 설정
-			this.m_saeaSend.UserToken = mdMsg;
+            
+			//여기서부터는 큐를 가지고 동작한다.
+			if(false == this.m_SendQueue.Used
+				&& 0 < this.m_SendQueue.Count)
+			{//큐를 사용중이 아닌데
+				//큐에 내용물이 남아있다.
 
-            this.OnLogCall(0, string.Format("데이터 전달 : {0}", sMsg));
-            //보내기
-            this.SocketMe.SendAsync(this.m_saeaSend);
-		}
+				//사용중임을 알리고
+                this.m_SendQueue.Used = true;
+				//맨 앞에 있는 데이터를 읽는다.
+				string sMsg_Send = this.m_SendQueue.Get();
 
+				if(string.Empty != sMsg_Send)
+				{//값이 있으면 처리 시작
+
+                    MessageData mdMsg = new MessageData();
+                    mdMsg.SetData(sMsg_Send);
+
+                    //데이터 길이 세팅
+                    this.m_saeaSend.SetBuffer(BitConverter.GetBytes(mdMsg.DataLength), 0, 4);
+                    //보낼 데이터 설정
+                    this.m_saeaSend.UserToken = mdMsg;
+
+                    this.OnLogCall(0, string.Format("데이터 전달 시작 : {0}", sMsg_Send));
+                    //.NET5 부터는 SendAsync가 상황에 따라서 동기/비동기로 돌아간다.
+                    //보내기
+                    if (false == this.SocketMe.SendAsync(this.m_saeaSend))
+                    {
+                        this.SaeaSend_Completed(this.SocketMe, this.m_saeaSend);
+                    }
+                }
+            }
+        }
+
+		/// <summary>
+		/// 보내기 완료 이벤트
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void SaeaSend_Completed(object sender, SocketAsyncEventArgs e)
 		{
-			//유저 소켓
-			Socket socketClient = (Socket)sender;
-			MessageData mdMsg = (MessageData)e.UserToken;
-			//데이터 보내기 마무리
-			socketClient.Send(mdMsg.Data);
-		}
+			//보내기 마무리
+            //유저 소켓
+            Socket socketClient = (Socket)sender;
+            MessageData mdMsg = (MessageData)e.UserToken;
+            //데이터 보내기 마무리
+            socketClient.Send(mdMsg.Data);
+            this.OnLogCall(0, string.Format("데이터 전달 완료 : " + e.SocketError ));
+
+
+			//큐 사용이 끝남을 알림
+			this.m_SendQueue.Used = false;
+            //보낸게 완료되었으니 다음 큐를 진행 시킨다.
+            this.Send(string.Empty);
+        }
 
 		/// <summary>
 		/// 연결을 끊는다.

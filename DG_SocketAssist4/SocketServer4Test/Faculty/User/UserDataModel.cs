@@ -144,7 +144,7 @@ namespace SocketServer4Test.Faculty.User
         /// <param name="typeCommand"></param>
         private void SendMeg_Main(ChatCommandType typeCommand, string sMag)
         {
-            MessageEventArgs e = new MessageEventArgs(sMag, typeCommand);
+            MessageEventArgs e = new MessageEventArgs(typeCommand, sMag);
 
             this.OnSendMessageCall(e);
         }
@@ -160,7 +160,7 @@ namespace SocketServer4Test.Faculty.User
                 = GlobalStatic.ChatCmd.ChatCommandString(
                     typeChatCommand
                     , sMsg);
-            this.ClientMe.Send(sToss);
+            this.SendMsg_User(sToss);
         }
 
         /// <summary>
@@ -169,6 +169,9 @@ namespace SocketServer4Test.Faculty.User
         /// <param name="sMsg"></param>
         public void SendMsg_User(string sMsg)
         {
+            this.OnLogCall(0, string.Format("[UserDataModel.SendMsg_User] 보내기 요청({0}) : {1}"
+                                            , this.UserName
+                                            , sMsg));
             this.ClientMe.Send(sMsg);
         }
 

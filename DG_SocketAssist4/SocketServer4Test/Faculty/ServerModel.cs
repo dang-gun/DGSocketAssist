@@ -71,7 +71,7 @@ namespace SocketServer4Test.Faculty
         }
 
         /// <summary>
-        /// 클라이언트 접속함
+        /// 클라이언트가 접속 성공함
         /// </summary>
         /// <param name="sender"></param>
         /// <exception cref="System.NotImplementedException"></exception>
@@ -112,36 +112,66 @@ namespace SocketServer4Test.Faculty
         }
 
 
-
+        /// <summary>
+        /// 유저로 부터 전달된 메시지
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void UserList_OnMessaged(
             UserDataModel sender
             , ChatGlobal.MessageEventArgs e)
         {
+
+
+            this.Log(string.Format("[UserList_OnMessaged] {0} : {1}"
+                                    , e.CommandType
+                                    , e.Message));
+
             StringBuilder sbMsg = new StringBuilder();
 
-            switch (e.m_typeCommand)
+            switch (e.CommandType)
             {
                 case ChatCommandType.Msg:
-                    this.Commd_ReceiveMsg(sender, e.m_strMsg);
+                    this.Commd_ReceiveMsg(sender, e.Message);
                     break;
 
                 case ChatCommandType.SignIn:   //id체크
-                    this.Commd_IDCheck(sender, e.m_strMsg);
+                    this.Commd_SignIn(sender, e.Message);
                     break;
                 case ChatCommandType.User_List_Get:  //유저 리스트 갱신 요청
-                    //Commd_User_List_Get(sender);
+                    this.Commd_User_List_Get(sender);
                     break;
             }
         }
         #endregion
 
         #region 명령 처리 관련
+
+
+        /// <summary>
+        /// 받은 메시지 체팅창에 표시
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="sMsg"></param>
+        private void Commd_ReceiveMsg(UserDataModel sender, string sMsg)
+        {
+            string sTossMsg
+                = string.Format("{0} : {1}"
+                    , sender.UserName
+                    , sMsg);
+
+            GlobalStatic.MainForm.DisplayMsg(sTossMsg);
+
+            //모든 유저에게 메시지 전달
+            this.SendMsg_All(sTossMsg);
+        }
+
         /// <summary>
 		/// 명령 처리 - ID체크
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="sID"></param>
-		private void Commd_IDCheck(UserDataModel sender, string sID)
+		private void Commd_SignIn(UserDataModel sender, string sID)
         {
             //사용 가능 여부
             bool bReturn = true;
@@ -170,7 +200,10 @@ namespace SocketServer4Test.Faculty
 
                 //유저 체크 성공
                 this.UserList.UserCheckOk(sender);
-                this.UserList_Add(sender.UserName);
+                this.UserListUi_Add(sender.UserName);
+
+                //접속한 유저를 제외하고 전체를 유제에게 알린다.
+                this.Send_All(sender, ChatCommandType.User_Connect, sender.UserName);
             }
             else
             {
@@ -189,22 +222,29 @@ namespace SocketServer4Test.Faculty
         }
 
         /// <summary>
-        /// 받은 메시지 체팅창에 표시
+        /// 유저 리스트 요청 처리
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="sMsg"></param>
-        private void Commd_ReceiveMsg(UserDataModel sender, string sMsg)
+        /// <param name="sender">요청자</param>
+        private void Commd_User_List_Get(UserDataModel sender)
         {
-            string sTossMsg
-                = string.Format("{0} : {1}"
-                    , sender.UserName
-                    , sMsg);
+            StringBuilder sbList = new StringBuilder();
 
-            GlobalStatic.MainForm.DisplayMsg(sTossMsg);
+            //리스트 만들기
+            foreach (string sItem in this.UserList.UserNameList)
+            {
+                sbList.Append(sItem);
+                sbList.Append(",");
+            }
 
-            //모든 유저에게 메시지 전달
-            this.SendMsg_All(sTossMsg);
+            string sSendData
+                = GlobalStatic.ChatCmd
+                    .ChatCommandString(
+                        ChatCommandType.User_List
+                        , sbList.ToString());
+
+            sender.SendMsg_User(sSendData);
         }
+
         #endregion
 
         #region 유저 리스트 UI 관련
@@ -212,7 +252,7 @@ namespace SocketServer4Test.Faculty
         /// 유저 리스트 UI에 ID 추가
         /// </summary>
         /// <param name="sId"></param>
-        public void UserList_Add(string sId)
+        public void UserListUi_Add(string sId)
         {
             GlobalStatic.MainForm.UserList_Add(sId);
         }
@@ -221,7 +261,7 @@ namespace SocketServer4Test.Faculty
         /// 유저 리스트 UI에 ID 제거
         /// </summary>
         /// <param name="sId"></param>
-        public void UserList_Remove(string sId)
+        public void UserListUi_Remove(string sId)
         {
             GlobalStatic.MainForm.UserList_Remove(sId);
         }
@@ -229,35 +269,59 @@ namespace SocketServer4Test.Faculty
         /// <summary>
         /// 유저 리스트 UI를 모두 지우고 접속자 리스트 기준으로 다시 ID를 넣는다.
         /// </summary>
-        public void UserList_Refresh()
+        public void UserListUi_Refresh()
         {
             GlobalStatic.MainForm.UserList_Clear();
 
-            string[] arrUserId = this.UserList.UserIdList;
+            string[] arrUserId = this.UserList.UserNameList;
             for (int i = 0; i < arrUserId.Length; i++)
             {
                 string sItem = arrUserId[i];
 
-                this.UserList_Add(sItem);
+                this.UserListUi_Add(sItem);
             }
         }
         #endregion
 
         #region 메시지 관련
 
-        
+        /// <summary>
+        /// 접속 완료된 모든 유저에게 지정된 명령을 보낸다.
+        /// </summary>
+        /// <param name="targetExcept">제외할 대상</param>
+        /// <param name="typeChatCmd"></param>
+        /// <param name="sMsg"></param>
+        public void Send_All(
+            UserDataModel targetExcept
+            , ChatCommandType typeChatCmd
+            , string sMsg)
+        {
+            string sSendData
+                = GlobalStatic.ChatCmd
+                    .ChatCommandString(typeChatCmd, sMsg);
+            this.UserList.SendMsg_All(targetExcept, sSendData);
+        }
+
+        /// <summary>
+        /// 접속 완료된 모든 유저에게 지정된 명령을 보낸다.
+        /// </summary>
+        /// <param name="typeChatCmd"></param>
+        /// <param name="sMsg"></param>
+        public void Send_All(ChatCommandType typeChatCmd, string sMsg)
+        {
+            string sSendData
+                = GlobalStatic.ChatCmd
+                    .ChatCommandString(typeChatCmd, sMsg);
+            this.UserList.SendMsg_All(sSendData);
+        }
+
         /// <summary>
         /// 접속 완료된 모든 유저에게 메시지를 보낸다.
         /// </summary>
         /// <param name="sMsg"></param>
         public void SendMsg_All(string sMsg)
         {
-            string sSendData
-                = GlobalStatic.ChatCmd
-                    .ChatCommandString(
-                        ChatCommandType.Msg
-                        , sMsg);
-            this.UserList.SendMsg_All(sSendData);
+            this.Send_All(ChatCommandType.Msg, sMsg);
         }
         #endregion
 

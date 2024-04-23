@@ -14,21 +14,21 @@ namespace ChatGlobal
         /// <summary>
         /// 메시지
         /// </summary>
-        public readonly string m_strMsg = "";
+        public readonly string Message = "";
         /// <summary>
         /// 메시지 타입
         /// </summary>
-        public ChatCommandType m_typeCommand = ChatCommandType.None;
+        public ChatCommandType CommandType = ChatCommandType.None;
 
         /// <summary>
         /// 메시지 설정
         /// </summary>
         /// <param name="strMsg"></param>
         /// <param name="typeCommand"></param>
-        public MessageEventArgs(string strMsg, ChatCommandType typeCommand)
+        public MessageEventArgs(ChatCommandType typeCommand, string strMsg)
         {
-            this.m_strMsg = strMsg;
-            this.m_typeCommand = typeCommand;
+            this.Message = strMsg;
+            this.CommandType = typeCommand;
         }
     }
 }

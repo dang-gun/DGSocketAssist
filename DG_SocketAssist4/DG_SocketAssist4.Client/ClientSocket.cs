@@ -164,10 +164,15 @@ namespace DG_SocketAssist4.Client
 		/// 서버로 전송용 SocketAsyncEventArgs
 		/// </summary>
 		private SocketAsyncEventArgs m_saeaSend = null;
-		/// <summary>
-		/// 수신용 SocketAsyncEventArgs
-		/// </summary>
-		private SocketAsyncEventArgs m_saeaReceive = null;
+        /// <summary>
+        /// 서버 전송시 m_saeaSend가 사용중일때 처리해주는 큐
+        /// </summary>
+        private SendQueue m_SendQueue = new SendQueue();
+
+        /// <summary>
+        /// 수신용 SocketAsyncEventArgs
+        /// </summary>
+        private SocketAsyncEventArgs m_saeaReceive = null;
 
 		/// <summary>
 		/// 서버 주소
@@ -250,8 +255,11 @@ namespace DG_SocketAssist4.Client
 			saeaConnect.Completed += SaeaConnect_Completed;
 
             this.OnLogCall(0, "서버 연결 중");
-            //서버 메시지 대기
-            this.SocketMe.ConnectAsync(saeaConnect);
+			//서버 메시지 대기
+			if (false == this.SocketMe.ConnectAsync(saeaConnect))
+			{
+				this.SaeaConnect_Completed(this.SocketMe, saeaConnect);
+            };
 		}
 
 		/// <summary>
@@ -270,6 +278,7 @@ namespace DG_SocketAssist4.Client
 
 				//서버에 수신대기할 개체를 설정한다.
 				//보낼 데이터를 설정하고
+
 				this.m_saeaReceive.UserToken = mdReceiveMsg;
 
                 //.NET5 부터는 ReceiveAsync 상황에 따라서 동기/비동기로 돌아간다.
@@ -342,21 +351,40 @@ namespace DG_SocketAssist4.Client
 		/// <param name="sMsg"></param>
 		public void Send(string sMsg)
 		{
-			MessageData mdSendMsg = new MessageData();
+            if (string.Empty != sMsg)
+            {
+                this.m_SendQueue.Add(sMsg);
+            }
 
-			//데이터를 넣고
-			mdSendMsg.SetData(sMsg);
+
+            //여기서부터는 큐를 가지고 동작한다.
+            if (false == this.m_SendQueue.Used
+                && 0 < this.m_SendQueue.Count)
+			{
+                //사용중임을 알리고
+                this.m_SendQueue.Used = true;
+                //맨 앞에 있는 데이터를 읽는다.
+                string sMsg_Send = this.m_SendQueue.Get();
+
+                MessageData mdSendMsg = new MessageData();
+                //데이터를 넣고
+                mdSendMsg.SetData(sMsg_Send);
 
 
 
-            //데이터 길이 세팅
-            this.m_saeaSend.SetBuffer(BitConverter.GetBytes(mdSendMsg.DataLength), 0, 4);
-            //보낼 데이터 설정
-            this.m_saeaSend.UserToken = mdSendMsg;
-			//보내기 시작
-			this.SocketMe.SendAsync(this.m_saeaSend);
-			
-		}
+                this.OnLogCall(0, "Send : 메시지 보내기 시작 : " + sMsg_Send);
+                //데이터 길이 세팅
+                this.m_saeaSend.SetBuffer(BitConverter.GetBytes(mdSendMsg.DataLength), 0, 4);
+                //보낼 데이터 설정
+                this.m_saeaSend.UserToken = mdSendMsg;
+                //보내기 시작
+                if (false == this.SocketMe.SendAsync(this.m_saeaSend))
+                {
+                    this.SaeaSend_Completed(this.SocketMe, this.m_saeaSend);
+                }
+            }
+
+        }
 
 		/// <summary>
 		/// 전송 완료 이벤트 연결됨.
@@ -366,11 +394,18 @@ namespace DG_SocketAssist4.Client
 		/// <param name="e"></param>
 		private void SaeaSend_Completed(object sender, SocketAsyncEventArgs e)
 		{
-			Socket socketSend = (Socket)sender;
+            //보내기 마무리
+            Socket socketSend = (Socket)sender;
 			MessageData mdMsg = (MessageData)e.UserToken;
 			//데이터 보내기 마무리
 			socketSend.Send(mdMsg.Data);
-		}
+            this.OnLogCall(0, "Send : 메시지 보내기 완료");
+
+            //큐 사용이 끝남을 알림
+            this.m_SendQueue.Used = false;
+            //보낸게 완료되었으니 다음 큐를 진행 시킨다.
+            this.Send(string.Empty);
+        }
 
 		/// <summary>
 		/// 연결을 끊는다.
