@@ -137,10 +137,12 @@ namespace SocketClient4Test
                     btnSend.Enabled = false;
                     break;
                 case typeState.Connect: //연결완료
-                    this.Invoke(new Action(
-                        delegate ()
+                    GlobalStatic.CrossThread_Winfom(this
+                        , new Action(delegate ()
                         {
                             txtMsg.Enabled = true;
+                            this.txtMsg.Text = "";
+
                             btnSend.Text = "보내기";
                             btnSend.Enabled = true;
                         }));
@@ -180,12 +182,16 @@ namespace SocketClient4Test
         /// <param name="sId"></param>
         public void UserList_Add(string sId)
         {
-            GlobalStatic.CrossThread_Winfom(this
-                , new Action(
-                    delegate ()
-                    {
-                        this.listUser.Items.Add(sId);
-                    }));
+            if(string.Empty != sId)
+            {
+                GlobalStatic.CrossThread_Winfom(this
+                    , new Action(
+                        delegate ()
+                        {
+                            this.listUser.Items.Add(sId);
+                        }));
+            }
+
         }
 
         /// <summary>
@@ -206,7 +212,10 @@ namespace SocketClient4Test
                         string[] sList = sUserList.Split(',');
                         for (int i = 0; i < sList.Length; ++i)
                         {
-                            listUser.Items.Add(sList[i]);
+                            if(string.Empty != sList[i])
+                            {
+                                listUser.Items.Add(sList[i]);
+                            }
                         }
                     }));
         }
@@ -258,6 +267,9 @@ namespace SocketClient4Test
                     delegate ()
                     {
                         this.listLog.Items.Add(sb.ToString());
+
+                        this.listLog.SelectedIndex = listLog.Items.Count - 1;
+                        this.listLog.SelectedIndex = -1;
                     }));
         }
 

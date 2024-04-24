@@ -217,26 +217,19 @@ namespace DG_SocketAssist4.Client
 		private void SocketSetting(IPEndPoint ip)
 		{
 			//소켓 생성
-			SocketMe 
+			this.SocketMe 
 				= new Socket(AddressFamily.InterNetwork
 					, SocketType.Stream
 					, ProtocolType.Tcp);
 			this.ServerIP = ip;
 
-            //KeepAlive 설정
-            //닷넷을 통한 KeepAlive설정은 .NET Core 3.0이상에서만 지원한다.
-            //https://learn.microsoft.com/ko-kr/dotnet/api/system.net.sockets.socketoptionname?view=netcore-3.0#system-net-sockets-socketoptionname-tcpkeepalivetime
-            //윈도우의 경우 IOControl를 통해서 적용할 수 있다.
-            //this.socketServer.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, true);
-            //this.socketServer.SetSocketOption(SocketOptionLevel.Tcp, SocketOptionName.TcpKeepAliveTime, 10000);
-            //this.socketServer.SetSocketOption(SocketOptionLevel.Tcp, SocketOptionName.TcpKeepAliveInterval, 5000);
-            // Windows 10 version 1703 or later
-            //https://learn.microsoft.com/en-us/windows/win32/winsock/ipproto-tcp-socket-options?WT.mc_id=DT-MVP-4038148
-            //if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
-            //    && Environment.OSVersion.Version >= new Version(10, 0, 15063))
-            //{//윈도우10, 1703 이후 버전(windows server 2019)
-            //    this.socketServer.SetSocketOption(SocketOptionLevel.Tcp, SocketOptionName.TcpKeepAliveRetryCount, _keepalive.TcpKeepAliveRetryCount);
-            //}
+            //keepalive설정 적용
+            this.SocketMe.IOControl(
+                IOControlCode.KeepAliveValues
+                , SettingData.KeepAliveSetting()
+                , null);
+
+            
 
             //전송용 SocketAsyncEventArgs 세팅
             this.m_saeaSend = new SocketAsyncEventArgs();

@@ -38,6 +38,50 @@ namespace DG_SocketAssist4.Global
 		/// </summary>
 		public readonly static int BufferFullSize = 8192;
         //public readonly static int BufferFullSize = 1024;
+
+        /// <summary>
+        /// 연결 유지 확인 시간
+        /// </summary>
+        public readonly static uint TcpKeepAliveTimeMilliseconds = 1000;
+        /// <summary>
+        /// 연결 유지 확인 간격
+        /// </summary>
+        public readonly static uint TcpKeepAliveIntervalMilliseconds = 1000;
+
+        /// <summary>
+        /// KeepAlive설정값을 리턴한다.
+        /// </summary>
+        /// <returns></returns>
+        public static byte[] KeepAliveSetting()
+        {
+            //KeepAlive 설정
+            byte[] keepAlive = new byte[12];
+
+            //keepalive 기능 켜기
+            Buffer.BlockCopy(BitConverter.GetBytes((uint)1), 0, keepAlive, 0, 4);
+            //keepalive 확인 시간
+            Buffer.BlockCopy(BitConverter.GetBytes(SettingData.TcpKeepAliveTimeMilliseconds), 0, keepAlive, 4, 4);
+            //keepalive 확인 간격
+            Buffer.BlockCopy(BitConverter.GetBytes(SettingData.TcpKeepAliveIntervalMilliseconds), 0, keepAlive, 8, 4);
+
+
+            //KeepAlive 설정
+            //닷넷을 통한 KeepAlive설정은 .NET Core 3.0이상에서만 지원한다.
+            //https://learn.microsoft.com/ko-kr/dotnet/api/system.net.sockets.socketoptionname?view=netcore-3.0#system-net-sockets-socketoptionname-tcpkeepalivetime
+            //윈도우의 경우 IOControl를 통해서 적용할 수 있다.
+            //this.socketServer.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, true);
+            //this.socketServer.SetSocketOption(SocketOptionLevel.Tcp, SocketOptionName.TcpKeepAliveTime, 10000);
+            //this.socketServer.SetSocketOption(SocketOptionLevel.Tcp, SocketOptionName.TcpKeepAliveInterval, 5000);
+            // Windows 10 version 1703 or later
+            //https://learn.microsoft.com/en-us/windows/win32/winsock/ipproto-tcp-socket-options?WT.mc_id=DT-MVP-4038148
+            //if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
+            //    && Environment.OSVersion.Version >= new Version(10, 0, 15063))
+            //{//윈도우10, 1703 이후 버전(windows server 2019)
+            //    this.socketServer.SetSocketOption(SocketOptionLevel.Tcp, SocketOptionName.TcpKeepAliveRetryCount, _keepalive.TcpKeepAliveRetryCount);
+            //}
+
+            return keepAlive;
+        }
     }
 
     /// <summary>

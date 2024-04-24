@@ -85,6 +85,14 @@ namespace SocketServer4Test.Faculty.User
         }
         #endregion
 
+        /// <summary>
+		/// 접속을 성공한 클라이언트에게 부여할 고유번호 카운트
+		/// </summary>
+        /// <remarks>
+        /// 0은 없는값으로 사용해야 하므로 실제 사용할때는 1부터 사용해야 관리가 쉽다.
+        /// </remarks>
+		public long ClientIndexCount { get; private set; } = 0;
+
         public UserListModel()
         {
             this.UserList_Temp = new List<UserDataModel>();
@@ -140,6 +148,9 @@ namespace SocketServer4Test.Faculty.User
 
             //임시 리스트에서 제거한다.
             this.UserList_Temp.Remove(sender);
+
+            //접속허가가 나면 겹치지 않는 고유번호를 할당해 준다.
+            sender.ClientIndex = ++this.ClientIndexCount;
 
             this.OnLogCall(0, "접속 허가 완료 : " + sender.UserName);
 
@@ -232,14 +243,30 @@ namespace SocketServer4Test.Faculty.User
         /// <summary>
         /// 지정한 ID를 가지고 있는 유저를 찾아 리턴한다.
         /// </summary>
-        /// <param name="sId"></param>
+        /// <param name="sName"></param>
         /// <returns></returns>
-        public UserDataModel FindUser(string sId)
+        public UserDataModel FindUser(string sName)
         {
             //같은 리스너를 가진 유저를 찾는다.
             UserDataModel findUser
                 = this.UserList
-                    .Where(w => w.UserName == sId)
+                    .Where(w => w.UserName == sName)
+                    .FirstOrDefault();
+
+            return findUser;
+        }
+
+        /// <summary>
+        /// 지정한 인덱스를 가지고 있는 유저를 찾아 리턴한다.
+        /// </summary>
+        /// <param name="nClientIndex"></param>
+        /// <returns></returns>
+        public UserDataModel FindUser(long nClientIndex)
+        {
+            //같은 리스너를 가진 유저를 찾는다.
+            UserDataModel findUser
+                = this.UserList
+                    .Where(w => w.ClientIndex == nClientIndex)
                     .FirstOrDefault();
 
             return findUser;
@@ -280,6 +307,8 @@ namespace SocketServer4Test.Faculty.User
         /// <param name="sMsg"></param>
         public void SendMsg_All(string sMsg)
         {
+            this.OnLogCall(0, "UserListModel.SendMsg_All : " + sMsg);
+
             //모든 유저에게 메시지를 전송 한다.
             foreach (UserDataModel itemUser in this.UserList)
             {

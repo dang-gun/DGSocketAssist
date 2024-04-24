@@ -117,8 +117,25 @@ namespace DG_SocketAssist4.Server
         /// </summary>
         private ClientListener ClientLis;
 
+        /// <summary>
+        /// 이 개체를 구분하기위한 고유번호
+        /// <para>외부에서 이 개체를 구분하기위한 인덱스</para>
+        /// </summary>
+        public long ClientIndex
+        {
+            get
+            {
+                return this.ClientLis.ClientIndex;
+            }
+            set
+            {
+                this.ClientLis.ClientIndex = value;
+            }
+        }
+
+
         #region 클라이언트 리스너에게 바로 전달할 함수
-        
+
         /// <summary>
         /// 가지고 있는 클라이언트에게 매시지를 보낸다.
         /// </summary>
@@ -133,7 +150,7 @@ namespace DG_SocketAssist4.Server
         /// </summary>
         public void Disconnect()
         {
-            this.ClientLis.Disconnect(false);
+            this.ClientLis.Disconnect();
         }
         #endregion
 

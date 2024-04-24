@@ -62,9 +62,11 @@ namespace DG_SocketAssist4.Server
 		/// <summary>
 		/// 클라이언트 끊김 처리가 시작되었음을 외부에 알림
 		/// </summary>
-		private void DisconnectCall()
+		private void OnDisconnectCall()
 		{
-			if (null != OnDisconnect)
+			this.DisconnectEventIs = true;
+
+            if (null != OnDisconnect)
 			{
 				this.OnDisconnect(this);
 			}
@@ -141,16 +143,49 @@ namespace DG_SocketAssist4.Server
 		private BtyeAssist BtyeAssist = new BtyeAssist();
 
         /// <summary>
+        /// 클라이언트 끊어짐 이벤트가 발생했었는지 여부
+        /// </summary>
+        /// <remarks>
+        /// 이 클래스는 클라이언트가 끊어지면 제거되므로 OnDisconnect이벤트는 한번만 발생해야 한다.
+		/// <para>OnDisconnect이벤트가 여러번 발생하면 외부에서는 제거된 개체를 제거하려는 문제가 생길 수 있다.</para>
+		/// <para>이 문제를 방지하기위한 변수로 OnDisconnect가 한번이라도 발생하면 true로 변경된다. </para>
+        /// </remarks>
+        private bool DisconnectEventIs = false;
+
+		/// <summary>
+		/// 이 개체를 구분하기위한 고유번호
+		/// <para>외부에서 이 개체를 구분하기위한 인덱스</para>
+		/// </summary>
+		/// <remarks>
+		/// 이 라이브러리에서는 여기에 값을 부여하지 않는다.
+		/// <para>이 클래스를 관리하는 쪽에서 필요에 따라 인덱스를 부여해야 한다.</para>
+		/// </remarks>
+        public long ClientIndex { get; set; } = 0;
+
+		/// <summary>
+		/// 연결 확인 개체
+		/// </summary>
+		//private KeepAliveChecker ConnectChecker;
+
+
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="socketMe">전달받은 Socket</param>
-        internal ClientListener(Socket socketMe)
+		internal ClientListener(Socket socketMe)
 		{
 			//소캣을 저장한다.
 			this.SocketMe = socketMe;
 
-			//전송용 SocketAsyncEventArgs 세팅
-			this.m_saeaSend = new SocketAsyncEventArgs();
+
+            //keepalive설정 적용
+            this.SocketMe.IOControl(
+				IOControlCode.KeepAliveValues
+				, SettingData.KeepAliveSetting()
+				, null);
+
+            //전송용 SocketAsyncEventArgs 세팅
+            this.m_saeaSend = new SocketAsyncEventArgs();
 			this.m_saeaSend.Completed -= SaeaSend_Completed;
 			this.m_saeaSend.Completed += SaeaSend_Completed;
 
@@ -163,6 +198,8 @@ namespace DG_SocketAssist4.Server
 
             //여기서 바로 Listening을 시작하면 이벤트가 연결되기 전에 동작이 진행될수 있다.
             //외부에서 원하는 타이밍에 FirstListening를 호출해야 한다.
+
+
         }
 
         /// <summary>
@@ -237,8 +274,13 @@ namespace DG_SocketAssist4.Server
             }
 			else
 			{//아니다
-				//접속 끊김을 알린다.
-				Disconnect(true);
+
+                //연결이 끊김이 감지되면 리시브가 전달되게 된다.
+                //문제는 끊김이 일어났을때 100% 전달되지는 않는다.
+				//(상황에 따라서 끊어졌는데도 안오는 경우가 있음.)
+
+                //접속 끊김을 알린다.
+                this.Disconnect();
 			}
 		}
 
@@ -309,34 +351,26 @@ namespace DG_SocketAssist4.Server
 		/// <para>이미 끊는 이벤트가 발생했는데 bEvent를 true로 사용하는 경우
 		/// 무한루프에 빠질수 있으니 조심해야 한다.</para>
 		/// </summary>
-		/// <param name="bEvent">연결끊김 이벤트 발생 여부.</param>
-		public void Disconnect(bool bEvent)
+		public void Disconnect()
 		{
-			if (true == bEvent)
+			if (false == this.DisconnectEventIs)
 			{
-				this.DisconnectCall();
+				this.OnDisconnectCall();
 			}
 
 			if (null != this.SocketMe)
 			{
 				this.SocketMe.Close();
-				this.SocketMe = null;
+				this.SocketMe.Dispose();
+                this.SocketMe = null;
 			}
 
-			if (true == bEvent)
+			if (false == this.DisconnectEventIs)
 			{
 				this.DisconnectCompletedCall();
 			}
 		}
 
-		/// <summary>
-		/// 연결을 끊는다.
-		/// 외부용 - 이벤트 발생 안함.
-		/// </summary>
-		public void Disconnect()
-		{
-			this.Disconnect(false);
-		}
 
 	}
 }

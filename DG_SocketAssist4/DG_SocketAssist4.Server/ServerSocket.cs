@@ -120,23 +120,25 @@ namespace DG_SocketAssist4.Server
 			}
 		}
 
-		/// <summary>
-		/// 클라이언트 끊김 처리 완료
-		/// </summary>
-		/// <param name="sender"></param>
-		public delegate void DisconnectCompletedDelegate(ClientModel sender);
-		/// <summary>
-		/// 클라이언트가 끊김처리가 완료 되었다.
-		/// </summary>
-		public event DisconnectCompletedDelegate OnDisconnectCompleted;
-		/// <summary>
-		/// 클라이언트 끊김 처리 완료되었음을 외부에 알림
-		/// </summary>
-		private void OnDisconnectCompletedCall(ClientModel sender)
+        /// <summary>
+        /// 클라이언트 끊김 처리 완료
+        /// </summary>
+        /// <param name="nClientIndex">호출한 개체가 가지고 있던 인덱스</param>
+        public delegate void DisconnectCompletedDelegate(long nClientIndex);
+        /// <summary>
+        /// 클라이언트가 끊김처리가 완료 되었다.
+        /// <para>끊김 처리가 완료되면 호출했던 ClientModel모델은 제거</para>
+        /// </summary>
+        public event DisconnectCompletedDelegate OnDisconnectCompleted;
+        /// <summary>
+        /// 클라이언트 끊김 처리 완료되었음을 외부에 알림
+        /// </summary>
+        /// <param name="nClientIndex">호출한 개체가 가지고 있던 인덱스</param>
+        private void OnDisconnectCompletedCall(long nClientIndex)
 		{
 			if (null != OnDisconnectCompleted)
 			{
-				this.OnDisconnectCompleted(sender);
+				this.OnDisconnectCompleted(nClientIndex);
 			}
 		}
         #endregion
@@ -175,7 +177,7 @@ namespace DG_SocketAssist4.Server
 
 			return bReturn;
 		}
-        #endregion
+		#endregion
 
         /// <summary>
         /// 접속한 클라이언트 리스트
@@ -201,20 +203,6 @@ namespace DG_SocketAssist4.Server
 							, SocketType.Stream
 							, ProtocolType.Tcp);
 
-            //KeepAlive 설정
-            //닷넷을 통한 KeepAlive설정은 .NET Core 3.0이상에서만 지원한다.
-            //https://learn.microsoft.com/ko-kr/dotnet/api/system.net.sockets.socketoptionname?view=netcore-3.0#system-net-sockets-socketoptionname-tcpkeepalivetime
-            //윈도우의 경우 IOControl를 통해서 적용할 수 있다.
-            //this.socketServer.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, true);
-            //this.socketServer.SetSocketOption(SocketOptionLevel.Tcp, SocketOptionName.TcpKeepAliveTime, 10000);
-            //this.socketServer.SetSocketOption(SocketOptionLevel.Tcp, SocketOptionName.TcpKeepAliveInterval, 5000);
-            // Windows 10 version 1703 or later
-            //https://learn.microsoft.com/en-us/windows/win32/winsock/ipproto-tcp-socket-options?WT.mc_id=DT-MVP-4038148
-            //if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
-            //    && Environment.OSVersion.Version >= new Version(10, 0, 15063))
-            //{//윈도우10, 1703 이후 버전(windows server 2019)
-            //    this.socketServer.SetSocketOption(SocketOptionLevel.Tcp, SocketOptionName.TcpKeepAliveRetryCount, _keepalive.TcpKeepAliveRetryCount);
-            //}
 
             //서버 ip 및 포트
             IPEndPoint ipServer 
@@ -327,11 +315,14 @@ namespace DG_SocketAssist4.Server
         /// <param name="sender"></param>
         private void NewCM_OnDisconnectCompleted(ClientModel sender)
         {
+			//끊기전에 인덱스를 저장해 둔다.
+			long nClientIndex = sender.ClientIndex;
+
             //연결이 끊긴 클라이언트를 제거한다.
             this.ClientList.Remove(sender);
             sender = null;
 
-            this.OnDisconnectCompletedCall(sender);
+            this.OnDisconnectCompletedCall(nClientIndex);
         }
 
 

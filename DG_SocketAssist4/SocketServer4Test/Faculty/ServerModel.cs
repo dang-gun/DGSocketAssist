@@ -81,24 +81,36 @@ namespace SocketServer4Test.Faculty
             this.UserList.UserCheckStart(sender);
         }
 
+        
         /// <summary>
         /// 클라이언트 접속끊김이 감지되어 끊김 작업이 시작됨
         /// </summary>
         /// <param name="sender"></param>
-        private void Server_OnDisconnectCompleted(ClientModel sender)
+        private void Server_OnDisconnect(ClientModel sender)
         {
+            //끊김 처리가 시작되었으면 중간에 취소될리가 없으므로 그냥 끊어졌다고 판단하고 작업한다.
+
+            //끊어진 대상 이름
+            string sName = this.UserList.FindUser(sender.ClientIndex).UserName;
+
+            //UI에서 제거
+            this.UserListUi_Remove(sName);
+            //리스트에서 제거
+            this.UserList.UserList_Remove(sender);
             
+
+            //끊어진 대상을 알려줌
+            this.Send_All(ChatCommandType.User_Disonnect, sName);
         }
+
         /// <summary>
         /// 클라이언트 끊김 작업이 완료됨
         /// </summary>
-        /// <param name="sender"></param>
-        private void Server_OnDisconnect(ClientModel sender)
+        /// <param name="nClientIndex"></param>
+        private void Server_OnDisconnectCompleted(long nClientIndex)
         {
-            //리스트에서 제거
-            this.UserList.UserList_Remove(sender);
+            
         }
-
         #endregion
 
 

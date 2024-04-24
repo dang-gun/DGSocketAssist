@@ -62,6 +62,40 @@ namespace SocketServer4Test.Faculty.User
         public ClientModel ClientMe { get; private set; }
 
         /// <summary>
+        /// 이 개체를 구분하기위한 고유번호 - 백업본
+        /// </summary>
+        /// <remarks>
+        /// this.ClientMe가 존제할때는 this.ClientMe.ClientIndex를 사용하고 
+        /// 없을때는 이 값을 사용한다.
+        /// </remarks>
+        private long ClientIndex_Backup = 0;
+        /// <summary>
+        /// 이 개체를 구분하기위한 고유번호
+        /// <para>외부에서 이 개체를 구분하기위한 인덱스</para>
+        /// </summary>
+        public long ClientIndex
+        {
+            get
+            {
+                if(null == this.ClientMe)
+                {
+                    return this.ClientIndex_Backup;
+                }
+                else
+                {
+                    return this.ClientMe.ClientIndex;
+                }
+            }
+            set
+            {
+                this.ClientMe.ClientIndex = value;
+                this.ClientIndex_Backup = value;
+            }
+        }
+
+
+
+        /// <summary>
         /// 이 유저의 구분용 ID
         /// </summary>
         public string UserName { get; set; }

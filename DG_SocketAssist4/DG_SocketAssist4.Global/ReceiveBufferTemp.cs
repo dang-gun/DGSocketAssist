@@ -118,7 +118,7 @@ namespace DG_SocketAssist4.Global
 
 
         /// <summary>
-        /// 맨 앞의 헤더가 지정한 이상의 데이터가 쌓여있는지 여부
+        /// 맨 앞의 헤더가 지정한 크기 이상의 데이터가 쌓여있는지 여부
         /// <para>SettingData.BufferHeaderSize를 기준으로 헤더를 읽은 다음 
         /// 헤더가 지정한 크기 이상으로 데이터가 쌓여있는지 여부를 리턴한다.</para>
         /// </summary>
@@ -140,7 +140,7 @@ namespace DG_SocketAssist4.Global
         /// 헤더가 지정한 만큼 데이터를 잘라 리턴한다.
         /// <para>데이터가 모자르거나 문제가 있으면 byte[0]이 리턴된다.</para>
         /// </summary>
-        /// <returns>헤더가 제거된 데이터 영역</returns>
+        /// <returns>헤더가 제거된 데이터 영역(지정된 크기 만큼의 바이트 개수)</returns>
         public byte[] FirstSizeData_Int()
         {
             byte[] byteReturn = new byte[0];

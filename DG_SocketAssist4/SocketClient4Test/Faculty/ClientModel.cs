@@ -168,12 +168,12 @@ namespace SocketClient4Test.Faculty
                         GlobalStatic.MainForm.UI_Setting(ClientForm.typeState.None);
                         break;
 
-                    //case ChatCommandType.User_Connect:   //다른 유저가 접속 했다.
-                    //    SendMeg_User_Connect(sData[1]);
-                    //    break;
-                    //case ChatCommandType.User_Disonnect: //다른 유저가 접속을 끊었다.
-                    //    SendMeg_User_Disconnect(sData[1]);
-                    //    break;
+                    case ChatCommandType.User_Connect:   //다른 유저가 접속 했다.
+                        GlobalStatic.MainForm.UserList_Add(sData[1]);
+                        break;
+                    case ChatCommandType.User_Disonnect: //다른 유저가 접속을 끊었다.
+                        GlobalStatic.MainForm.UserList_Remove(sData[1]);
+                        break;
                     case ChatCommandType.User_List:  //유저 리스트 갱신
                         GlobalStatic.MainForm.UserList_Add_List(sData[1]);
                         break;
