@@ -41,13 +41,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BtyeAssist.cs" />
+    <Compile Include="Faculty\BtyeAssist.cs" />
     <Compile Include="BufferDataModel.cs" />
     <Compile Include="DelegateList.cs" />
     <Compile Include="KeepAliveChecker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ReceiveBufferTemp.cs" />
-    <Compile Include="SendQueue.cs" />
+    <Compile Include="ReceiveAssists\ReceiveAssist.cs" />
+    <Compile Include="ReceiveAssists\ReceiveBufferTemp.cs" />
+    <Compile Include="SendAssists\SendAssist.cs" />
+    <Compile Include="SendAssists\SendQueue.cs" />
     <Compile Include="SettingData.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -2,19 +2,19 @@
 using System;
 using System.Collections.Generic;
 
-namespace DG_SocketAssist4.Global
+namespace DG_SocketAssist4.Global.ReceiveAssists
 {
     /// <summary>
     /// 리시브 데이터를 임시로 저장해둘 버퍼
     /// </summary>
-    public class ReceiveBufferTemp
+    internal class ReceiveBufferTemp
     {
         /// <summary>
         /// 임시 버퍼
         /// </summary>
-        public List<byte> BufferTemp = new List<byte>();
+        internal List<byte> BufferTemp = new List<byte>();
 
-        public ReceiveBufferTemp() 
+        internal ReceiveBufferTemp() 
         { 
 
         }
@@ -24,7 +24,7 @@ namespace DG_SocketAssist4.Global
         /// </summary>
         /// <param name="byteData"></param>
         /// <param name="nSize">잘라서 넣을 데이터 크기</param>
-        public void Add(byte[] byteData, int nSize)
+        internal void Add(byte[] byteData, int nSize)
         {
             //데이터를 잘라서 임시로 저장할 공간
             byte[] byteSlice = new byte[nSize];
@@ -42,7 +42,7 @@ namespace DG_SocketAssist4.Global
         /// * 무결성 검사 하지 않음 *
         /// </remarks>
         /// <returns></returns>
-        private byte[] HeaderSizeGet()
+        internal byte[] HeaderSizeGet()
         {
             byte[] byteHeaderSize = new byte[SettingData.BufferHeaderSize];
             Array.Copy(this.BufferTemp.ToArray(), 0
@@ -54,7 +54,7 @@ namespace DG_SocketAssist4.Global
         /// <summary>
         /// 버퍼 비우기
         /// </summary>
-        public void Clear()
+        internal void Clear()
         {
             this.BufferTemp.Clear();
         }
@@ -64,7 +64,7 @@ namespace DG_SocketAssist4.Global
         /// <para>Byte ~ Int 까지 사용하는 함수</para>
         /// </summary>
         /// <returns>계산된 크기. -1 = 버퍼에 최소한의 데이터도 쌓이지 않았다.</returns>
-        public int HeaderToInt()
+        internal int HeaderToInt()
         {
             int nReturn = -1;
 
@@ -99,7 +99,7 @@ namespace DG_SocketAssist4.Global
         /// <para>Long에서 사용하는 함수</para>
         /// </summary>
         /// <returns>계산된 크기. -1 = 버퍼에 최소한의 데이터도 쌓이지 않았다.</returns>
-        public long HeaderToLong()
+        internal long HeaderToLong()
         {
             long nReturn = -1;
 
@@ -123,7 +123,7 @@ namespace DG_SocketAssist4.Global
         /// 헤더가 지정한 크기 이상으로 데이터가 쌓여있는지 여부를 리턴한다.</para>
         /// </summary>
         /// <returns></returns>
-        public bool FirstSizeLength()
+        internal bool FirstSizeLength()
         {
             bool bReturn = false;
 
@@ -141,7 +141,7 @@ namespace DG_SocketAssist4.Global
         /// <para>데이터가 모자르거나 문제가 있으면 byte[0]이 리턴된다.</para>
         /// </summary>
         /// <returns>헤더가 제거된 데이터 영역(지정된 크기 만큼의 바이트 개수)</returns>
-        public byte[] FirstSizeData_Int()
+        internal byte[] FirstSizeData_Int()
         {
             byte[] byteReturn = new byte[0];
 

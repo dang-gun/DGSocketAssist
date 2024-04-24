@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DG_SocketAssist4.Global
+namespace DG_SocketAssist4.Global.SendAssists
 {
     /// <summary>
     /// 보내기 큐 구현

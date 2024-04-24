@@ -1,21 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace DG_SocketAssist4.Global
+
+namespace DG_SocketAssist4.Global.Faculty
 {
-    public class BtyeAssist
+    internal class BtyeAssist
     {
-        public BtyeAssist() { }
+        internal BtyeAssist() { }
 
         /// <summary>
         /// 입력된 길이를 BufferHeaderSize에 맞는 byte[]로 변환한다.
         /// </summary>
         /// <param name="nLength"></param>
         /// <returns></returns>
-        public byte[] LengthToByte(int nLength)
+        internal byte[] LengthToByte(int nLength)
         {
             //리턴할 데이터
             byte[] byteReturn = new byte[SettingData.BufferHeaderSize];
@@ -46,7 +43,7 @@ namespace DG_SocketAssist4.Global
         /// </summary>
         /// <param name="byteData"></param>
         /// <returns></returns>
-        public byte[] SizeAddData(byte[] byteData)
+        internal byte[] SizeAddData(byte[] byteData)
         {
             //데이터 길이를 헤더 데이터로 만들다.
             byte[] byteHeader = this.LengthToByte(byteData.Length);
