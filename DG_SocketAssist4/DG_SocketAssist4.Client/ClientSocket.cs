@@ -305,10 +305,8 @@ namespace DG_SocketAssist4.Client
 		/// <param name="e"></param>
 		private void SaeaReceive_Completed(object sender, SocketAsyncEventArgs e)
 		{
-			Socket socketClient = (Socket)sender;
 			
-
-			if (true == socketClient.Connected)
+			if (true == this.SocketMe.Connected)
 			{//연결이 되어 있다.
 
 				//버퍼에서 데이터가 완성되었는지 확인한다.
@@ -328,7 +326,7 @@ namespace DG_SocketAssist4.Client
 
                 this.OnLogCall(0, "다음 데이터 받을 준비 ");
                 //다음 메시지를 받을 준비를 한다.
-                if (false == socketClient.ReceiveAsync(e))
+                if (false == this.SocketMe.ReceiveAsync(e))
                 {
                     this.SaeaReceive_Completed(this.SocketMe, this.m_saeaReceive);
                 }
