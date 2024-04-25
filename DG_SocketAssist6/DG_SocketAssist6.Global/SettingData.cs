@@ -26,58 +26,29 @@ public class SettingData
     /// <para>여기에 표시된 크기는 헤더를 포함하지 않은 크기이다.</para>
     /// </remarks>
     public readonly static int BufferHeaderSize = BufferHeaderSizeType.GetHashCode();
-    
 
-		/// <summary>
-		/// 소켓이 한번에 받을 수 있는 최대 버퍼 크기.<br />
-		/// SocketAsyncEventArgs를 생성할때 사용되는 버퍼 크기이다.
-		/// </summary>
-		public readonly static int BufferFullSize = 8192;
+
+    /// <summary>
+    /// 소켓이 한번에 받을 수 있는 최대 버퍼 크기.<br />
+    /// SocketAsyncEventArgs를 생성할때 사용되는 버퍼 크기이다.
+    /// </summary>
+    public readonly static int BufferFullSize = 8192;
     //public readonly static int BufferFullSize = 1024;
 
     /// <summary>
-    /// 연결 유지 확인 시간
+    /// 연결 유지 확인 시간(ms)
     /// </summary>
-    public readonly static uint TcpKeepAliveTimeMilliseconds = 1000;
+    public readonly static uint TcpKeepAliveTime = 1000;
     /// <summary>
-    /// 연결 유지 확인 간격
+    /// 연결 유지 확인 간격(ms)
     /// </summary>
-    public readonly static uint TcpKeepAliveIntervalMilliseconds = 1000;
-
+    public readonly static uint TcpKeepAliveInterval = 1000;
     /// <summary>
-    /// KeepAlive설정값을 리턴한다.
+    /// 연결 유지 실패시 반복 확인 횟수
+    /// <para>끊김시 이 횟수만큼 반복해서 확인하고 연결이 복원되지 않으면 끊김처리가 된다.</para>
     /// </summary>
-    /// <returns></returns>
-    public static byte[] KeepAliveSetting()
-    {
-        //KeepAlive 설정
-        byte[] keepAlive = new byte[12];
+    public readonly static uint TcpKeepAliveRetryCount = 5;
 
-        //keepalive 기능 켜기
-        Buffer.BlockCopy(BitConverter.GetBytes((uint)1), 0, keepAlive, 0, 4);
-        //keepalive 확인 시간
-        Buffer.BlockCopy(BitConverter.GetBytes(SettingData.TcpKeepAliveTimeMilliseconds), 0, keepAlive, 4, 4);
-        //keepalive 확인 간격
-        Buffer.BlockCopy(BitConverter.GetBytes(SettingData.TcpKeepAliveIntervalMilliseconds), 0, keepAlive, 8, 4);
-
-
-        //KeepAlive 설정
-        //닷넷을 통한 KeepAlive설정은 .NET Core 3.0이상에서만 지원한다.
-        //https://learn.microsoft.com/ko-kr/dotnet/api/system.net.sockets.socketoptionname?view=netcore-3.0#system-net-sockets-socketoptionname-tcpkeepalivetime
-        //윈도우의 경우 IOControl를 통해서 적용할 수 있다.
-        //this.socketServer.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, true);
-        //this.socketServer.SetSocketOption(SocketOptionLevel.Tcp, SocketOptionName.TcpKeepAliveTime, 10000);
-        //this.socketServer.SetSocketOption(SocketOptionLevel.Tcp, SocketOptionName.TcpKeepAliveInterval, 5000);
-        // Windows 10 version 1703 or later
-        //https://learn.microsoft.com/en-us/windows/win32/winsock/ipproto-tcp-socket-options?WT.mc_id=DT-MVP-4038148
-        //if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
-        //    && Environment.OSVersion.Version >= new Version(10, 0, 15063))
-        //{//윈도우10, 1703 이후 버전(windows server 2019)
-        //    this.socketServer.SetSocketOption(SocketOptionLevel.Tcp, SocketOptionName.TcpKeepAliveRetryCount, _keepalive.TcpKeepAliveRetryCount);
-        //}
-
-        return keepAlive;
-    }
 }
 
 /// <summary>
