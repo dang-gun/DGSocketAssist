@@ -1,6 +1,6 @@
 ﻿using System.Timers;
 
-namespace DG_SocketAssist4.Global;
+namespace DG_SocketAssist4.Global.Faculty;
 
 /// <summary>
 /// 접속이 유지되고 있는지 확인하기위한 동작
@@ -25,7 +25,7 @@ public class KeepAliveChecker
         this.timer.Elapsed += Timer_Elapsed;
     }
 
-    private void Timer_Elapsed(object sender, ElapsedEventArgs e)
+    private void Timer_Elapsed(object? sender, ElapsedEventArgs e)
     {
         if(null != this.ActionSend)
         {

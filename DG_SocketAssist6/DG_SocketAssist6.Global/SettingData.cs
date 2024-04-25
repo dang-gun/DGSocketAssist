@@ -1,11 +1,12 @@
-﻿
+﻿using System;
+
 namespace DG_SocketAssist4.Global;
 
-	/// <summary>
-	/// 서버와 클라이언트가 주고/받는 데이터 구조체
-	/// </summary>
-	public class SettingData
-	{
+/// <summary>
+/// 서버와 클라이언트가 주고/받는 데이터 구조체
+/// </summary>
+public class SettingData
+{
     /// <summary>
     /// 버퍼의 정보가 들어있는 헤더의 크기를 타입으로 저장
     /// </summary>

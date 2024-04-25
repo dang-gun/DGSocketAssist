@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Net.Sockets;
 
 namespace DG_SocketAssist4.Global.ReceiveAssists
 {
@@ -27,7 +22,8 @@ namespace DG_SocketAssist4.Global.ReceiveAssists
         {
             byte[] byteReturn = new byte[0];
 
-            if (1 <= e.BytesTransferred)
+            if (1 <= e.BytesTransferred
+                && null != e.Buffer)
             {//데이터가 1이라도 들어왔다.
 
                 //임시 버퍼에 데이터 추가

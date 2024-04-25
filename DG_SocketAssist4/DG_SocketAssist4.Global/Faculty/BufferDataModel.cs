@@ -3,7 +3,7 @@
 namespace DG_SocketAssist4.Global.Faculty
 {
     /// <summary>
-    /// 
+    /// 버퍼 데이터모델
     /// </summary>
     public class BufferDataModel
     {

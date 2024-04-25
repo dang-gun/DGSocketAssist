@@ -9,7 +9,13 @@ namespace DG_SocketAssist4.Global.SendAssists
     /// </summary>
     public class SendAssist
     {
+        /// <summary>
+        /// 바이트 처리 지원
+        /// </summary>
         private BtyeAssist BtyeAssist = new BtyeAssist();
+        /// <summary>
+        /// 보내기 큐 관리 지원
+        /// </summary>
         private SendQueue SendQueue = new SendQueue();
 
 
