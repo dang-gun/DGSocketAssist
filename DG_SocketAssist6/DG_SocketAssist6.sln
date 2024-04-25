@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DG_SocketAssist6.Global", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DG_SocketAssist6.Server", "DG_SocketAssist6.Server\DG_SocketAssist6.Server.csproj", "{F0B1461D-D76F-4014-8D5E-C13B0069D08E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DG_SocketAssist6.Client", "DG_SocketAssist6.Client\DG_SocketAssist6.Client.csproj", "{2E600C8C-DC5D-49E8-9439-F7B5B68BCF68}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{F0B1461D-D76F-4014-8D5E-C13B0069D08E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F0B1461D-D76F-4014-8D5E-C13B0069D08E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F0B1461D-D76F-4014-8D5E-C13B0069D08E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E600C8C-DC5D-49E8-9439-F7B5B68BCF68}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E600C8C-DC5D-49E8-9439-F7B5B68BCF68}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E600C8C-DC5D-49E8-9439-F7B5B68BCF68}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E600C8C-DC5D-49E8-9439-F7B5B68BCF68}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

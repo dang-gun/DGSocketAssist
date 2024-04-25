@@ -14,9 +14,12 @@ namespace DG_SocketAssist4.Server;
 /// </summary>
 /// <remarks>
 /// ClientListener를 외부에 노출시키기 않기 위해 ClientModel를 사용해야 한다.
-/// <para>
-/// 내부에서는 ClientListener를 사용하고 외부에서는 ClientModel를 사용한 것이 컨샙이다.
-/// </para>
+/// <para>내부에서는 ClientListener를 사용하고 외부에서는 ClientModel를 사용한 것이 컨샙이다.</para>
+/// <para>이 솔류션에서는 한 클라이언트는 2개의 SocketAsyncEventArgs를 가지는 것을 원칙으로 한다.</para>
+/// <para>스래드 풀 사용을 가정하지 않으므로 SocketAsyncEventArgs.Completed의 sender는 
+/// 항상 SocketMe와 동일하다고 가정한다.</para>
+/// <para>만약 스래드 풀을 사용할 생각이면 SocketAsyncEventArgs를 해제할때
+/// 이벤트관리를 철저하게 하여 sender가 다른 클라이언트가 들어오지 않도록 해야 한다.</para>
 /// </remarks>
 internal class ClientListener
 {
@@ -166,9 +169,8 @@ internal class ClientListener
     /// <param name="socketMe">전달받은 Socket</param>
     internal ClientListener(Socket socketMe)
     {
-        //소캣을 저장한다.
+        //소켓을 저장한다.
         this.SocketMe = socketMe;
-
 
         //keepalive설정 적용
         (new KeepAliveSetting()).KeepAliveSetting_Net6(socketMe);
@@ -220,23 +222,25 @@ internal class ClientListener
     /// <param name="e"></param>
     private void SaeaReceive_Completed(object? sender, SocketAsyncEventArgs e)
     {
-        Socket? socketClient = null;
-        if (null != sender)
-        {//샌더가 있다.
+        //다른 클라이언트의 소켓이 올 가능성이 있다면 아래와 같은 방법으로
+        //다른 클라이언트의 소켓을 처리해야 한다.
+        //Socket? socketClient = null;
+        //if (null != sender)
+        //{//샌더가 있다.
 
-            //그대로 사용
-            socketClient = (Socket)sender;
-        }
-        else
-        {//샌더가 없다.
+        //    //그대로 사용
+        //    socketClient = (Socket)sender;
+        //}
+        //else
+        //{//샌더가 없다.
 
-            //SocketAsyncEventArgs의 소켓을 사용한다.
-            socketClient = e.AcceptSocket;
-        }
+        //    //SocketAsyncEventArgs의 소켓을 사용한다.
+        //    socketClient = e.AcceptSocket;
+        //}
 
 
-        if (null != socketClient
-            && true == socketClient.Connected)
+        if (null != this.SocketMe
+            && true == this.SocketMe.Connected)
         {//연결 상태이다
 
             //버퍼에서 데이터가 완성되었는지 확인한다.
@@ -257,7 +261,7 @@ internal class ClientListener
             this.OnLogCall(0, "다음 데이터 받기 준비");
             //'Read'에서 무한루프 없이 구현하기 위해 두번째부터는 여기서 대기하도록 구성되어 있다.
             //다음 메시지를 받을 준비를 한다.
-            if (false == socketClient.ReceiveAsync(e))
+            if (false == this.SocketMe.ReceiveAsync(e))
             {
                 this.SaeaReceive_Completed(this.SocketMe, this.m_saeaReceive);
             }
