@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Timers;
 
-namespace DG_SocketAssist4.Global
+namespace DG_SocketAssist4.Global.Faculty
 {
     /// <summary>
     /// 접속이 유지되고 있는지 확인하기위한 동작

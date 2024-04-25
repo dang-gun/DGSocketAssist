@@ -1,16 +1,11 @@
-﻿using DG_SocketAssist4.Global;
-using DG_SocketAssist4.Global.ReceiveAssists;
-using DG_SocketAssist4.Global.SendAssists;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+﻿using System;
 using System.Net;
 using System.Net.Sockets;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+
+using DG_SocketAssist4.Global;
+using DG_SocketAssist4.Global.Faculty;
+using DG_SocketAssist4.Global.ReceiveAssists;
+using DG_SocketAssist4.Global.SendAssists;
 
 namespace DG_SocketAssist4.Client
 {

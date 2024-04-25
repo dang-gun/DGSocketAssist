@@ -1,12 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 using DG_SocketAssist4.Global;
 
@@ -51,7 +46,7 @@ namespace DG_SocketAssist4.Server
 		/// <summary>
 		/// 서버 시작됨을 외부에 알림
 		/// </summary>
-		public void OnStartCall()
+		private void OnStartCall()
 		{
 			if (null != this.OnStart)
 			{
@@ -66,7 +61,7 @@ namespace DG_SocketAssist4.Server
 		/// <summary>
 		/// 서버 멈춤을 외부에 알림
 		/// </summary>
-		public void OnStopCall()
+		private void OnStopCall()
 		{
 			if (null != this.OnStop)
 			{
@@ -90,7 +85,7 @@ namespace DG_SocketAssist4.Server
 		/// 클라이언트 접속을 외부에 알림
 		/// </summary>
 		/// <param name="sender"></param>
-		public void ConnectedCall(ClientModel sender)
+		private void ConnectedCall(ClientModel sender)
 		{
 			if (null != this.OnConnected)
 			{
