@@ -131,24 +131,25 @@ namespace SocketServer4Test.Faculty
         /// <param name="e"></param>
         private void UserList_OnMessaged(
             UserDataModel sender
-            , ChatGlobal.MessageEventArgs e)
+            , ChatCommandType typeCommand
+            , string sMag)
         {
 
 
             this.Log(string.Format("[UserList_OnMessaged] {0} : {1}"
-                                    , e.CommandType
-                                    , e.Message));
+                                    , typeCommand
+                                    , sMag));
 
             StringBuilder sbMsg = new StringBuilder();
 
-            switch (e.CommandType)
+            switch (typeCommand)
             {
                 case ChatCommandType.Msg:
-                    this.Commd_ReceiveMsg(sender, e.Message);
+                    this.Commd_ReceiveMsg(sender, sMag);
                     break;
 
                 case ChatCommandType.SignIn:   //id체크
-                    this.Commd_SignIn(sender, e.Message);
+                    this.Commd_SignIn(sender, sMag);
                     break;
                 case ChatCommandType.User_List_Get:  //유저 리스트 갱신 요청
                     this.Commd_User_List_Get(sender);
@@ -179,18 +180,21 @@ namespace SocketServer4Test.Faculty
         }
 
         /// <summary>
-		/// 명령 처리 - ID체크
+		/// 명령 처리 - 이름 체크
 		/// </summary>
 		/// <param name="sender"></param>
-		/// <param name="sID"></param>
-		private void Commd_SignIn(UserDataModel sender, string sID)
+		/// <param name="sName"></param>
+		private void Commd_SignIn(UserDataModel sender, string sName)
         {
             //사용 가능 여부
             bool bReturn = true;
 
             //모든 유저의 아이디 체크
-            UserDataModel findUser = this.UserList.FindUser(sID);
-            if(null != findUser)
+            if("server" == sName)
+            {//예약된 아이디이다.
+                bReturn = false;
+            }
+            else if(null != this.UserList.FindUser(sName))
             {//같은 유저가 있다!
                 bReturn = false;
             }
@@ -198,8 +202,8 @@ namespace SocketServer4Test.Faculty
             if (true == bReturn)
             {//사용 가능
 
-                //아이디를 지정하고
-                sender.UserName = sID;
+                //이름을 지정하고
+                sender.UserName = sName;
 
                 //명령어 만들기
                 string sSendData

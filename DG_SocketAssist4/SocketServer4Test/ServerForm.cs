@@ -177,6 +177,7 @@ namespace SocketServer4Test
         {
             string sTossMsg = string.Format("server : {0}", this.txtSendMsg.Text);
             GlobalStatic.MainServer.SendMsg_All(sTossMsg);
+            this.DisplayMsg(sTossMsg);
         }
     }
 }

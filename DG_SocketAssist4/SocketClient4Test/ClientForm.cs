@@ -31,6 +31,11 @@ namespace SocketClient4Test
             /// 연결 완료
             /// </summary>
             Connect,
+
+            /// <summary>
+            /// 연결 끊김
+            /// </summary>
+            Disconnect,
         }
 
         /// <summary>
@@ -111,26 +116,23 @@ namespace SocketClient4Test
 
             switch (typeSet)
             {
-                case typeState.None:    //기본
-                    if (true == InvokeRequired)
-                    {
-                        this.Invoke(new Action(
-                        delegate ()
+                case typeState.None://기본
+                case typeState.Disconnect: //끊김
+                    GlobalStatic.CrossThread_Winfom(this
+                        , new Action(delegate ()
                         {
                             txtMsg.Enabled = true;
                             btnSend.Text = "로그인";
                             btnSend.Enabled = true;
+
+                            //유저 리스트 비우기
+                            this.UserList_Clear();
                         }));
-                    }
-                    else
-                    {
-                        txtMsg.Enabled = true;
-                        btnSend.Text = "로그인";
 
-                        btnSend.Enabled = true;
-                    }
-
+                    //처음으로 돌리기위해 typeState.None로 초기화 한다.
+                    m_typeState = typeState.None;
                     break;
+
                 case typeState.Connecting:  //연결중
                     txtMsg.Enabled = false;
                     btnSend.Text = "연결중";

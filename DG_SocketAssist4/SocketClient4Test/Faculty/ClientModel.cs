@@ -95,7 +95,8 @@ namespace SocketClient4Test.Faculty
         /// <param name="sender">이 이벤트를 발생시킨 개체</param>
         private void Client_OnDisconnect(ClientSocket sender)
         {
-            //처리 없음
+            this.Log("*** 서버 끊김 ***");
+            GlobalStatic.MainForm.UI_Setting(ClientForm.typeState.Disconnect);
         }
         /// <summary>
         /// 서버와 끊김 처리가 완료됨

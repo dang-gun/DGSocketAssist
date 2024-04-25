@@ -311,8 +311,6 @@ namespace DG_SocketAssist4.Server
 
 		/// <summary>
 		/// 연결을 끊는다.
-		/// <para>이미 끊는 이벤트가 발생했는데 bEvent를 true로 사용하는 경우
-		/// 무한루프에 빠질수 있으니 조심해야 한다.</para>
 		/// </summary>
 		public void Disconnect()
 		{

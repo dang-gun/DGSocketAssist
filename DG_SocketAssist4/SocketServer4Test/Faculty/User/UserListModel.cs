@@ -47,7 +47,8 @@ namespace SocketServer4Test.Faculty.User
         /// <param name="sender"></param>
         public delegate void MessagedDelegate(
             UserDataModel sender
-            , MessageEventArgs e);
+            , ChatCommandType typeCommand
+            , string strMsg);
         /// <summary>
         /// 유저로 부터 전달된 메시지가 있으면 발생하는 이벤트
         /// </summary>
@@ -59,28 +60,12 @@ namespace SocketServer4Test.Faculty.User
         /// <param name="e"></param>
         private void OnMessagedCall(
             UserDataModel sender
-            , MessageEventArgs e)
-        {
-            if (null != OnMessaged)
-            {
-                this.OnMessaged(sender, e);
-            }
-        }
-        /// <summary>
-        /// 유저로 부터 메시지가 전달 되었음을 알림.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="typeCommand"></param>
-        /// <param name="strMsg"></param>
-        private void OnMessagedCall(
-            UserDataModel sender
             , ChatCommandType typeCommand
             , string strMsg)
         {
             if (null != OnMessaged)
             {
-                MessageEventArgs e = new MessageEventArgs(typeCommand, strMsg);
-                this.OnMessaged(sender, e);
+                this.OnMessaged(sender, typeCommand, strMsg);
             }
         }
         #endregion
@@ -284,9 +269,12 @@ namespace SocketServer4Test.Faculty.User
         /// <param name="sender"></param>
         /// <param name="e"></param>
         /// <exception cref="NotImplementedException"></exception>
-        private void NewUser_OnSendMessage(UserDataModel sender, MessageEventArgs e)
+        private void NewUser_OnSendMessage(
+            UserDataModel sender
+            , ChatCommandType typeCommand
+            , string strMsg)
         {
-            this.OnMessagedCall(sender, e);
+            this.OnMessagedCall(sender, typeCommand, strMsg);
         }
 
         #endregion

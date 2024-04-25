@@ -79,7 +79,9 @@ namespace DG_SocketAssist4.Client
 		/// </summary>
 		private void DisconnectCall()
 		{
-			if (null != OnDisconnect)
+            this.DisconnectEventIs = true;
+
+            if (null != OnDisconnect)
 			{
 				this.OnDisconnect(this);
 			}
@@ -181,12 +183,22 @@ namespace DG_SocketAssist4.Client
         /// </summary>
         public IPEndPoint ServerIP { get; private set; }
 
-		/// <summary>
-		/// 서버와 연결할 클라이언트 생성. 
-		/// </summary>
-		/// <param name="sIP">서버 ip</param>
-		/// <param name="nPort">서버 포트</param>
-		public ClientSocket(string sIP, int nPort)
+        /// <summary>
+        /// 클라이언트 끊어짐 이벤트가 발생했었는지 여부
+        /// </summary>
+        /// <remarks>
+        /// 이 클래스는 클라이언트가 끊어지면 제거되므로 OnDisconnect이벤트는 한번만 발생해야 한다.
+        /// <para>OnDisconnect이벤트가 여러번 발생하면 외부에서는 제거된 개체를 제거하려는 문제가 생길 수 있다.</para>
+        /// <para>이 문제를 방지하기위한 변수로 OnDisconnect가 한번이라도 발생하면 true로 변경된다. </para>
+        /// </remarks>
+        private bool DisconnectEventIs = false;
+
+        /// <summary>
+        /// 서버와 연결할 클라이언트 생성. 
+        /// </summary>
+        /// <param name="sIP">서버 ip</param>
+        /// <param name="nPort">서버 포트</param>
+        public ClientSocket(string sIP, int nPort)
 		{
 			this.SocketSetting(
 				new IPEndPoint(
@@ -292,7 +304,7 @@ namespace DG_SocketAssist4.Client
 			else
 			{
 				//접속 끊김을 알린다.
-				Disconnect(true);
+				this.Disconnect();
 			}
 		}
 
@@ -335,7 +347,7 @@ namespace DG_SocketAssist4.Client
 			else
 			{
 				//접속 끊김을 알린다.
-				Disconnect(true);
+				this.Disconnect();
 			}
 		}
 
@@ -382,13 +394,11 @@ namespace DG_SocketAssist4.Client
 
 		/// <summary>
 		/// 연결을 끊는다.
-		/// <para>bEvent를 true로 사용하는 경우 무한루프에 빠질수 있으니 조심해야 한다.</para>
 		/// </summary>
-		/// <param name="bEvent">연결끊김 이벤트 발생 여부.</param>
-		public void Disconnect(bool bEvent)
+		public void Disconnect()
 		{
-			if (true == bEvent)
-			{
+            if (false == this.DisconnectEventIs)
+            {
 				this.DisconnectCall();
 			}
 
@@ -398,20 +408,10 @@ namespace DG_SocketAssist4.Client
 				this.SocketMe = null;
 			}
 
-			if (true == bEvent)
-			{
+            if (false == this.DisconnectEventIs)
+            {
 				this.DisconnectCompletedCall();
 			}
 		}
-
-		/// <summary>
-		/// 연결을 끊는다.
-		/// <para>외부용 - 이벤트 발생 안함.</para>
-		/// </summary>
-		public void Disconnect()
-		{
-			this.Disconnect(false);
-		}
-
 	}
 }

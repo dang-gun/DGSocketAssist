@@ -36,7 +36,10 @@ namespace SocketServer4Test.Faculty.User
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        public delegate void MessageDelegate(UserDataModel sender, MessageEventArgs e);
+        public delegate void MessageDelegate(
+            UserDataModel sender
+            , ChatCommandType typeCommand
+            , string strMsg);
         /// <summary>
         /// 서버로 메시지를 보내려고 알리는 이벤트
         /// </summary>
@@ -45,11 +48,13 @@ namespace SocketServer4Test.Faculty.User
         /// 서버로 메시지를 보내려고 알리는 요청
         /// </summary>
         /// <param name="e"></param>
-        private void OnSendMessageCall(MessageEventArgs e)
+        private void OnSendMessageCall(
+            ChatCommandType typeCommand
+            , string strMsg)
         {
             if(null != OnSendMessage)
             {
-                this.OnSendMessage(this, e);
+                this.OnSendMessage(this, typeCommand, strMsg);
             }
         }
 
@@ -181,9 +186,7 @@ namespace SocketServer4Test.Faculty.User
         /// <param name="typeCommand"></param>
         private void SendMeg_Main(ChatCommandType typeCommand, string sMag)
         {
-            MessageEventArgs e = new MessageEventArgs(typeCommand, sMag);
-
-            this.OnSendMessageCall(e);
+            this.OnSendMessageCall(typeCommand, sMag);
         }
 
         /// <summary>
