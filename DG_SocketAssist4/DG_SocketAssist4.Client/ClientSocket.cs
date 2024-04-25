@@ -218,7 +218,7 @@ namespace DG_SocketAssist4.Client
             //keepalive설정 적용
             this.SocketMe.IOControl(
                 IOControlCode.KeepAliveValues
-                , SettingData.KeepAliveSetting()
+                , (new KeepAliveSetting()).KeepAliveSetting_Btye()
                 , null);
 
             

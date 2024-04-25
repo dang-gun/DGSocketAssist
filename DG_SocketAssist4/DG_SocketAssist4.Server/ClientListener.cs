@@ -174,8 +174,8 @@ namespace DG_SocketAssist4.Server
             //keepalive설정 적용
             this.SocketMe.IOControl(
 				IOControlCode.KeepAliveValues
-				, SettingData.KeepAliveSetting()
-				, null);
+                , (new KeepAliveSetting()).KeepAliveSetting_Btye()
+                , null);
 
             //전송용 SocketAsyncEventArgs 세팅
             this.m_saeaSend = new SocketAsyncEventArgs();

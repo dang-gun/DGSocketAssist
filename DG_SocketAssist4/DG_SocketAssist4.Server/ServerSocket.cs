@@ -230,7 +230,7 @@ namespace DG_SocketAssist4.Server
 
 			//클라이언트 접속 대기 시작
 			//첫 클라이언트가 접속되기 전까지 여기서 대기를 하게 된다.
-			if(false == socketServer.AcceptAsync(saeaUser))
+			if(false == this.socketServer.AcceptAsync(saeaUser))
 			{
                 this.ClientConnect_Completed(this.socketServer, saeaUser);
 
@@ -282,11 +282,11 @@ namespace DG_SocketAssist4.Server
 
             //이렇게 구성하는 이유는 'Start'에서 무한 루프 없이
             //클라이언트 대기를 구현하기 위해서이다.
-            Socket socketServer = (Socket)sender;
+            //Socket socketServer = (Socket)sender;
 			e.AcceptSocket = null;
-			if (false == socketServer.AcceptAsync(e))
+			if (false == this.socketServer.AcceptAsync(e))
 			{
-                this.ClientConnect_Completed(socketServer, e);
+                this.ClientConnect_Completed(this.socketServer, e);
             }
 		}
 

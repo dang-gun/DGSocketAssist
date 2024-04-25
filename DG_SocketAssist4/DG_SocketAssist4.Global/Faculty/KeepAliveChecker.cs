@@ -43,4 +43,26 @@ namespace DG_SocketAssist4.Global.Faculty
             this.timer.Start();
         }
     }
+
+    public class KeepAliveSetting
+    {
+        /// <summary>
+        /// KeepAlive설정값을 리턴한다.
+        /// </summary>
+        /// <returns></returns>
+        public byte[] KeepAliveSetting_Btye()
+        {
+            //KeepAlive 설정
+            byte[] keepAlive = new byte[12];
+
+            //keepalive 기능 켜기
+            Buffer.BlockCopy(BitConverter.GetBytes((uint)1), 0, keepAlive, 0, 4);
+            //keepalive 확인 시간
+            Buffer.BlockCopy(BitConverter.GetBytes(SettingData.TcpKeepAliveTime), 0, keepAlive, 4, 4);
+            //keepalive 확인 간격
+            Buffer.BlockCopy(BitConverter.GetBytes(SettingData.TcpKeepAliveInterval), 0, keepAlive, 8, 4);
+
+            return keepAlive;
+        }
+    }
 }
