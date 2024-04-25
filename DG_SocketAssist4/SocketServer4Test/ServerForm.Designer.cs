@@ -96,7 +96,7 @@
             // 
             this.listLog.FormattingEnabled = true;
             this.listLog.ItemHeight = 12;
-            this.listLog.Location = new System.Drawing.Point(6, 250);
+            this.listLog.Location = new System.Drawing.Point(6, 240);
             this.listLog.Name = "listLog";
             this.listLog.Size = new System.Drawing.Size(595, 316);
             this.listLog.TabIndex = 18;
@@ -114,7 +114,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(612, 575);
+            this.ClientSize = new System.Drawing.Size(607, 563);
             this.Controls.Add(this.txtSendMsg);
             this.Controls.Add(this.btnSend);
             this.Controls.Add(this.listUser);

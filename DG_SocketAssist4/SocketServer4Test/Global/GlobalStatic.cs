@@ -1,17 +1,13 @@
-﻿using ChatGlobal;
-using DG_SocketAssist4.Server;
-using SocketServer4Test.Faculty;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using System.Windows.Forms;
+
+using ChatGlobal;
+
+using SocketServer4Test.Faculty;
+
 
 namespace SocketServer4Test.Global
 {
-
-
     /// <summary>
     /// 전역 프로그램 변수
     /// </summary>
