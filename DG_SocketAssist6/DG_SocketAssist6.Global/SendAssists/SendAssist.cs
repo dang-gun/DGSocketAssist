@@ -1,6 +1,6 @@
-﻿using DG_SocketAssist4.Global.Faculty;
+﻿using DG_SocketAssist6.Global.Faculty;
 
-namespace DG_SocketAssist4.Global.SendAssists;
+namespace DG_SocketAssist6.Global.SendAssists;
 
 /// <summary>
 /// 전송할 데이터를 큐로 관리

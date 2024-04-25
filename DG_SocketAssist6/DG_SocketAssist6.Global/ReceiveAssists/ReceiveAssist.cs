@@ -1,6 +1,6 @@
 ﻿using System.Net.Sockets;
 
-namespace DG_SocketAssist4.Global.ReceiveAssists
+namespace DG_SocketAssist6.Global.ReceiveAssists
 {
     public class ReceiveAssist
     {

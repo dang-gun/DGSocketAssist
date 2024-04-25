@@ -1,5 +1,5 @@
 ﻿
-namespace DG_SocketAssist4.Global.ReceiveAssists;
+namespace DG_SocketAssist6.Global.ReceiveAssists;
 
 /// <summary>
 /// 리시브 데이터를 임시로 저장해둘 버퍼

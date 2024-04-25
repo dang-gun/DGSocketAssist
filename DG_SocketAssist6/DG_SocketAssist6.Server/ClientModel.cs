@@ -1,5 +1,5 @@
 ﻿
-namespace DG_SocketAssist4.Server;
+namespace DG_SocketAssist6.Server;
 
 /// <summary>
 /// 직접적인 클라이언트 처리를 하는 클래스

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DG_SocketAssist4.Global.Faculty;
+namespace DG_SocketAssist6.Global.Faculty;
 
 /// <summary>
 /// 버퍼 데이터모델

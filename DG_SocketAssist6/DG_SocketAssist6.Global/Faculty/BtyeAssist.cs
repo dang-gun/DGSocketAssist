@@ -1,7 +1,7 @@
 ﻿using System;
 
 
-namespace DG_SocketAssist4.Global.Faculty;
+namespace DG_SocketAssist6.Global.Faculty;
 
 /// <summary>
 /// SettingData의 설정에 맞게 전달된 바이트를 처리하는 클래스

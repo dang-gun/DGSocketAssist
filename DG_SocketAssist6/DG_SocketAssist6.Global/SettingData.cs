@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DG_SocketAssist4.Global;
+namespace DG_SocketAssist6.Global;
 
 /// <summary>
 /// 서버와 클라이언트가 주고/받는 데이터 구조체

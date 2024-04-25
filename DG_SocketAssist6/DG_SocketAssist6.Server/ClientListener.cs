@@ -1,11 +1,11 @@
 ﻿using System.Net.Sockets;
 
-using DG_SocketAssist4.Global;
-using DG_SocketAssist4.Global.Faculty;
-using DG_SocketAssist4.Global.ReceiveAssists;
-using DG_SocketAssist4.Global.SendAssists;
+using DG_SocketAssist6.Global;
+using DG_SocketAssist6.Global.Faculty;
+using DG_SocketAssist6.Global.ReceiveAssists;
+using DG_SocketAssist6.Global.SendAssists;
 
-namespace DG_SocketAssist4.Server;
+namespace DG_SocketAssist6.Server;
 
 /// <summary>
 /// 연결된 클라이언트

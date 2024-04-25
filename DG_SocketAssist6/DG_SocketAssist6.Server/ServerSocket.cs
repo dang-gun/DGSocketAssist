@@ -1,10 +1,10 @@
 ﻿using System.Net;
 using System.Net.Sockets;
 
-using DG_SocketAssist4.Global;
+using DG_SocketAssist6.Global;
 using DG_SocketAssist6.Global.Faculty;
 
-namespace DG_SocketAssist4.Server;
+namespace DG_SocketAssist6.Server;
 
 /// <summary>
 /// 클라이언트의 접속을 기다리는 서버

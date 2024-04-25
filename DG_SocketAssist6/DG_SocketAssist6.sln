@@ -13,6 +13,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Chat Sample", "Chat Sample"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatGlobal", "ChatGlobal\ChatGlobal.csproj", "{247314F5-D5A0-4757-8423-A313D2D3D3B1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocketServer6Test", "SocketServer6Test\SocketServer6Test.csproj", "{75561847-4627-42CC-9E81-F34D2F06F110}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,12 +37,17 @@ Global
 		{247314F5-D5A0-4757-8423-A313D2D3D3B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{247314F5-D5A0-4757-8423-A313D2D3D3B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{247314F5-D5A0-4757-8423-A313D2D3D3B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75561847-4627-42CC-9E81-F34D2F06F110}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75561847-4627-42CC-9E81-F34D2F06F110}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75561847-4627-42CC-9E81-F34D2F06F110}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75561847-4627-42CC-9E81-F34D2F06F110}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{247314F5-D5A0-4757-8423-A313D2D3D3B1} = {924001E3-E085-4DF6-9417-A96EC61ECC80}
+		{75561847-4627-42CC-9E81-F34D2F06F110} = {924001E3-E085-4DF6-9417-A96EC61ECC80}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {09FC0B3E-5E55-4F3E-B3C2-10DECF8E89DB}

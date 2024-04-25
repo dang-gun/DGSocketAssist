@@ -1,5 +1,5 @@
 ﻿
-namespace DG_SocketAssist4.Global.SendAssists;
+namespace DG_SocketAssist6.Global.SendAssists;
 
 /// <summary>
 /// 보내기 큐 구현
