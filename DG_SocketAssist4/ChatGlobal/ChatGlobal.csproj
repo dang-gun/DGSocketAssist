@@ -44,7 +44,6 @@
     <Compile Include="ChatCommand.cs" />
     <Compile Include="ChatSetting.cs" />
     <Compile Include="MessageEventArgs.cs" />
-    <Compile Include="NumberAssist.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

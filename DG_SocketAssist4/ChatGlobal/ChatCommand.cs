@@ -74,11 +74,6 @@ namespace ChatGlobal
 	public class ChatCommand
 	{
 		/// <summary>
-		/// 숫자 관련 지원
-		/// </summary>
-		private NumberAssist m_insNumber = new NumberAssist();
-
-		/// <summary>
 		/// 문자열로된 숫자를 명령어 타입으로 바꿔줍니다.
 		/// 입력된 문자열이 올바르지 않다면 기본상태를 줍니다.
 		/// </summary>
@@ -89,11 +84,13 @@ namespace ChatGlobal
 			//넘어온 명령
 			ChatCommandType typeCommand = ChatCommandType.None;
 
-			if (true == m_insNumber.IsNumeric(sData))
-			{
+			int nCommand = 0;
+
+			if (true == Int32.TryParse(sData, out nCommand))
+			{//숫자 변환 성공
+
 				//입력된 명령이 숫자라면 명령 타입으로 변환한다.
-				//입력된 명령이 숫자가 아니면 명령 없음 처리(기본값)를 한다.
-				typeCommand = (ChatCommandType)Convert.ToInt32(sData);
+				typeCommand = (ChatCommandType)nCommand;
 			}
 
 			return typeCommand;
