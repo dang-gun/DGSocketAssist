@@ -26,7 +26,7 @@ namespace SocketServer6Test.Faculty.User
         /// <summary>
         /// 로그 작성 이벤트
         /// </summary>
-        internal event LogDelegate OnLog;
+        internal event LogDelegate? OnLog;
         /// <summary>
         /// 로그 작성 이벤트를 알림
         /// </summary>
@@ -52,7 +52,7 @@ namespace SocketServer6Test.Faculty.User
         /// <summary>
         /// 유저로 부터 전달된 메시지가 있으면 발생하는 이벤트
         /// </summary>
-        public event MessagedDelegate OnMessaged;
+        public event MessagedDelegate? OnMessaged;
         /// <summary>
         /// 유저로 부터 메시지가 전달 되었음을 알림.
         /// </summary>
@@ -91,7 +91,7 @@ namespace SocketServer6Test.Faculty.User
         /// <remarks>
         /// 사인인 전과 후로 나누어 리스트를 가지고 있는 이유는 유저 리스트를 좀더 효율 적으로 검색하기 위함이다.
         /// </remarks>
-        private List<UserDataModel> UserList_Temp = null;
+        private List<UserDataModel> UserList_Temp;
         /// <summary>
         /// 접속자 개체를 만들어 임시 리스트에 추가하고 로그인 작업을 시작한다.
         /// </summary>
@@ -159,7 +159,7 @@ namespace SocketServer6Test.Faculty.User
         /// <summary>
         /// 접속한 유저 리스트
         /// </summary>
-        private List<UserDataModel> UserList = null;
+        private List<UserDataModel> UserList;
         
         /// <summary>
         /// 접속자 숫자
@@ -187,7 +187,7 @@ namespace SocketServer6Test.Faculty.User
             if (null != sender)
             {
                 //같은 리스너를 가진 유저를 찾는다.
-                UserDataModel findUser = this.FindUser(sender);
+                UserDataModel? findUser = this.FindUser(sender);
                 if (null != findUser)
                 {//유저를 찾았다
                  //리스트에서 지운다.
@@ -214,10 +214,10 @@ namespace SocketServer6Test.Faculty.User
         /// </summary>
         /// <param name="sender"></param>
         /// <returns></returns>
-        public UserDataModel FindUser(ClientModel sender)
+        public UserDataModel? FindUser(ClientModel sender)
         {
             //같은 리스너를 가진 유저를 찾는다.
-            UserDataModel findUser
+            UserDataModel? findUser
                 = this.UserList
                     .Where(w => w.ClientMe == sender)
                     .FirstOrDefault();
@@ -230,10 +230,10 @@ namespace SocketServer6Test.Faculty.User
         /// </summary>
         /// <param name="sName"></param>
         /// <returns></returns>
-        public UserDataModel FindUser(string sName)
+        public UserDataModel? FindUser(string sName)
         {
             //같은 리스너를 가진 유저를 찾는다.
-            UserDataModel findUser
+            UserDataModel? findUser
                 = this.UserList
                     .Where(w => w.UserName == sName)
                     .FirstOrDefault();
@@ -246,10 +246,10 @@ namespace SocketServer6Test.Faculty.User
         /// </summary>
         /// <param name="nClientIndex"></param>
         /// <returns></returns>
-        public UserDataModel FindUser(long nClientIndex)
+        public UserDataModel? FindUser(long nClientIndex)
         {
             //같은 리스너를 가진 유저를 찾는다.
-            UserDataModel findUser
+            UserDataModel? findUser
                 = this.UserList
                     .Where(w => w.ClientIndex == nClientIndex)
                     .FirstOrDefault();

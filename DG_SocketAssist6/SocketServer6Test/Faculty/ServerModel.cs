@@ -17,11 +17,13 @@ namespace SocketServer6Test.Faculty
         /// </summary>
         private UserListModel UserList;
 
+#pragma warning disable CS8618 // 생성자를 종료할 때 null을 허용하지 않는 필드에 null이 아닌 값을 포함해야 합니다. null 허용으로 선언해 보세요.
         public ServerModel()
+
         {
             
         }
-
+#pragma warning restore CS8618 // 생성자를 종료할 때 null을 허용하지 않는 필드에 null이 아닌 값을 포함해야 합니다. null 허용으로 선언해 보세요.
 
         /// <summary>
         /// 서버 시작
@@ -91,7 +93,12 @@ namespace SocketServer6Test.Faculty
             //끊김 처리가 시작되었으면 중간에 취소될리가 없으므로 그냥 끊어졌다고 판단하고 작업한다.
 
             //끊어진 대상 이름
-            string sName = this.UserList.FindUser(sender.ClientIndex).UserName;
+            string sName = string.Empty;
+            UserDataModel? udTemp = this.UserList.FindUser(sender.ClientIndex);
+            if (null != udTemp)
+            {
+                sName = udTemp.UserName;
+            }
 
             //UI에서 제거
             this.UserListUi_Remove(sName);
@@ -173,7 +180,7 @@ namespace SocketServer6Test.Faculty
                     , sender.UserName
                     , sMsg);
 
-            GlobalStatic.MainForm.DisplayMsg(sTossMsg);
+            GlobalStatic.MainForm!.DisplayMsg(sTossMsg);
 
             //모든 유저에게 메시지 전달
             this.SendMsg_All(sTossMsg);
@@ -270,7 +277,7 @@ namespace SocketServer6Test.Faculty
         /// <param name="sId"></param>
         public void UserListUi_Add(string sId)
         {
-            GlobalStatic.MainForm.UserList_Add(sId);
+            GlobalStatic.MainForm!.UserList_Add(sId);
         }
 
         /// <summary>
@@ -279,7 +286,7 @@ namespace SocketServer6Test.Faculty
         /// <param name="sId"></param>
         public void UserListUi_Remove(string sId)
         {
-            GlobalStatic.MainForm.UserList_Remove(sId);
+            GlobalStatic.MainForm!.UserList_Remove(sId);
         }
 
         /// <summary>
@@ -287,7 +294,7 @@ namespace SocketServer6Test.Faculty
         /// </summary>
         public void UserListUi_Refresh()
         {
-            GlobalStatic.MainForm.UserList_Clear();
+            GlobalStatic.MainForm!.UserList_Clear();
 
             string[] arrUserId = this.UserList.UserNameList;
             for (int i = 0; i < arrUserId.Length; i++)
@@ -347,7 +354,7 @@ namespace SocketServer6Test.Faculty
         /// <param name="sMsg"></param>
         private void Log(string sMsg)
         {
-            GlobalStatic.MainForm.DisplayLog(sMsg);
+            GlobalStatic.MainForm!.DisplayLog(sMsg);
         }
     }
 }

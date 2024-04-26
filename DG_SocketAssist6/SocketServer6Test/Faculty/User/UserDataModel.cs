@@ -18,7 +18,7 @@ namespace SocketServer6Test.Faculty.User
         /// <summary>
         /// 로그 작성 이벤트
         /// </summary>
-        internal event LogDelegate OnLog;
+        internal event LogDelegate? OnLog;
         /// <summary>
         /// 로그 작성 이벤트를 알림
         /// </summary>
@@ -43,7 +43,7 @@ namespace SocketServer6Test.Faculty.User
         /// <summary>
         /// 서버로 메시지를 보내려고 알리는 이벤트
         /// </summary>
-        public event MessageDelegate OnSendMessage;
+        public event MessageDelegate? OnSendMessage;
         /// <summary>
         /// 서버로 메시지를 보내려고 알리는 요청
         /// </summary>
@@ -103,7 +103,7 @@ namespace SocketServer6Test.Faculty.User
         /// <summary>
         /// 이 유저의 구분용 ID
         /// </summary>
-        public string UserName { get; set; }
+        public string UserName { get; set; } = string.Empty;
 
 
         /// <summary>
