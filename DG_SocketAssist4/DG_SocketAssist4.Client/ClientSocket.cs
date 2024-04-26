@@ -227,13 +227,10 @@ namespace DG_SocketAssist4.Client
 					, ProtocolType.Tcp);
 			this.ServerIP = ip;
 
-            //keepalive설정 적용
-            this.SocketMe.IOControl(
-                IOControlCode.KeepAliveValues
-                , (new KeepAliveSetting()).KeepAliveSetting_Btye()
-                , null);
+			//keepalive설정 적용
+			(new KeepAliveSetting()).KeepAliveSetting_Btye(this.SocketMe);
 
-            
+
 
             //전송용 SocketAsyncEventArgs 세팅
             this.m_saeaSend = new SocketAsyncEventArgs();

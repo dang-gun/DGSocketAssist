@@ -172,9 +172,6 @@ internal class ClientListener
         //소켓을 저장한다.
         this.SocketMe = socketMe;
 
-        //keepalive설정 적용
-        (new KeepAliveSetting()).KeepAliveSetting_Net6(socketMe);
-
         //전송용 SocketAsyncEventArgs 세팅
         this.m_saeaSend = new SocketAsyncEventArgs();
         this.m_saeaSend.Completed -= SaeaSend_Completed;

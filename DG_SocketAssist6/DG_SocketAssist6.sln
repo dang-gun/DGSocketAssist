@@ -3,17 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DG_SocketAssist6.Global", "DG_SocketAssist6.Global\DG_SocketAssist6.Global.csproj", "{A1721600-0853-4BC2-B406-67C1469D0529}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DG_SocketAssist6.Global", "DG_SocketAssist6.Global\DG_SocketAssist6.Global.csproj", "{A1721600-0853-4BC2-B406-67C1469D0529}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DG_SocketAssist6.Server", "DG_SocketAssist6.Server\DG_SocketAssist6.Server.csproj", "{F0B1461D-D76F-4014-8D5E-C13B0069D08E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DG_SocketAssist6.Server", "DG_SocketAssist6.Server\DG_SocketAssist6.Server.csproj", "{F0B1461D-D76F-4014-8D5E-C13B0069D08E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DG_SocketAssist6.Client", "DG_SocketAssist6.Client\DG_SocketAssist6.Client.csproj", "{2E600C8C-DC5D-49E8-9439-F7B5B68BCF68}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DG_SocketAssist6.Client", "DG_SocketAssist6.Client\DG_SocketAssist6.Client.csproj", "{2E600C8C-DC5D-49E8-9439-F7B5B68BCF68}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Chat Sample", "Chat Sample", "{924001E3-E085-4DF6-9417-A96EC61ECC80}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatGlobal", "ChatGlobal\ChatGlobal.csproj", "{247314F5-D5A0-4757-8423-A313D2D3D3B1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatGlobal", "ChatGlobal\ChatGlobal.csproj", "{247314F5-D5A0-4757-8423-A313D2D3D3B1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocketServer6Test", "SocketServer6Test\SocketServer6Test.csproj", "{75561847-4627-42CC-9E81-F34D2F06F110}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SocketServer6Test", "SocketServer6Test\SocketServer6Test.csproj", "{75561847-4627-42CC-9E81-F34D2F06F110}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocketClient6Test", "SocketClient6Test\SocketClient6Test.csproj", "{70BF2E3E-B658-49B9-9D4E-FBEEC644D023}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +43,10 @@ Global
 		{75561847-4627-42CC-9E81-F34D2F06F110}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{75561847-4627-42CC-9E81-F34D2F06F110}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{75561847-4627-42CC-9E81-F34D2F06F110}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70BF2E3E-B658-49B9-9D4E-FBEEC644D023}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70BF2E3E-B658-49B9-9D4E-FBEEC644D023}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70BF2E3E-B658-49B9-9D4E-FBEEC644D023}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70BF2E3E-B658-49B9-9D4E-FBEEC644D023}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -48,6 +54,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{247314F5-D5A0-4757-8423-A313D2D3D3B1} = {924001E3-E085-4DF6-9417-A96EC61ECC80}
 		{75561847-4627-42CC-9E81-F34D2F06F110} = {924001E3-E085-4DF6-9417-A96EC61ECC80}
+		{70BF2E3E-B658-49B9-9D4E-FBEEC644D023} = {924001E3-E085-4DF6-9417-A96EC61ECC80}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {09FC0B3E-5E55-4F3E-B3C2-10DECF8E89DB}

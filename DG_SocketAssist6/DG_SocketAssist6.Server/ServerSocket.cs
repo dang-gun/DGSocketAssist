@@ -216,7 +216,11 @@ public class ServerSocket
         //매개변수는 연결 대기 숫자.
         //.NET 5 이상에서는 자동으로 설정가능하다.
         //https://docs.microsoft.com/ko-kr/dotnet/api/system.net.sockets.socket.listen?view=net-6.0
-        socketServer.Listen(40);
+        //socketServer.Listen(40);
+        socketServer.Listen();
+
+        //keepalive설정 적용
+        (new KeepAliveSetting()).KeepAliveSetting_Net6(this.socketServer);
 
         this.OnStartCall();
         this.OnLogCall(0, "클라이언트 접속 대기 : 시작");

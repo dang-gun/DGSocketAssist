@@ -173,13 +173,6 @@ namespace DG_SocketAssist4.Server
 			//소캣을 저장한다.
 			this.SocketMe = socketMe;
 
-
-            //keepalive설정 적용
-            this.SocketMe.IOControl(
-				IOControlCode.KeepAliveValues
-                , (new KeepAliveSetting()).KeepAliveSetting_Btye()
-                , null);
-
             //전송용 SocketAsyncEventArgs 세팅
             this.m_saeaSend = new SocketAsyncEventArgs();
 			this.m_saeaSend.Completed -= SaeaSend_Completed;

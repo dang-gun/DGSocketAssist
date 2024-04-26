@@ -66,14 +66,14 @@
             this.labID.Name = "labID";
             this.labID.Size = new System.Drawing.Size(100, 23);
             this.labID.TabIndex = 31;
-            this.labID.Text = "ID 출력";
+            this.labID.Text = "ID 입력";
             this.labID.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // btnSend
             // 
-            this.btnSend.Location = new System.Drawing.Point(447, 229);
+            this.btnSend.Location = new System.Drawing.Point(444, 229);
             this.btnSend.Name = "btnSend";
-            this.btnSend.Size = new System.Drawing.Size(75, 23);
+            this.btnSend.Size = new System.Drawing.Size(78, 23);
             this.btnSend.TabIndex = 30;
             this.btnSend.Text = "사인인";
             this.btnSend.UseVisualStyleBackColor = true;
@@ -83,7 +83,7 @@
             // 
             this.txtMsg.Location = new System.Drawing.Point(110, 229);
             this.txtMsg.Name = "txtMsg";
-            this.txtMsg.Size = new System.Drawing.Size(331, 21);
+            this.txtMsg.Size = new System.Drawing.Size(328, 21);
             this.txtMsg.TabIndex = 27;
             // 
             // listUser
@@ -114,8 +114,8 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(83, 21);
             this.label1.TabIndex = 32;
-            this.label1.Text = "Port";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label1.Text = "Port : ";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // txtAutoMsg
             // 
@@ -201,7 +201,7 @@
             // 
             this.listLog.FormattingEnabled = true;
             this.listLog.ItemHeight = 12;
-            this.listLog.Location = new System.Drawing.Point(4, 268);
+            this.listLog.Location = new System.Drawing.Point(4, 256);
             this.listLog.Name = "listLog";
             this.listLog.Size = new System.Drawing.Size(518, 232);
             this.listLog.TabIndex = 37;
@@ -210,7 +210,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(531, 505);
+            this.ClientSize = new System.Drawing.Size(531, 492);
             this.Controls.Add(this.listLog);
             this.Controls.Add(this.txtIp);
             this.Controls.Add(this.label2);

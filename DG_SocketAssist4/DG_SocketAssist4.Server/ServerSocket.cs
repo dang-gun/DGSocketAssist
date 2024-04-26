@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Sockets;
 
 using DG_SocketAssist4.Global;
+using DG_SocketAssist4.Global.Faculty;
 
 namespace DG_SocketAssist4.Server
 {
@@ -198,6 +199,7 @@ namespace DG_SocketAssist4.Server
 							, SocketType.Stream
 							, ProtocolType.Tcp);
 
+            (new KeepAliveSetting()).KeepAliveSetting_Btye(this.socketServer);
 
             //서버 ip 및 포트
             IPEndPoint ipServer 

@@ -27,28 +27,12 @@ public class SettingData
     /// </remarks>
     public readonly static int BufferHeaderSize = BufferHeaderSizeType.GetHashCode();
 
-
     /// <summary>
     /// 소켓이 한번에 받을 수 있는 최대 버퍼 크기.<br />
     /// SocketAsyncEventArgs를 생성할때 사용되는 버퍼 크기이다.
     /// </summary>
     public readonly static int BufferFullSize = 8192;
     //public readonly static int BufferFullSize = 1024;
-
-    /// <summary>
-    /// 연결 유지 확인 시간(ms)
-    /// </summary>
-    public readonly static uint TcpKeepAliveTime = 1000;
-    /// <summary>
-    /// 연결 유지 확인 간격(ms)
-    /// </summary>
-    public readonly static uint TcpKeepAliveInterval = 1000;
-    /// <summary>
-    /// 연결 유지 실패시 반복 확인 횟수
-    /// <para>끊김시 이 횟수만큼 반복해서 확인하고 연결이 복원되지 않으면 끊김처리가 된다.</para>
-    /// </summary>
-    public readonly static uint TcpKeepAliveRetryCount = 5;
-
 }
 
 /// <summary>

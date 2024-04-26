@@ -121,9 +121,11 @@ namespace SocketClient4Test
                     GlobalStatic.CrossThread_Winfom(this
                         , new Action(delegate ()
                         {
-                            txtMsg.Enabled = true;
-                            btnSend.Text = "로그인";
-                            btnSend.Enabled = true;
+                            this.labID.Text = "ID 입력";
+
+                            this.txtMsg.Enabled = true;
+                            this.btnSend.Text = "로그인";
+                            this.btnSend.Enabled = true;
 
                             //유저 리스트 비우기
                             this.UserList_Clear();
@@ -142,11 +144,13 @@ namespace SocketClient4Test
                     GlobalStatic.CrossThread_Winfom(this
                         , new Action(delegate ()
                         {
-                            txtMsg.Enabled = true;
+                            this.labID.Text = "메시지";
+
+                            this.txtMsg.Enabled = true;
                             this.txtMsg.Text = "";
 
-                            btnSend.Text = "보내기";
-                            btnSend.Enabled = true;
+                            this.btnSend.Text = "보내기";
+                            this.btnSend.Enabled = true;
                         }));
                     break;
             }

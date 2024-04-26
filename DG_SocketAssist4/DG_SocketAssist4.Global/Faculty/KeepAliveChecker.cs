@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Sockets;
 using System.Timers;
 
 namespace DG_SocketAssist4.Global.Faculty
@@ -47,10 +48,10 @@ namespace DG_SocketAssist4.Global.Faculty
     public class KeepAliveSetting
     {
         /// <summary>
-        /// KeepAlive설정값을 리턴한다.
+        /// KeepAlive설정값을 설정한다.
         /// </summary>
         /// <returns></returns>
-        public byte[] KeepAliveSetting_Btye()
+        public void KeepAliveSetting_Btye(Socket socket)
         {
             //KeepAlive 설정
             byte[] keepAlive = new byte[12];
@@ -62,7 +63,11 @@ namespace DG_SocketAssist4.Global.Faculty
             //keepalive 확인 간격
             Buffer.BlockCopy(BitConverter.GetBytes(SettingData.TcpKeepAliveInterval), 0, keepAlive, 8, 4);
 
-            return keepAlive;
+            //keepalive설정 적용
+            socket.IOControl(
+                IOControlCode.KeepAliveValues
+                , keepAlive
+                , null);
         }
     }
 }
