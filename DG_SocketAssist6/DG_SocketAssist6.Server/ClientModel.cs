@@ -111,6 +111,16 @@ public class ClientModel
     /// 연결된 클라이언트 리스너
     /// </summary>
     private ClientListener ClientLis;
+    /// <summary>
+    /// 연결된 SocketMe의 IP
+    /// </summary>
+    public string Ip
+    {
+        get
+        {
+            return this.ClientLis.Ip;
+        }
+    }
 
     /// <summary>
     /// 이 개체를 구분하기위한 고유번호
