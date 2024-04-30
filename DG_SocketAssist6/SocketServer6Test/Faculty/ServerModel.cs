@@ -34,8 +34,8 @@ namespace SocketServer6Test.Faculty
             this.Server = new ServerSocket(nPort);
             this.Server.OnLog += this.Server_OnLog;
             this.Server.OnConnected += this.Server_OnConnected;
-            this.Server.OnDisconnect += Server_OnDisconnect;
-            this.Server.OnDisconnectCompleted += Server_OnDisconnectCompleted;
+            this.Server.OnDisconnect += this.Server_OnDisconnect;
+            this.Server.OnDisconnectCompleted += this.Server_OnDisconnectCompleted;
 
 
             this.UserList = new UserListModel();

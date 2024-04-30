@@ -11,7 +11,7 @@ public partial class ClientForm : Form
     /// <summary>
     /// 나의 상태
     /// </summary>
-    public enum typeState
+    public enum UiStateType
     {
         /// <summary>
         /// 없음
@@ -35,7 +35,7 @@ public partial class ClientForm : Form
     /// <summary>
     /// 나의 상태
     /// </summary>
-    private typeState m_typeState = typeState.None;
+    private UiStateType m_typeState = UiStateType.None;
 
     public ClientForm()
     {
@@ -63,7 +63,7 @@ public partial class ClientForm : Form
     {
         switch (m_typeState)
         {
-            case typeState.None://기본
+            case UiStateType.None://기본
                 if ("" == txtMsg.Text)
                 {
                     //입력값이 없으면 리턴
@@ -72,15 +72,15 @@ public partial class ClientForm : Form
                 }
                 else
                 {
-                    //아이디가 있으면 로그인 시작
+                    //아이디가 있으면 사인인 시작
 
                     //유아이를 세팅하고
-                    this.UI_Setting(typeState.Connecting);
+                    this.UI_Setting(UiStateType.Connecting);
 
-                    string sIP = this.txtIp.Text;
                     int nPort = Convert.ToInt32(txtPort.Text);
 
                     //서버연결 처리 개체 
+                    //서버연결 시작
                     GlobalStatic.MainClient
                         .ConnectStart(
                             this.txtIp.Text
@@ -89,7 +89,7 @@ public partial class ClientForm : Form
                 }
                 break;
 
-            case typeState.Connect://접속 상태
+            case UiStateType.Connect://접속 상태
                                    //이상태에서는 메시지를 보낸다.
                 GlobalStatic.MainClient.SendMsg(ChatCommandType.Msg, txtMsg.Text);
                 this.txtMsg.Text = "";
@@ -103,15 +103,15 @@ public partial class ClientForm : Form
     /// UI 세팅
     /// </summary>
     /// <param name="typeSet"></param>
-    public void UI_Setting(typeState typeSet)
+    public void UI_Setting(UiStateType typeSet)
     {
         //들어온 값을 세팅하고
         m_typeState = typeSet;
 
         switch (typeSet)
         {
-            case typeState.None://기본
-            case typeState.Disconnect: //끊김
+            case UiStateType.None://기본
+            case UiStateType.Disconnect: //끊김
                 GlobalStatic.CrossThread_Winfom(this
                     , new Action(delegate ()
                     {
@@ -126,15 +126,15 @@ public partial class ClientForm : Form
                     }));
 
                 //처음으로 돌리기위해 typeState.None로 초기화 한다.
-                m_typeState = typeState.None;
+                m_typeState = UiStateType.None;
                 break;
 
-            case typeState.Connecting:  //연결중
+            case UiStateType.Connecting:  //연결중
                 txtMsg.Enabled = false;
                 btnSend.Text = "연결중";
                 btnSend.Enabled = false;
                 break;
-            case typeState.Connect: //연결완료
+            case UiStateType.Connect: //연결완료
                 GlobalStatic.CrossThread_Winfom(this
                     , new Action(delegate ()
                     {

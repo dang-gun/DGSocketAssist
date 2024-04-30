@@ -119,6 +119,17 @@ internal class ClientListener
     public Socket SocketMe { get; private set; }
 
     /// <summary>
+    /// 연결된 SocketMe의 IP
+    /// </summary>
+    public string Ip 
+    { 
+        get
+        {
+            return (new SocketInfo()).ToIp(this.SocketMe);
+        }
+    }
+
+    /// <summary>
     /// 이 클라이언트에게 전송용 SocketAsyncEventArgs
     /// </summary>
     private SocketAsyncEventArgs m_saeaSend;

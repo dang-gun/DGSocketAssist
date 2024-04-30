@@ -99,7 +99,7 @@ namespace SocketClient6Test.Faculty
         private void Client_OnDisconnect(ClientSocket sender)
         {
             this.Log("*** 서버 끊김 ***");
-            GlobalStatic.MainForm!.UI_Setting(ClientForm.typeState.Disconnect);
+            GlobalStatic.MainForm!.UI_Setting(ClientForm.UiStateType.Disconnect);
         }
         /// <summary>
         /// 서버와 끊김 처리가 완료됨
@@ -159,14 +159,14 @@ namespace SocketClient6Test.Faculty
                         break;
                     case ChatCommandType.SignIn_Ok:
                         this.Log("사인인 성공 : " + this.Id);
-                        GlobalStatic.MainForm!.UI_Setting(ClientForm.typeState.Connect);
+                        GlobalStatic.MainForm!.UI_Setting(ClientForm.UiStateType.Connect);
                         this.UserList_Add(this.Id);
                         //유저 리스트 갱신 요청
                         this.SendMsg(ChatCommandType.User_List_Get, "");
                         break;
                     case ChatCommandType.SignIn_Fail:
                         this.Log("사인인 실패 : " + this.Id);
-                        GlobalStatic.MainForm!.UI_Setting(ClientForm.typeState.None);
+                        GlobalStatic.MainForm!.UI_Setting(ClientForm.UiStateType.None);
                         break;
 
                     case ChatCommandType.User_Connect:   //다른 유저가 접속 했다.

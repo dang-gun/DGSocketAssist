@@ -159,11 +159,21 @@ namespace DG_SocketAssist4.Client
 		/// 이 클라이언트가 연결된 Socket
 		/// </summary>
 		public Socket SocketMe { get; private set; }
+        /// <summary>
+        /// 연결된 SocketMe의 IP
+        /// </summary>
+        public string Ip
+        {
+            get
+            {
+                return (new SocketInfo()).ToIp(this.SocketMe);
+            }
+        }
 
-		/// <summary>
-		/// 서버로 전송용 SocketAsyncEventArgs
-		/// </summary>
-		private SocketAsyncEventArgs m_saeaSend = null;
+        /// <summary>
+        /// 서버로 전송용 SocketAsyncEventArgs
+        /// </summary>
+        private SocketAsyncEventArgs m_saeaSend = null;
         /// <summary>
         /// 서버 전송시 m_saeaSend가 사용중일때 처리해주는 큐
         /// </summary>
