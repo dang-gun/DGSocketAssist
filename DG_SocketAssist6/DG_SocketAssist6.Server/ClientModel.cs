@@ -112,7 +112,7 @@ public class ClientModel
     /// </summary>
     private ClientListener ClientLis;
     /// <summary>
-    /// 연결된 SocketMe의 IP
+    /// 연결된 클라이언트의 IP
     /// </summary>
     public string Ip
     {
